@@ -13,6 +13,13 @@
 *.out
 *.kdev4
 
+Makefile
+
+/aclocal.m4
+/autom4te.cache/
+/libtool
+/configure
+/config.status
 /build*
 
 !.gitignore
