@@ -55,6 +55,7 @@ NC_EDIT_ERROPT_TYPE erropt = NC_EDIT_ERROPT_NOTSET;
  */
 int transapi_init(xmlDocPtr * running)
 {
+	printf("init done\n");
 	return EXIT_SUCCESS;
 }
 
@@ -63,6 +64,7 @@ int transapi_init(xmlDocPtr * running)
  */
 void transapi_close(void)
 {
+	printf("closed\n");
 	return;
 }
 
@@ -76,7 +78,20 @@ void transapi_close(void)
  */
 xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **err)
 {
-	return(NULL);
+	puts(__FUNCTION__);
+
+
+	xmlDocPtr state;
+	xmlNodePtr root;
+	xmlNsPtr ns;
+
+	state = xmlNewDoc(BAD_CAST "1.0");
+	root = xmlNewDocNode(state, NULL, BAD_CAST "capable-switch", NULL);
+	xmlDocSetRootElement(state, root);
+	ns = xmlNewNs(root, BAD_CAST "urn:onf:of111:config:yang", NULL);
+	xmlSetNs(root, ns);
+
+	return (state);
 }
 /*
  * Mapping prefixes with namespaces.
@@ -91,7 +106,7 @@ struct ns_pair namespace_mapping[] = {{"ofconfig", "urn:onf:of111:config:yang"},
 */
 
 /**
- * @brief This callback will be run when node in path /of-config1.1.1:of-config1.1.1 changes
+ * @brief This callback will be run when node in path /ofconfig:capable-switch changes
  *
  * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
  * @param[in] op	Observed change in path. XMLDIFF_OP type.
@@ -101,8 +116,20 @@ struct ns_pair namespace_mapping[] = {{"ofconfig", "urn:onf:of111:config:yang"},
  * @return EXIT_SUCCESS or EXIT_FAILURE
  */
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
-int callback_of_config1_1_1_of_config1_1_1 (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+int callback_ofconfig_capable_switch (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
+
+	printf("op=%d\n", op);
+
+	if (op & XMLDIFF_ADD) {
+
+	} else if (op & XMLDIFF_REM) {
+
+	} else {
+		*error = nc_err_new(NC_ERR_OP_FAILED);
+		nc_err_set(*error, NC_ERR_PARAM_MSG, "Unsupported operation.");
+		return EXIT_FAILURE;
+	}
 	return EXIT_SUCCESS;
 }
 
@@ -115,7 +142,7 @@ struct transapi_data_callbacks clbks =  {
 	.callbacks_count = 1,
 	.data = NULL,
 	.callbacks = {
-		{.path = "/of-config1.1.1:of-config1.1.1", .func = callback_of_config1_1_1_of_config1_1_1}
+		{.path = "/ofconfig:capable-switch", .func = callback_ofconfig_capable_switch}
 	}
 };
 
