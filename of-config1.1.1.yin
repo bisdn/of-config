@@ -336,7 +336,6 @@ Logical Switch.</text>
       </description>
     </leaf>
     <container name="capabilities">
-      <config value="false"/>
       <description>
         <text>This element contains all capability items that
 an OpenFlow Logical Switch MAY implement.
@@ -876,7 +875,6 @@ defaults to 'tls'.</text>
       </description>
     </leaf>
     <container name="state">
-      <config value="false"/>
       <description>
         <text>This container holds connection state
 information that indicate the connection state of the
@@ -1208,7 +1206,6 @@ error is returned.</text>
     <uses name="OFResourceType"/>
     <leaf name="number">
       <type name="uint64"/>
-      <config value="false"/>
       <description>
         <text>This number identifies the OpenFlow Port to 
 OpenFlow Controllers. It is assigned to an OpenFlow Port 
@@ -1237,7 +1234,6 @@ included in replies to NETCONF &lt;get-config&gt; requests.</text>
       <type name="string">
         <length value="1..16"/>
       </type>
-      <config value="false"/>
       <description>
         <text>This element assists OpenFlow Controllers in 
 identifying OpenFlow Ports.  
@@ -1268,7 +1264,6 @@ of the current features has value 'other'.</text>
       </when>
       <type name="uint32"/>
       <units name="kbit/s"/>
-      <config value="false"/>
       <description>
         <text>This element indicates the current bit rate of 
 the port. Its values is to be provided in units of kilobit 
@@ -1290,7 +1285,6 @@ of the current features has value 'other'.</text>
       </when>
       <type name="uint32"/>
       <units name="kbit/s"/>
-      <config value="false"/>
       <description>
         <text>This element indicates the maximum bit rate of 
 the port. Its values is to be provided in units of kilobit 
@@ -1356,7 +1350,6 @@ it defaults to 'false'.</text>
       </leaf>
     </container>
     <container name="state">
-      <config value="false"/>
       <description>
         <text>This element represents the general operational 
 state of the OpenFlow Port.
@@ -1395,7 +1388,6 @@ for fast failover.</text>
     <container name="features">
       <container name="current">
         <uses name="OFPortCurrentFeatureListType"/>
-        <config value="false"/>
         <description>
           <text>The features (rates, duplex, etc.) of the
 port, that are currently in use.
@@ -1433,7 +1425,6 @@ it exists. If the element does not exist, a
       </container>
       <container name="supported">
         <uses name="OFPortOtherFeatureListType"/>
-        <config value="false"/>
         <description>
           <text>The features (rates, duplex, etc.) of the
 port, that are supported on the port.
@@ -1448,7 +1439,6 @@ modify this element and its children with a NETCONF
       </container>
       <container name="advertised-peer">
         <uses name="OFPortOtherFeatureListType"/>
-        <config value="false"/>
         <description>
           <text>The features (rates, duplex, etc.) that are
 currently advertised by the peer port.

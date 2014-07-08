@@ -314,7 +314,7 @@ module of-config1.1.1 {
         Logical Switch.";
     }
     container capabilities {
-      config false;
+      /* config false; */
       description "This element contains all capability items that
         an OpenFlow Logical Switch MAY implement.
 
@@ -778,7 +778,7 @@ module of-config1.1.1 {
         defaults to 'tls'.";
     }
     container state {
-      config false;
+      /* config false; */
       description "This container holds connection state
         information that indicate the connection state of the
         OpenFlow Logical Switch and the OpenFlow protocol version
@@ -1050,7 +1050,7 @@ module of-config1.1.1 {
     uses OFResourceType;
     leaf number {
       type uint64;
-      config false;
+      /* config false; */
       description "This number identifies the OpenFlow Port to 
         OpenFlow Controllers. It is assigned to an OpenFlow Port 
         latest when the OpenFlow Port is associated with and
@@ -1075,7 +1075,7 @@ module of-config1.1.1 {
     }
     leaf name {
       type string { length "1..16"; }
-      config false;
+      /* config false; */
       description "This element assists OpenFlow Controllers in 
         identifying OpenFlow Ports.  
       
@@ -1102,7 +1102,7 @@ module of-config1.1.1 {
       }
       type uint32;
       units "kbit/s";
-      config false;
+      /* config false; */
       description "This element indicates the current bit rate of 
         the port. Its values is to be provided in units of kilobit 
         per second (kbps). This element is only valid if the 
@@ -1120,7 +1120,7 @@ module of-config1.1.1 {
       }
       type uint32;
       units "kbit/s";
-      config false;
+      /* config false; */
       description "This element indicates the maximum bit rate of 
         the port. Its values is to be provided in units of kilobit 
         per second (kbps). This element is only valid if the 
@@ -1174,7 +1174,7 @@ module of-config1.1.1 {
       }
     }
     container state {
-      config false;
+      /* config false; */
       description "This element represents the general operational 
       state of the OpenFlow Port.
 
@@ -1205,7 +1205,7 @@ module of-config1.1.1 {
     container features {
       container current {
         uses OFPortCurrentFeatureListType;
-        config false;
+        /* config false; */
         description "The features (rates, duplex, etc.) of the
           port, that are currently in use.
 
@@ -1239,7 +1239,7 @@ module of-config1.1.1 {
       }
       container supported {
         uses OFPortOtherFeatureListType;
-        config false;
+        /* config false; */
         description "The features (rates, duplex, etc.) of the
           port, that are supported on the port.
 
@@ -1252,7 +1252,7 @@ module of-config1.1.1 {
       }
       container advertised-peer {
         uses OFPortOtherFeatureListType;
-        config false;
+        /* config false; */
         description "The features (rates, duplex, etc.) that are
           currently advertised by the peer port.
 
