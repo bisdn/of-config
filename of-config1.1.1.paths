@@ -1,2 +1,23 @@
 ofconfig=urn:onf:of111:config:yang
-/of-config1.1.1:of-config1.1.1
+#/ofconfig:capable-switch
+/ofconfig:capable-switch/ofconfig:id
+
+# configuration points
+/ofconfig:capable-switch/ofconfig:configuration-points/ofconfig:configuration-point
+
+# Resources
+/ofconfig:capable-switch/ofconfig:resources
+/ofconfig:capable-switch/ofconfig:resources/ofconfig:port
+/ofconfig:capable-switch/ofconfig:resources/ofconfig:queue
+/ofconfig:capable-switch/ofconfig:resources/ofconfig:owned-certificate
+/ofconfig:capable-switch/ofconfig:resources/ofconfig:external-certificate
+/ofconfig:capable-switch/ofconfig:resources/ofconfig:flow-table
+
+# LSIs
+/ofconfig:capable-switch/ofconfig:logical-switches
+
+
+
+
+
+
