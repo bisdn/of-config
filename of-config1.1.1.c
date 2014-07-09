@@ -93,27 +93,7 @@ void transapi_close(void)
  */
 xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **err)
 {
-	puts(__FUNCTION__);
-
-	if (NULL != running) {
-		printf("using running config:\n");
-		xmlDocDump(stdout, running);
-		return running;
-	}
-
-	xmlDocPtr state;
-	xmlNodePtr root;
-	xmlNsPtr ns;
-
-	state = xmlNewDoc(BAD_CAST "1.0");
-	root = xmlNewDocNode(state, NULL, BAD_CAST "capable-switch", NULL);
-	xmlDocSetRootElement(state, root);
-	ns = xmlNewNs(root, BAD_CAST "urn:onf:of111:config:yang", NULL);
-	xmlSetNs(root, ns);
-
-	xmlNewChild(root, ns, BAD_CAST "config-version", BAD_CAST "1.1.1");
-
-	return (state);
+	return(NULL);
 }
 /*
  * Mapping prefixes with namespaces.
@@ -158,24 +138,6 @@ int callback_ofconfig_capable_switch_ofconfig_id (void ** data, XMLDIFF_OP op, x
  */
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofconfig_capable_switch_ofconfig_configuration_points_ofconfig_configuration_point (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
-{
-	printf("%s: op=%d\n", __FUNCTION__, op);
-	print_element_names(node);
-	return EXIT_SUCCESS;
-}
-
-/**
- * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:resources changes
- *
- * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
- * @param[in] op	Observed change in path. XMLDIFF_OP type.
- * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
- * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
- *
- * @return EXIT_SUCCESS or EXIT_FAILURE
- */
-/* !DO NOT ALTER FUNCTION SIGNATURE! */
-int callback_ofconfig_capable_switch_ofconfig_resources (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
 	printf("%s: op=%d\n", __FUNCTION__, op);
 	print_element_names(node);
@@ -273,7 +235,7 @@ int callback_ofconfig_capable_switch_ofconfig_resources_ofconfig_flow_table (voi
 }
 
 /**
- * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:logical-switches changes
+ * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch changes
  *
  * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
  * @param[in] op	Observed change in path. XMLDIFF_OP type.
@@ -283,7 +245,223 @@ int callback_ofconfig_capable_switch_ofconfig_resources_ofconfig_flow_table (voi
  * @return EXIT_SUCCESS or EXIT_FAILURE
  */
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
-int callback_ofconfig_capable_switch_ofconfig_logical_switches (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+int callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: op=%d\n", __FUNCTION__, op);
+	print_element_names(node);
+	return EXIT_SUCCESS;
+}
+
+/**
+ * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:id changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: op=%d\n", __FUNCTION__, op);
+	print_element_names(node);
+	return EXIT_SUCCESS;
+}
+
+/**
+ * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:capabilities changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_capabilities (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: op=%d\n", __FUNCTION__, op);
+	print_element_names(node);
+	return EXIT_SUCCESS;
+}
+
+/**
+ * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:datapath-id changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_datapath_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: op=%d\n", __FUNCTION__, op);
+	print_element_names(node);
+	return EXIT_SUCCESS;
+}
+
+/**
+ * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:enabled changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_enabled (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: op=%d\n", __FUNCTION__, op);
+	print_element_names(node);
+	return EXIT_SUCCESS;
+}
+
+/**
+ * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:check-controller-certificate changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_check_controller_certificate (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: op=%d\n", __FUNCTION__, op);
+	print_element_names(node);
+	return EXIT_SUCCESS;
+}
+
+/**
+ * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:lost-connection-behavior changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_lost_connection_behavior (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: op=%d\n", __FUNCTION__, op);
+	print_element_names(node);
+	return EXIT_SUCCESS;
+}
+
+/**
+ * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:controllers/ofconfig:controller changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_controllers_ofconfig_controller (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: op=%d\n", __FUNCTION__, op);
+	print_element_names(node);
+	return EXIT_SUCCESS;
+}
+
+/**
+ * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:resources changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_resources (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: op=%d\n", __FUNCTION__, op);
+	print_element_names(node);
+	return EXIT_SUCCESS;
+}
+
+/**
+ * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:resources/ofconfig:port changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_resources_ofconfig_port (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: op=%d\n", __FUNCTION__, op);
+	print_element_names(node);
+	return EXIT_SUCCESS;
+}
+
+/**
+ * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:resources/ofconfig:queue changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_resources_ofconfig_queue (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: op=%d\n", __FUNCTION__, op);
+	print_element_names(node);
+	return EXIT_SUCCESS;
+}
+
+/**
+ * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:resources/ofconfig:certificate changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_resources_ofconfig_certificate (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: op=%d\n", __FUNCTION__, op);
+	print_element_names(node);
+	return EXIT_SUCCESS;
+}
+
+/**
+ * @brief This callback will be run when node in path /ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:resources/ofconfig:flow-table changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_resources_ofconfig_flow_table (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
 	printf("%s: op=%d\n", __FUNCTION__, op);
 	print_element_names(node);
@@ -296,18 +474,29 @@ int callback_ofconfig_capable_switch_ofconfig_logical_switches (void ** data, XM
 * DO NOT alter this structure
 */
 struct transapi_data_callbacks clbks =  {
-	.callbacks_count = 9,
+	.callbacks_count = 20,
 	.data = NULL,
 	.callbacks = {
 		{.path = "/ofconfig:capable-switch/ofconfig:id", .func = callback_ofconfig_capable_switch_ofconfig_id},
 		{.path = "/ofconfig:capable-switch/ofconfig:configuration-points/ofconfig:configuration-point", .func = callback_ofconfig_capable_switch_ofconfig_configuration_points_ofconfig_configuration_point},
-		{.path = "/ofconfig:capable-switch/ofconfig:resources", .func = callback_ofconfig_capable_switch_ofconfig_resources},
 		{.path = "/ofconfig:capable-switch/ofconfig:resources/ofconfig:port", .func = callback_ofconfig_capable_switch_ofconfig_resources_ofconfig_port},
 		{.path = "/ofconfig:capable-switch/ofconfig:resources/ofconfig:queue", .func = callback_ofconfig_capable_switch_ofconfig_resources_ofconfig_queue},
 		{.path = "/ofconfig:capable-switch/ofconfig:resources/ofconfig:owned-certificate", .func = callback_ofconfig_capable_switch_ofconfig_resources_ofconfig_owned_certificate},
 		{.path = "/ofconfig:capable-switch/ofconfig:resources/ofconfig:external-certificate", .func = callback_ofconfig_capable_switch_ofconfig_resources_ofconfig_external_certificate},
 		{.path = "/ofconfig:capable-switch/ofconfig:resources/ofconfig:flow-table", .func = callback_ofconfig_capable_switch_ofconfig_resources_ofconfig_flow_table},
-		{.path = "/ofconfig:capable-switch/ofconfig:logical-switches", .func = callback_ofconfig_capable_switch_ofconfig_logical_switches}
+		{.path = "/ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch", .func = callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch},
+		{.path = "/ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:id", .func = callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_id},
+		{.path = "/ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:capabilities", .func = callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_capabilities},
+		{.path = "/ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:datapath-id", .func = callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_datapath_id},
+		{.path = "/ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:enabled", .func = callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_enabled},
+		{.path = "/ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:check-controller-certificate", .func = callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_check_controller_certificate},
+		{.path = "/ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:lost-connection-behavior", .func = callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_lost_connection_behavior},
+		{.path = "/ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:controllers/ofconfig:controller", .func = callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_controllers_ofconfig_controller},
+		{.path = "/ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:resources", .func = callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_resources},
+		{.path = "/ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:resources/ofconfig:port", .func = callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_resources_ofconfig_port},
+		{.path = "/ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:resources/ofconfig:queue", .func = callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_resources_ofconfig_queue},
+		{.path = "/ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:resources/ofconfig:certificate", .func = callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_resources_ofconfig_certificate},
+		{.path = "/ofconfig:capable-switch/ofconfig:logical-switches/ofconfig:switch/ofconfig:resources/ofconfig:flow-table", .func = callback_ofconfig_capable_switch_ofconfig_logical_switches_ofconfig_switch_ofconfig_resources_ofconfig_flow_table}
 	}
 };
 
