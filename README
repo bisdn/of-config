@@ -4,13 +4,6 @@ pre-build (skip unless you know what you are doing)
 lnctool --model ./of-config1.1.1.yang transapi --paths ./of-config1.1.1.paths
 # complete stubs
 
-# add module to server
-/usr/local/bin/netopeer-manager add --name of-config1.1.1 --model /home/tobi/workspace/xdpd-netconf-module/of-config1.1.1.yin --transapi /home/tobi/workspace/xdpd-netconf-module/.libs/of-config1.1.1.so --datastore /var/lib/libnetconf/ofc_datastore.xml
-# delete module from server
-/usr/local/bin/netopeer-manager rm --name of-config1.1.1
-
-# fine tuning
-PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/ netopeer-configurator
 
 build
 =====
@@ -18,6 +11,16 @@ build
 ./autogen.sh
 ./configure
 make
+
+
+add module to server
+====================
+/usr/local/bin/netopeer-manager add --name of-config1.1.1 --model /home/tobi/workspace/xdpd-netconf-module/of-config1.1.1.yin --transapi /home/tobi/workspace/xdpd-netconf-module/.libs/of-config1.1.1.so --datastore /var/lib/libnetconf/ofc_datastore.xml
+# delete module from server
+/usr/local/bin/netopeer-manager rm --name of-config1.1.1
+
+# fine tuning
+PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/ netopeer-configurator
 
 
 run
