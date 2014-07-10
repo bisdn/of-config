@@ -94,7 +94,76 @@ void transapi_close(void)
 xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **err)
 {
 	printf("get_state_data\n");
-	return(NULL);
+
+	xmlDocPtr state;
+	xmlNodePtr root;
+	xmlNsPtr ns;
+
+	state = xmlNewDoc(BAD_CAST "1.0");
+	root = xmlNewDocNode(state, NULL, BAD_CAST "capable-switch", NULL);
+	xmlDocSetRootElement(state, root);
+	ns = xmlNewNs(root, BAD_CAST "urn:onf:of111:config:yang", NULL);
+	xmlSetNs(root, ns);
+
+	// state that should be queried here
+	// ### base
+	// #/ofc:capable-switch/ofc:config-version
+	xmlNewChild(root, ns, BAD_CAST "config-version", BAD_CAST "1.1.1");
+	// ### configuration points
+	// ### Resources
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:number
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:name
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:current-rate
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:max-rate
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:state
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:state/ofc:oper-state
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:state/ofc:blocked
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:state/ofc:live
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:current
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:current/ofc:rate
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:current/ofc:auto-negotiate
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:current/ofc:medium
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:current/ofc:pause
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:supported
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:supported/ofc:rate
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:supported/ofc:auto-negotiate
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:supported/ofc:medium
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:supported/ofc:pause
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer/ofc:rate
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer/ofc:auto-negotiate
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer/ofc:medium
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer/ofc:pause
+	// ### LSIs
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:max-buffered-packets
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:max-tables
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:max-ports
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:flow-statistics
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:table-statistics
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:port-statistics
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:group-statistics
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:queue-statistics
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:reassemble-ip-fragments
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:block-looping-ports
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:reserved-port-types
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:reserved-port-types/ofc:type
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:group-types
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:group-types/ofc:type
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:group-capabilities
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:group-capabilities/ofc:capability
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:action-types
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:action-types/ofc:type
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:instruction-types
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:instruction-types/ofc:type
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:connection-state
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:current-version
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:supported-versions
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:local-ip-address-in-use
+	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:local-port-in-use
+
+	return state;
 }
 /*
  * Mapping prefixes with namespaces.
