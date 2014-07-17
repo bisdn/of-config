@@ -8,6 +8,8 @@
 #include <libxml/tree.h>
 #include <libnetconf_xml.h>
 
+#include "cxmpclient_wrapper.h"
+
 /* transAPI version which must be compatible with libnetconf */
 int transapi_version = 4;
 
@@ -51,6 +53,11 @@ print_element_names(xmlNode * a_node)
     }
 }
 
+/* status structure */
+struct of_config__status {
+	void *xmp_client_handle;
+} ofc_state;
+
 /**
  * @brief Initialize plugin after loaded and before any other functions are called.
 
@@ -70,6 +77,8 @@ print_element_names(xmlNode * a_node)
  */
 int transapi_init(xmlDocPtr * running)
 {
+	ofc_state.xmp_client_handle = new_xmp_client();
+
 	printf("init done\n");
 	return EXIT_SUCCESS;
 }
@@ -79,6 +88,7 @@ int transapi_init(xmlDocPtr * running)
  */
 void transapi_close(void)
 {
+	delete_xmp_client(ofc_state.xmp_client_handle);
 	printf("closed\n");
 	return;
 }
@@ -112,6 +122,11 @@ xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **er
 	// ### configuration points
 	// ### Resources
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:number
+//	unsigned int cnt;
+//	struct node node;
+//
+//	get_port_list(ofc_state.xmp_client_handle, &cnt, &node);
+
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:name
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:current-rate
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:max-rate

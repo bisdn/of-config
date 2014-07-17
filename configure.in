@@ -28,10 +28,11 @@ AC_ARG_WITH([libxml2],
 
 # Checks for programs.
 AC_PROG_CC
+AC_PROG_CXX
 AC_PROG_INSTALL
 
 # Use libtool
-AC_PROG_LIBTOOL
+LT_INIT
 # Always use ./libtool unless overridden from command-line
 if test -z "$libtool"; then
 	libtool='./libtool'
@@ -40,6 +41,7 @@ AC_SUBST(libtool)
 
 # Checks for libraries.
 AC_SEARCH_LIBS([ncds_apply_rpc], [netconf], ,AC_MSG_ERROR([libnetconf not found!]))
+PKG_CHECK_MODULES([xdpd_xmp_client], [xdpd_xmp_client])
 
 # Check for libxml2.
 if test -z "$WITH_LIBXML2" ; then

@@ -7,6 +7,7 @@ lnctool --model ./of-config1.1.1.yang transapi --paths ./of-config1.1.1.paths
 
 build
 =====
+You have to have xDPd <www.xdpd.org> with xmp config plugin (--with-plugins="xmp $OTHER_PLUGINS") installed.
 
 ./autogen.sh
 ./configure
