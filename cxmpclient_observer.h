@@ -22,7 +22,7 @@ public:
 	virtual void
 	notify(const xdpd::mgmt::protocol::cxmpmsg &msg);
 
-	const xdpd::mgmt::protocol::cxmpmsg&
+	xdpd::mgmt::protocol::cxmpmsg&
 	get_msg();
 
 private:

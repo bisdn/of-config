@@ -10,6 +10,7 @@
 #include <xdpd/xmp/client/cxmpclient.h>
 
 #include <pthread.h>
+#include <assert.h>
 
 static pthread_t worker = 0;
 static xdpd::mgmt::protocol::cxmpclient *xmp_client = NULL;
@@ -45,6 +46,9 @@ new_xmp_client()
 	puts(__FUNCTION__);
 	if (NULL != xmp_client) return xmp_client;
 
+	rofl::logging::init();
+	rofl::logging::set_debug_level(rofl::logging::DBG);
+
 	observer = new cxmpclient_observer(&client_lock, &client_read_cv);
 
 	pthread_create(&worker, NULL, &run, NULL);
@@ -67,18 +71,38 @@ delete_xmp_client(void* data)
 }
 
 void
-get_port_list(void* handle, unsigned int *count, struct node *port_list)
+get_port_list(void* handle, struct list *port_list)
 {
+	using xdpd::mgmt::protocol::cxmpie;
+	using xdpd::mgmt::protocol::cxmpie_portname;
+
 	puts(__FUNCTION__);
 	assert(handle);
-	assert(count);
 	assert(port_list);
 	assert(handle == xmp_client);
 
 	pthread_mutex_lock(&client_lock);
 
 	xmp_client->port_list();
-	observer->get_msg();
+	xdpd::mgmt::protocol::cxmpmsg &msg = observer->get_msg();
 	pthread_mutex_unlock(&client_lock);
 
+	assert(true == msg.get_xmpies().has_ie_multipart());
+
+	const std::deque<cxmpie*> & ies =
+			msg.get_xmpies().get_ie_multipart().get_ies();
+
+	std::cerr << "ies.size()=" << ies.size() << std::endl;
+	for (std::deque<cxmpie*>::const_iterator iter = ies.begin();
+			iter != ies.end(); ++iter) {
+
+		cxmpie_portname* port = dynamic_cast<cxmpie_portname*>(*iter);
+		if (NULL == port) continue;
+
+
+		std::cerr << "append " <<  port->get_portname() << std::endl;
+
+		list_append_data(port_list, strdup(port->get_portname().c_str()));
+	}
+	list_set_free_fn(port_list, free);
 }

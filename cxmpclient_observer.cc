@@ -23,16 +23,23 @@ cxmpclient_observer::~cxmpclient_observer()
 void
 cxmpclient_observer::notify(const xdpd::mgmt::protocol::cxmpmsg& msg)
 {
+	puts(__PRETTY_FUNCTION__);
 	pthread_mutex_lock(mutex);
 	if (this->msg) delete this->msg;
+
+	std::cerr << "msg: " << msg;
+
 	this->msg = new xdpd::mgmt::protocol::cxmpmsg(msg);
 	pthread_cond_signal(cv);
 	pthread_mutex_unlock(mutex);
+
+	std::cerr << "save msg: " <<  *this->msg << std::endl;
 }
 
-const xdpd::mgmt::protocol::cxmpmsg&
+xdpd::mgmt::protocol::cxmpmsg&
 cxmpclient_observer::get_msg()
 {
+	puts(__PRETTY_FUNCTION__);
 	pthread_cond_wait(cv, mutex);
 
 	return *msg;

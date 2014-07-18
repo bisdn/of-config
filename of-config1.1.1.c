@@ -8,6 +8,7 @@
 #include <libxml/tree.h>
 #include <libnetconf_xml.h>
 
+#include "list.h"
 #include "cxmpclient_wrapper.h"
 
 /* transAPI version which must be compatible with libnetconf */
@@ -121,13 +122,23 @@ xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **er
 	xmlNewChild(root, ns, BAD_CAST "config-version", BAD_CAST "1.1.1");
 	// ### configuration points
 	// ### Resources
-	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:number
-//	unsigned int cnt;
-//	struct node node;
-//
-//	get_port_list(ofc_state.xmp_client_handle, &cnt, &node);
 
-	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:name
+	xmlNodePtr resources = xmlNewChild(root, ns, BAD_CAST "resources", NULL);
+
+	struct list *list = list_new();
+	get_port_list(ofc_state.xmp_client_handle, list);
+
+	struct node *n = list_get_head(list);
+	while (n) {
+		xmlNodePtr port = xmlNewChild(resources, ns, BAD_CAST "port", NULL);
+		// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:name
+		xmlNewChild(port, ns, BAD_CAST "name", BAD_CAST n->data);
+
+		n = n->next;
+	}
+	list_delete(list);
+
+	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:number
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:current-rate
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:max-rate
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:state
