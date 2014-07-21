@@ -28,6 +28,7 @@ run(void* arg)
 	try {
 		xmp_client = new xdpd::mgmt::protocol::cxmpclient();
 		xmp_client->register_observer(observer);
+		xmp_client->set_auto_exit(false);
 		xmp_client->run();
 	} catch (...) {
 		// todo log error
