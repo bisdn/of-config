@@ -107,3 +107,40 @@ get_port_list(void* handle, struct list *port_list)
 	}
 	list_set_free_fn(port_list, free);
 }
+
+void
+get_port_info(void* handle, struct list *port_list)
+{
+	using xdpd::mgmt::protocol::cxmpie;
+	using xdpd::mgmt::protocol::cxmpie_portinfo;
+
+	puts(__FUNCTION__);
+	assert(handle);
+	assert(port_list);
+	assert(handle == xmp_client);
+
+	pthread_mutex_lock(&client_lock);
+
+	xmp_client->port_info();
+	xdpd::mgmt::protocol::cxmpmsg &msg = observer->get_msg();
+	pthread_mutex_unlock(&client_lock);
+
+	assert(true == msg.get_xmpies().has_ie_multipart());
+
+	const std::deque<cxmpie*> & ies =
+			msg.get_xmpies().get_ie_multipart().get_ies();
+
+	std::cerr << "ies.size()=" << ies.size() << std::endl;
+	for (std::deque<cxmpie*>::const_iterator iter = ies.begin();
+			iter != ies.end(); ++iter) {
+
+		cxmpie_portinfo* port_info = dynamic_cast<cxmpie_portinfo*>(*iter);
+		if (NULL == port_info) continue;
+
+
+		std::cerr << "append " <<  port_info->get_portname() << std::endl;
+
+		list_append_data(port_list, strdup(port_info->get_portname().c_str()));
+	}
+	list_set_free_fn(port_list, free);
+}

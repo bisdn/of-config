@@ -23,6 +23,9 @@ delete_xmp_client(void* handle);
 void
 get_port_list(void* handle, struct list *port_list);
 
+void
+get_port_info(void* handle, struct list *port_list);
+
 
 #ifdef  __cplusplus
 }

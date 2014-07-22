@@ -127,10 +127,22 @@ xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **er
 
 	struct list *list = list_new();
 	get_port_list(ofc_state.xmp_client_handle, list);
-
 	struct node *n = list_get_head(list);
 	while (n) {
 		xmlNodePtr port = xmlNewChild(resources, ns, BAD_CAST "port", NULL);
+		// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:name
+		xmlNewChild(port, ns, BAD_CAST "name", BAD_CAST n->data);
+
+		n = n->next;
+	}
+	list_delete(list);
+
+	/*  **/
+	list = list_new();
+	get_port_info(ofc_state.xmp_client_handle, list);
+	n = list_get_head(list);
+	while (n) {
+		xmlNodePtr port = xmlNewChild(resources, ns, BAD_CAST "aport", NULL);
 		// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:name
 		xmlNewChild(port, ns, BAD_CAST "name", BAD_CAST n->data);
 
