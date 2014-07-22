@@ -125,31 +125,6 @@ xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **er
 
 	xmlNodePtr resources = xmlNewChild(root, ns, BAD_CAST "resources", NULL);
 
-	struct list *list = list_new();
-	get_port_list(ofc_state.xmp_client_handle, list);
-	struct node *n = list_get_head(list);
-	while (n) {
-		xmlNodePtr port = xmlNewChild(resources, ns, BAD_CAST "port", NULL);
-		// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:name
-		xmlNewChild(port, ns, BAD_CAST "name", BAD_CAST n->data);
-
-		n = n->next;
-	}
-	list_delete(list);
-
-	/*  **/
-	list = list_new();
-	get_port_info(ofc_state.xmp_client_handle, list);
-	n = list_get_head(list);
-	while (n) {
-		xmlNodePtr port = xmlNewChild(resources, ns, BAD_CAST "aport", NULL);
-		// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:name
-		xmlNewChild(port, ns, BAD_CAST "name", BAD_CAST n->data);
-
-		n = n->next;
-	}
-	list_delete(list);
-
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:number
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:current-rate
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:max-rate
@@ -172,6 +147,9 @@ xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **er
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer/ofc:auto-negotiate
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer/ofc:medium
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer/ofc:pause
+	get_port_info(ofc_state.xmp_client_handle, resources);
+
+	// todo
 	// ### LSIs
 	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities
 	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:max-buffered-packets

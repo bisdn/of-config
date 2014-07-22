@@ -8,7 +8,7 @@
 #ifndef CXMPCLIENT_WRAPPER_H_
 #define CXMPCLIENT_WRAPPER_H_
 
-#include "list.h"
+#include <libxml/tree.h>
 
 #ifdef  __cplusplus
 extern "C" {
@@ -20,11 +20,11 @@ new_xmp_client();
 void
 delete_xmp_client(void* handle);
 
-void
-get_port_list(void* handle, struct list *port_list);
+//void
+//get_port_list(void* handle, struct list *port_list);
 
 void
-get_port_info(void* handle, struct list *port_list);
+get_port_info(void* handle, xmlNodePtr resources);
 
 
 #ifdef  __cplusplus
