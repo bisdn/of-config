@@ -8,7 +8,6 @@
 #include <libxml/tree.h>
 #include <libnetconf_xml.h>
 
-#include "list.h"
 #include "cxmpclient_wrapper.h"
 
 /* transAPI version which must be compatible with libnetconf */
