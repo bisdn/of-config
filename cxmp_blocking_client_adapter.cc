@@ -167,6 +167,11 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources)
 	pthread_cond_wait(&client_read_cv, &client_lock);
 	pthread_mutex_unlock(&client_lock);
 
+	if (0 == msg->get_xmpies().size()) {
+		std::cerr << "no ports found" << std::endl;
+		return;
+	}
+
 	assert(true == msg->get_xmpies().has_ie_multipart());
 
 	const std::deque<cxmpie*> & ies =
@@ -279,6 +284,11 @@ cxmp_blocking_client_adapter::add_lsi_info(xmlNodePtr lsis)
 	xmp_client->lsi_info();
 	pthread_cond_wait(&client_read_cv, &client_lock);
 	pthread_mutex_unlock(&client_lock);
+
+	if (0 == msg->get_xmpies().size()) {
+		std::cerr << "no lsi found" << std::endl;
+		return;
+	}
 
 	assert(true == msg->get_xmpies().has_ie_multipart());
 
