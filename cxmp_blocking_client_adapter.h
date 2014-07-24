@@ -24,6 +24,9 @@ public:
 	void
 	add_port_info(xmlNodePtr resources);
 
+	void
+	add_lsi_info(xmlNodePtr lsis);
+
 	xdpd::mgmt::protocol::cxmpclient *xmp_client;
 private:
 	pthread_mutex_t client_lock;

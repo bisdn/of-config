@@ -11,6 +11,7 @@
 #include <assert.h>
 
 #include <rofl/datapath/pipeline/switch_port.h>
+#include <rofl/datapath/pipeline/openflow/openflow1x/pipeline/of1x_pipeline.h>
 
 static void *
 run(void* arg)
@@ -265,4 +266,90 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources)
 			xmlNewChild(node, resources->ns, BAD_CAST "pause", parse_pause(port_info->get_features_advertised_peer()));
 		}
 	}
+}
+
+void
+cxmp_blocking_client_adapter::add_lsi_info(xmlNodePtr lsis)
+{
+	puts(__PRETTY_FUNCTION__);
+	using xdpd::mgmt::protocol::cxmpie;
+	using xdpd::mgmt::protocol::cxmpie_lsiinfo;
+
+	pthread_mutex_lock(&client_lock);
+	xmp_client->lsi_info();
+	pthread_cond_wait(&client_read_cv, &client_lock);
+	pthread_mutex_unlock(&client_lock);
+
+	assert(true == msg->get_xmpies().has_ie_multipart());
+
+	const std::deque<cxmpie*> & ies = msg->get_xmpies().get_ie_multipart().get_ies();
+
+	std::cerr << "ies.size()=" << ies.size() << std::endl;
+	for (std::deque<cxmpie*>::const_iterator iter = ies.begin(); iter != ies.end(); ++iter) {
+		cxmpie_lsiinfo* lsi_info = dynamic_cast<cxmpie_lsiinfo*>(*iter);
+
+		std::cerr << lsi_info->get_lsiname() << std::endl;
+
+		xmlChar buf[255];
+
+		xmlNodePtr sw = xmlNewChild(lsis, lsis->ns, BAD_CAST "switch", NULL);
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities
+		xmlNodePtr caps = xmlNewChild(sw, lsis->ns, BAD_CAST "capabilities", NULL);
+
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:max-buffered-packets (type uint32)
+		xmlStrPrintf(buf, sizeof(buf), BAD_CAST "%u", lsi_info->get_num_of_buffers()); // fixme get the format right for uint64 llu vs lu
+		xmlNewChild(caps, lsis->ns, BAD_CAST "max-buffered-packets", buf);
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:max-tables (type uint8)
+		xmlStrPrintf(buf, sizeof(buf), BAD_CAST "%u", lsi_info->get_max_tables());
+		xmlNewChild(caps, lsis->ns, BAD_CAST "max-tables", buf);
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:max-ports (type uint32)
+		xmlStrPrintf(buf, sizeof(buf), BAD_CAST "%u", lsi_info->get_max_ports()); // fixme get the format right for uint64 llu vs lu
+		xmlNewChild(caps, lsis->ns, BAD_CAST "max-ports", buf);
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:flow-statistics (xs:boolean)
+		xmlChar *ptr = BAD_CAST ((lsi_info->get_capabilities() & OF1X_CAP_FLOW_STATS) ? "true" : "false");
+		xmlNewChild(caps, lsis->ns, BAD_CAST "flow-statistics", ptr);
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:table-statistics (xs:boolean)
+		ptr = BAD_CAST ((lsi_info->get_capabilities() & OF1X_CAP_TABLE_STATS) ? "true" : "false");
+		xmlNewChild(caps, lsis->ns, BAD_CAST "table-statistics", ptr);
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:port-statistics (xs:boolean)
+		ptr = BAD_CAST ((lsi_info->get_capabilities() & OF1X_CAP_PORT_STATS) ? "true" : "false");
+		xmlNewChild(caps, lsis->ns, BAD_CAST "port-statistics", ptr);
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:group-statistics (xs:boolean)
+		ptr = BAD_CAST ((lsi_info->get_capabilities() & OF1X_CAP_GROUP_STATS) ? "true" : "false");
+		xmlNewChild(caps, lsis->ns, BAD_CAST "group-statistics", ptr);
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:queue-statistics (xs:boolean)
+		ptr = BAD_CAST ((lsi_info->get_capabilities() & OF1X_CAP_QUEUE_STATS) ? "true" : "false");
+		xmlNewChild(caps, lsis->ns, BAD_CAST "queue-statistics", ptr);
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:reassemble-ip-fragments (xs:boolean)
+		ptr = BAD_CAST ((lsi_info->get_capabilities() & OF1X_CAP_IP_REASM) ? "true" : "false");
+		xmlNewChild(caps, lsis->ns, BAD_CAST "reassemble-ip-fragments", ptr);
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:block-looping-ports (xs:boolean)
+		ptr = BAD_CAST ((lsi_info->get_capabilities() & OF1X_CAP_PORT_BLOCKED) ? "true" : "false");
+		xmlNewChild(caps, lsis->ns, BAD_CAST "block-looping-ports", ptr);
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:reserved-port-types
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:reserved-port-types/ofc:type
+		// todo
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:group-types (:ref:)
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:group-types/ofc:type (all|select|indirect|fast-failover)
+		// fixme not yet exported
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:group-capabilities (:ref:)
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:group-capabilities/ofc:capability (select-weight|select-liveness|chaining|chaining-check)
+		// fixme not yet exported
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:action-types
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:action-types/ofc:type (output|copy-ttl-out|copy-ttl-in|set-mpls-ttl|dec-mpls-ttl|push-vlan|pop-vlan|push-mpls|pop-mpls|set-queue|group|set-nw-ttl|dec-nw-ttl|set-field)
+		// todo this is only available per table
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:instruction-types
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:instruction-types/ofc:type (apply-actions|clear-actions|write-actions|write-metadata|goto-table)
+		// todo this is only available per table
+
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:connection-state
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:current-version
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:supported-versions
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:local-ip-address-in-use
+		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:local-port-in-use
+	}
+
+
+
 }

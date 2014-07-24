@@ -148,7 +148,7 @@ xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **er
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer/ofc:pause
 	get_port_info(ofc_state.xmp_client_handle, resources);
 
-	// todo
+	xmlNodePtr lsis = xmlNewChild(root, ns, BAD_CAST "logical-switches", NULL);
 	// ### LSIs
 	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities
 	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:max-buffered-packets
@@ -177,6 +177,7 @@ xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **er
 	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:supported-versions
 	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:local-ip-address-in-use
 	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:local-port-in-use
+	get_lsi_info(ofc_state.xmp_client_handle, lsis);
 
 	return state;
 }
