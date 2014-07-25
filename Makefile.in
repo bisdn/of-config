@@ -28,7 +28,7 @@ LTCXXCOMPILE = $(LIBTOOL) --tag=CXX --quiet
 xdpd_xmp_client_CFLAGS = @xdpd_xmp_client_CFLAGS@
 xdpd_xmp_client_LIBS = @xdpd_xmp_client_LIBS@
 
-SRCS = @PROJECTNAME@.c cxmpclient_wrapper.cc cxmp_blocking_client_adapter.cc
+SRCS = @PROJECTNAME@.c xml_helper.c cxmpclient_wrapper.cc cxmp_blocking_client_adapter.cc
 OBJDIR = .obj
 LOBJS = $(SRCS:%.c=$(OBJDIR)/%.c.lo)
 LCXXOBJS = $(SRCS:%.cc=$(OBJDIR)/%.cc.lo)

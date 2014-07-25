@@ -42,7 +42,7 @@ delete_xmp_client(void* data)
 }
 
 void
-get_port_info(void* handle, xmlNodePtr resources)
+get_port_info(void* handle, xmlNodePtr resources, xmlDocPtr running)
 {
 	puts(__PRETTY_FUNCTION__);
 	using xdpd::mgmt::protocol::cxmpie;
@@ -52,12 +52,12 @@ get_port_info(void* handle, xmlNodePtr resources)
 	assert(resources);
 	assert(handle == xmp_client);
 
-	xmp_client->add_port_info(resources);
+	xmp_client->add_port_info(resources, running);
 
 }
 
 void
-get_lsi_info(void* handle, xmlNodePtr lsis)
+get_lsi_info(void* handle, xmlNodePtr lsis, xmlDocPtr running)
 {
 	puts(__PRETTY_FUNCTION__);
 	using xdpd::mgmt::protocol::cxmpie;
@@ -67,5 +67,5 @@ get_lsi_info(void* handle, xmlNodePtr lsis)
 	assert(lsis);
 	assert(handle == xmp_client);
 
-	xmp_client->add_lsi_info(lsis);
+	xmp_client->add_lsi_info(lsis, running);
 }

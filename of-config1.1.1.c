@@ -8,7 +8,10 @@
 #include <libxml/tree.h>
 #include <libnetconf_xml.h>
 
+#include "xml_helper.h"
 #include "cxmpclient_wrapper.h"
+
+extern struct ns_pair namespace_mapping[];
 
 /* transAPI version which must be compatible with libnetconf */
 int transapi_version = 4;
@@ -109,20 +112,38 @@ xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **er
 	xmlNodePtr root;
 	xmlNsPtr ns;
 
+	if (running) {
+		puts("running config:");
+		xmlSaveFormatFileEnc("-", running, "UTF-8", 1);
+	} else {
+		puts("no running config");
+	}
+
 	state = xmlNewDoc(BAD_CAST "1.0");
 	root = xmlNewDocNode(state, NULL, BAD_CAST "capable-switch", NULL);
 	xmlDocSetRootElement(state, root);
 	ns = xmlNewNs(root, BAD_CAST "urn:onf:of111:config:yang", NULL);
 	xmlSetNs(root, ns);
 
+	// check if the id is missing
+	if (running) {
+		xmlXPathObjectPtr xpath_obj;
+		if (NULL == (xpath_obj = get_node(running, namespace_mapping, BAD_CAST "/ofc:capable-switch/ofc:id"))) {
+			puts("/ofc:capable-switch/ofc:id not found");
+			// fixme actual check
+			xmlNewChild(root, ns, BAD_CAST "id", BAD_CAST "test");
+		}
+
+	}
+
 	// state that should be queried here
 	// ### base
 	// #/ofc:capable-switch/ofc:config-version
 	xmlNewChild(root, ns, BAD_CAST "config-version", BAD_CAST "1.1.1");
-	// ### configuration points
-	// ### Resources
-
-	xmlNodePtr resources = xmlNewChild(root, ns, BAD_CAST "resources", NULL);
+//	// ### configuration points
+//	// ### Resources
+//
+	xmlNodePtr resources = xmlNewChild(root, NULL, BAD_CAST "resources", NULL);
 
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:number
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:current-rate
@@ -146,9 +167,9 @@ xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **er
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer/ofc:auto-negotiate
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer/ofc:medium
 	// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer/ofc:pause
-	get_port_info(ofc_state.xmp_client_handle, resources);
+	get_port_info(ofc_state.xmp_client_handle, resources, running);
 
-	xmlNodePtr lsis = xmlNewChild(root, ns, BAD_CAST "logical-switches", NULL);
+//	xmlNodePtr lsis = xmlNewChild(root, NULL, BAD_CAST "logical-switches", NULL);
 	// ### LSIs
 	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities
 	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:max-buffered-packets
@@ -177,8 +198,16 @@ xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **er
 	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:supported-versions
 	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:local-ip-address-in-use
 	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:local-port-in-use
-	get_lsi_info(ofc_state.xmp_client_handle, lsis);
+//	get_lsi_info(ofc_state.xmp_client_handle, lsis, running);
 
+
+
+	if (state) {
+		puts("current state:");
+		xmlSaveFormatFileEnc("-", state, "UTF-8", 1);
+	} else {
+		puts("no state");
+	}
 	return state;
 }
 /*

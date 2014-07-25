@@ -21,10 +21,10 @@ void
 delete_xmp_client(void* handle);
 
 void
-get_port_info(void* handle, xmlNodePtr resources);
+get_port_info(void* handle, xmlNodePtr resources, xmlDocPtr running);
 
 void
-get_lsi_info(void* handle, xmlNodePtr lsis);
+get_lsi_info(void* handle, xmlNodePtr lsis, xmlDocPtr running);
 
 #ifdef  __cplusplus
 }

@@ -22,10 +22,10 @@ public:
 	notify(const xdpd::mgmt::protocol::cxmpmsg &msg);
 
 	void
-	add_port_info(xmlNodePtr resources);
+	add_port_info(xmlNodePtr resources, xmlDocPtr running);
 
 	void
-	add_lsi_info(xmlNodePtr lsis);
+	add_lsi_info(xmlNodePtr lsis, xmlDocPtr running);
 
 	xdpd::mgmt::protocol::cxmpclient *xmp_client;
 private:

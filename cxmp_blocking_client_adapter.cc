@@ -9,9 +9,14 @@
 
 #include <stddef.h>
 #include <assert.h>
+#include <libxml/xpath.h>
+
+#include "xml_helper.h"
 
 #include <rofl/datapath/pipeline/switch_port.h>
 #include <rofl/datapath/pipeline/openflow/openflow1x/pipeline/of1x_pipeline.h>
+
+extern struct ns_pair namespace_mapping[];
 
 static void *
 run(void* arg)
@@ -78,7 +83,7 @@ parse_medium(const uint32_t features)
 	case PORT_FEATURE_FIBER:
 		return BAD_CAST "fibre";
 	default:
-		//assert(0);
+		//assert(0);  // fixme actually it should be an assert, but some platforms do not support valid features
 		return  BAD_CAST "copper";
 	}
 }
@@ -131,7 +136,7 @@ parse_rate(const uint32_t features)
 		return BAD_CAST "other";
 		break;
 	default:
-		// assert(0);
+		// assert(0); // fixme actually it should be an assert, but some platforms do not support valid features
 		return BAD_CAST "1Gb-FD";
 	}
 }
@@ -139,22 +144,32 @@ parse_rate(const uint32_t features)
 static void
 append_all_rates(xmlNodePtr node, const uint32_t features)
 {
-	if (features & PORT_FEATURE_10MB_HD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_10MB_HD));
-	if (features & PORT_FEATURE_10MB_HD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_10MB_HD));
-	if (features & PORT_FEATURE_10MB_FD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_10MB_FD));
-	if (features & PORT_FEATURE_100MB_HD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_100MB_HD));
-	if (features & PORT_FEATURE_100MB_FD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_100MB_FD));
-	if (features & PORT_FEATURE_1GB_HD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_1GB_HD));
-	if (features & PORT_FEATURE_1GB_FD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_1GB_FD));
-	if (features & PORT_FEATURE_10GB_FD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_10GB_FD));
-	if (features & PORT_FEATURE_40GB_FD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_40GB_FD));
-	if (features & PORT_FEATURE_100GB_FD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_100GB_FD));
-	if (features & PORT_FEATURE_1TB_FD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_1TB_FD));
-	if (features & PORT_FEATURE_OTHER) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_OTHER));
+	if ((features
+			& (PORT_FEATURE_10MB_HD | PORT_FEATURE_10MB_FD
+					| PORT_FEATURE_100MB_HD | PORT_FEATURE_100MB_FD
+					| PORT_FEATURE_1GB_HD | PORT_FEATURE_1GB_FD
+					| PORT_FEATURE_10GB_FD | PORT_FEATURE_40GB_FD
+					| PORT_FEATURE_100GB_FD | PORT_FEATURE_1TB_FD
+					| PORT_FEATURE_OTHER))) {
+		if (features & PORT_FEATURE_10MB_HD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_10MB_HD));
+		if (features & PORT_FEATURE_10MB_FD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_10MB_FD));
+		if (features & PORT_FEATURE_100MB_HD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_100MB_HD));
+		if (features & PORT_FEATURE_100MB_FD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_100MB_FD));
+		if (features & PORT_FEATURE_1GB_HD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_1GB_HD));
+		if (features & PORT_FEATURE_1GB_FD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_1GB_FD));
+		if (features & PORT_FEATURE_10GB_FD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_10GB_FD));
+		if (features & PORT_FEATURE_40GB_FD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_40GB_FD));
+		if (features & PORT_FEATURE_100GB_FD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_100GB_FD));
+		if (features & PORT_FEATURE_1TB_FD) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_1TB_FD));
+		if (features & PORT_FEATURE_OTHER) xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_OTHER));
+	} else {
+		// assert(0); // fixme actually it should be an assert, but some platforms do not support valid features
+		xmlNewChild(node, node->ns, BAD_CAST "rate", parse_rate(PORT_FEATURE_1GB_FD));
+	}
 }
 
 void
-cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources)
+cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources, xmlDocPtr running)
 {
 	puts(__PRETTY_FUNCTION__);
 	using xdpd::mgmt::protocol::cxmpie;
@@ -187,13 +202,22 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources)
 		xmlNodePtr port = xmlNewChild(resources, resources->ns, BAD_CAST "port", NULL);
 		xmlChar buf[255];
 
+		// resource-id is missing?
+		if (running) {
+			xmlStrPrintf(buf, sizeof(buf), BAD_CAST "/ofc:capable-switch/ofc:resources/ofc:port[ofc:name=%s]/ofc:resource-id", port_info->get_port_num());
+			xmlXPathObjectPtr xpath_obj;
+			if (NULL == (xpath_obj = get_node(running, namespace_mapping, buf))) {
+				// no resource-id, so we set the port as resource-id
+				xmlNewChild(port, resources->ns, BAD_CAST "resource-id", BAD_CAST port_info->get_portname().c_str());
+			}
+		}
+
 		// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:number
 		xmlStrPrintf(buf, sizeof(buf), BAD_CAST "%u", port_info->get_port_num());
 		xmlNewChild(port, resources->ns, BAD_CAST "number", buf);
 
 		// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:name
 		xmlNewChild(port, resources->ns, BAD_CAST "name", BAD_CAST port_info->get_portname().c_str());
-
 
 		{
 			// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:state
@@ -255,6 +279,7 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources)
 			xmlNewChild(node, resources->ns, BAD_CAST "medium", parse_medium(port_info->get_features_supported()));
 			// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:supported/ofc:pause (unsupported|symmetric|asymmetric)
 			xmlNewChild(node, resources->ns, BAD_CAST "pause", parse_pause(port_info->get_features_supported()));
+			xmlNodePtr supported = node; // back up supported node
 
 			// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer
 			node = xmlNewChild(features, resources->ns, BAD_CAST "advertised-peer", NULL);
@@ -267,12 +292,28 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources)
 			xmlNewChild(node, resources->ns, BAD_CAST "medium", parse_medium(port_info->get_features_advertised_peer()));
 			// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer/ofc:pause (unsupported|symmetric|asymmetric)
 			xmlNewChild(node, resources->ns, BAD_CAST "pause", parse_pause(port_info->get_features_advertised_peer()));
+
+			// since the advertised node is not optional we will
+			// add it here if it was not configured in the running config
+			if (running) {
+				xmlStrPrintf(buf, sizeof(buf), BAD_CAST "/ofc:capable-switch/ofc:resources/ofc:port[ofc:name=%s]/ofc:features/ofc:advertised-peer", port_info->get_port_num());
+				xmlXPathObjectPtr xpath_obj;
+				if (NULL != (xpath_obj = get_node(running, namespace_mapping, buf))) {
+					// fixme some parts have been configured... some not, so we will
+					// print the supported values only for the not set parts
+				} else {
+					node = xmlNewChild(features, NULL, BAD_CAST "advertised", NULL);
+					// copy supported to advertised
+					xmlNodePtr list = xmlCopyNodeList(supported->children);
+					xmlAddChildList(node, list);
+				}
+			}
 		}
 	}
 }
 
 void
-cxmp_blocking_client_adapter::add_lsi_info(xmlNodePtr lsis)
+cxmp_blocking_client_adapter::add_lsi_info(xmlNodePtr lsis, xmlDocPtr running)
 {
 	puts(__PRETTY_FUNCTION__);
 	using xdpd::mgmt::protocol::cxmpie;
