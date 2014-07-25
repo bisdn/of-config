@@ -67,8 +67,6 @@ cxmp_blocking_client_adapter::notify(const xdpd::mgmt::protocol::cxmpmsg& msg)
 	this->msg = new xdpd::mgmt::protocol::cxmpmsg(msg);
 	pthread_cond_signal(&client_read_cv);
 	pthread_mutex_unlock(&client_lock);
-
-	std::cerr << "save msg: " << *this->msg << std::endl;
 }
 
 static inline xmlChar*
