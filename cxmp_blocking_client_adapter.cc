@@ -79,7 +79,7 @@ parse_medium(const uint32_t features)
 		return BAD_CAST "fibre";
 	default:
 		//assert(0);
-		return NULL;
+		return  BAD_CAST "copper";
 	}
 }
 
@@ -132,7 +132,7 @@ parse_rate(const uint32_t features)
 		break;
 	default:
 		// assert(0);
-		return NULL;
+		return BAD_CAST "1Gb-FD";
 	}
 }
 
@@ -217,7 +217,7 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources)
 			xmlNodePtr features = xmlNewChild(port, resources->ns, BAD_CAST "features", NULL);
 
 			// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:current
-			xmlNodePtr node = xmlNewChild(port, resources->ns, BAD_CAST "current", NULL);
+			xmlNodePtr node = xmlNewChild(features, resources->ns, BAD_CAST "current", NULL);
 			// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:current/ofc:rate
 			xmlNodePtr rate = xmlNewNode(resources->ns, BAD_CAST "rate");
 			if (port_info->get_features_current() & PORT_FEATURE_OTHER) {
@@ -245,7 +245,7 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources)
 			xmlNewChild(node, resources->ns, BAD_CAST "pause", parse_pause(port_info->get_features_current()));
 
 			// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:supported
-			node = xmlNewChild(port, resources->ns, BAD_CAST "supported", NULL);
+			node = xmlNewChild(features, resources->ns, BAD_CAST "supported", NULL);
 			// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:supported/ofc:rate (multiple times)
 			append_all_rates(node, port_info->get_features_supported());
 			// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:supported/ofc:auto-negotiate (xs:boolean)
@@ -257,7 +257,7 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources)
 			xmlNewChild(node, resources->ns, BAD_CAST "pause", parse_pause(port_info->get_features_supported()));
 
 			// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer
-			node = xmlNewChild(port, resources->ns, BAD_CAST "advertised-peer", NULL);
+			node = xmlNewChild(features, resources->ns, BAD_CAST "advertised-peer", NULL);
 			// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer/ofc:rate (multiple times)
 			append_all_rates(node, port_info->get_features_advertised_peer());
 			// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised-peer/ofc:auto-negotiate (xs:boolean)
