@@ -23,7 +23,7 @@ expect "root@localhost password:"
 send "$password\n"
 expect "netconf>"
 
-send "edit-config running\r"
+send "edit-config --error rollback running\r"
 expect "Type the edit configuration data (close editor by Ctrl-D):"
 send "$netconf_xml"
 send "\x0004"
