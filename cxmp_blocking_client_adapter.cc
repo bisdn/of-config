@@ -398,7 +398,32 @@ cxmp_blocking_client_adapter::add_lsi_info(xmlNodePtr lsis, xmlDocPtr running)
 		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:local-ip-address-in-use
 		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:local-port-in-use
 	}
+}
 
+int
+cxmp_blocking_client_adapter::create_lsi(struct new_lsi* lsi)
+{
+	puts(__PRETTY_FUNCTION__);
+	using xdpd::mgmt::protocol::cxmpie;
 
+	pthread_mutex_lock(&client_lock);
+	xmp_client->lsi_create(lsi->dpid, std::string(lsi->dpname));
+	pthread_cond_wait(&client_read_cv, &client_lock);
+	pthread_mutex_unlock(&client_lock);
 
+	int rv = 0;
+	switch (msg->get_type()) {
+	case XMPT_REPLY:
+		break;
+	case XMPT_ERROR:
+		rv = -1;
+		break;
+	case XMPT_REQUEST:
+	case XMPT_NOTIFICATION:
+	default:
+		rv = -2;
+		break;
+	}
+
+	return rv;
 }

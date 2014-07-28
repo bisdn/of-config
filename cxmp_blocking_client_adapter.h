@@ -13,6 +13,8 @@
 
 #include <xdpd/xmp/client/cxmpclient.h>
 
+#include "cxmpclient_wrapper.h"
+
 class cxmp_blocking_client_adapter : public xdpd::mgmt::protocol::cxmpobserver {
 public:
 	cxmp_blocking_client_adapter();
@@ -26,6 +28,9 @@ public:
 
 	void
 	add_lsi_info(xmlNodePtr lsis, xmlDocPtr running);
+
+	int
+	create_lsi(struct new_lsi *lsi);
 
 	xdpd::mgmt::protocol::cxmpclient *xmp_client;
 private:

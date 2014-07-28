@@ -69,3 +69,17 @@ get_lsi_info(void* handle, xmlNodePtr lsis, xmlDocPtr running)
 
 	xmp_client->add_lsi_info(lsis, running);
 }
+
+int
+create_lsi(void* handle, struct new_lsi* lsi)
+{
+	puts(__PRETTY_FUNCTION__);
+	using xdpd::mgmt::protocol::cxmpie;
+	using xdpd::mgmt::protocol::cxmpie_portinfo;
+
+	assert(handle);
+	assert(lsi);
+	assert(handle == xmp_client);
+
+	return xmp_client->create_lsi(lsi);
+}
