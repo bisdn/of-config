@@ -2688,13 +2688,13 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 		assert(XMLDIFF_CHAIN & op);
 
 		// todo improve lsi creation
-		printf("create new lsi (dpid=%lu, name=%s)\n", ((struct new_lsi*) *data)->dpid, ((struct new_lsi*) *data)->dpname);
+		printf("create new lsi (dpid=%lu, name=%s)\n", ((struct lsi*) *data)->dpid, ((struct lsi*) *data)->dpname);
 		if (create_lsi(ofc_state.xmp_client_handle, *data)) {
 			rv = EXIT_FAILURE;
 		}
 
 		// free data
-		free(((struct new_lsi*) *data)->dpname);
+		free(((struct lsi*) *data)->dpname);
 		free(*data);
 		*data = NULL;
 	}
@@ -2720,11 +2720,11 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_id (void ** 
 		assert(data);
 		assert(NULL == *data);
 
-		*data = calloc(1, sizeof(struct new_lsi));
+		*data = calloc(1, sizeof(struct lsi));
 		assert(*data);
 
 		xmlChar* text = xmlNodeListGetString(node->doc, node->children, 1);
-		((struct new_lsi*) *data)->dpname = strdup(text);
+		((struct lsi*) *data)->dpname = strdup(text);
 
 		xmlFree(text);
 	}
@@ -2772,7 +2772,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_datapath_id 
 		uint64_t dpid = parse_dpid(text);
 		xmlFree(text);
 
-		((struct new_lsi*) *data)->dpid = dpid;
+		((struct lsi*) *data)->dpid = dpid;
 	}
 
 	return EXIT_SUCCESS;

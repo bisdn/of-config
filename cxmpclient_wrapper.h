@@ -15,10 +15,27 @@
 extern "C" {
 #endif
 
-/* commands */
-struct new_lsi {
+/* structures */
+enum operation {
+	ADD,
+	DELETE,
+	// todo what about modify?
+};
+
+struct port {
+	char *resource_id;
+	enum operation op;
+};
+
+struct resources {
+	struct port *ports;
+	unsigned int port_count;
+};
+
+struct lsi {
 	uint64_t dpid;
 	char *dpname;
+	struct resources res;
 };
 
 
@@ -35,7 +52,7 @@ void
 get_lsi_info(void* handle, xmlNodePtr lsis, xmlDocPtr running);
 
 int
-create_lsi(void* handle, struct new_lsi *lsi);
+create_lsi(void* handle, struct lsi *lsi);
 
 #ifdef  __cplusplus
 }

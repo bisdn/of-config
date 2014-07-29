@@ -401,7 +401,7 @@ cxmp_blocking_client_adapter::add_lsi_info(xmlNodePtr lsis, xmlDocPtr running)
 }
 
 int
-cxmp_blocking_client_adapter::create_lsi(struct new_lsi* lsi)
+cxmp_blocking_client_adapter::create_lsi(struct lsi* lsi)
 {
 	puts(__PRETTY_FUNCTION__);
 	using xdpd::mgmt::protocol::cxmpie;

@@ -30,7 +30,7 @@ public:
 	add_lsi_info(xmlNodePtr lsis, xmlDocPtr running);
 
 	int
-	create_lsi(struct new_lsi *lsi);
+	create_lsi(struct lsi *lsi);
 
 	xdpd::mgmt::protocol::cxmpclient *xmp_client;
 private:

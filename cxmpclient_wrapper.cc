@@ -71,7 +71,7 @@ get_lsi_info(void* handle, xmlNodePtr lsis, xmlDocPtr running)
 }
 
 int
-create_lsi(void* handle, struct new_lsi* lsi)
+create_lsi(void* handle, struct lsi* lsi)
 {
 	puts(__PRETTY_FUNCTION__);
 	using xdpd::mgmt::protocol::cxmpie;
