@@ -45,8 +45,6 @@ void
 get_port_info(void* handle, xmlNodePtr resources, xmlDocPtr running)
 {
 	puts(__PRETTY_FUNCTION__);
-	using xdpd::mgmt::protocol::cxmpie;
-	using xdpd::mgmt::protocol::cxmpie_portinfo;
 
 	assert(handle);
 	assert(resources);
@@ -60,8 +58,6 @@ void
 get_lsi_info(void* handle, xmlNodePtr lsis, xmlDocPtr running)
 {
 	puts(__PRETTY_FUNCTION__);
-	using xdpd::mgmt::protocol::cxmpie;
-	using xdpd::mgmt::protocol::cxmpie_portinfo;
 
 	assert(handle);
 	assert(lsis);
@@ -74,12 +70,22 @@ int
 create_lsi(void* handle, struct lsi* lsi)
 {
 	puts(__PRETTY_FUNCTION__);
-	using xdpd::mgmt::protocol::cxmpie;
-	using xdpd::mgmt::protocol::cxmpie_portinfo;
 
 	assert(handle);
 	assert(lsi);
 	assert(handle == xmp_client);
 
 	return xmp_client->create_lsi(lsi);
+}
+
+int
+attach_port(void* handle, uint64_t dpid, char* port_name)
+{
+	puts(__PRETTY_FUNCTION__);
+
+	assert(handle);
+	assert(port_name);
+	assert(handle == xmp_client);
+
+	return xmp_client->attach_port(dpid, port_name);
 }

@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include <libxml/tree.h>
+#include "list.h"
 
 #ifdef  __cplusplus
 extern "C" {
@@ -28,8 +29,7 @@ struct port {
 };
 
 struct resources {
-	struct port *ports;
-	unsigned int port_count;
+	void *port_list;
 };
 
 struct lsi {
@@ -53,6 +53,9 @@ get_lsi_info(void* handle, xmlNodePtr lsis, xmlDocPtr running);
 
 int
 create_lsi(void* handle, struct lsi *lsi);
+
+int
+attach_port(void* handle, uint64_t dpid, char* port_name);
 
 #ifdef  __cplusplus
 }

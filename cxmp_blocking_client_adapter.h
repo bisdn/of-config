@@ -32,6 +32,9 @@ public:
 	int
 	create_lsi(struct lsi *lsi);
 
+	int
+	attach_port(const uint64_t dpid, const char* port_name);
+
 	xdpd::mgmt::protocol::cxmpclient *xmp_client;
 private:
 	pthread_mutex_t client_lock;
