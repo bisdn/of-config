@@ -139,16 +139,6 @@ xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **er
 	ns = xmlNewNs(root, BAD_CAST "urn:onf:of111:config:yang", NULL);
 	xmlSetNs(root, ns);
 
-	// check if the id is missing
-//	if (running) {
-//		xmlXPathObjectPtr xpath_obj;
-//		if (NULL == (xpath_obj = get_node(running, namespace_mapping, BAD_CAST "/ofc:capable-switch/ofc:id"))) {
-//			puts("/ofc:capable-switch/ofc:id not found");
-//			// fixme actual check
-//			xmlNewChild(root, ns, BAD_CAST "id", BAD_CAST "test");
-//		}
-//	}
-
 	// state that should be queried here
 	// ### base
 	// #/ofc:capable-switch/ofc:config-version
@@ -248,7 +238,7 @@ struct ns_pair namespace_mapping[] = {{"ofc", "urn:onf:of111:config:yang"}, {NUL
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 
 	xmlSaveFormatFileEnc("-", node->doc, "UTF-8", 1);
 
@@ -268,7 +258,7 @@ int callback_ofc_capable_switch (void ** data, XMLDIFF_OP op, xmlNodePtr node, s
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	assert(0 == strcmp(node->name, "id"));
 	assert(node);
 	assert(node->doc);
@@ -292,6 +282,8 @@ int callback_ofc_capable_switch_ofc_id (void ** data, XMLDIFF_OP op, xmlNodePtr 
 		}
 	} else {
 		// todo anything else?
+		printf("%s: unsupported operation %u\n", __PRETTY_FUNCTION__, op);
+		return EXIT_FAILURE;
 	}
 
 
@@ -311,7 +303,7 @@ int callback_ofc_capable_switch_ofc_id (void ** data, XMLDIFF_OP op, xmlNodePtr 
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_configuration_points (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -329,7 +321,7 @@ int callback_ofc_capable_switch_ofc_configuration_points (void ** data, XMLDIFF_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_configuration_points_ofc_configuration_point (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -347,7 +339,7 @@ int callback_ofc_capable_switch_ofc_configuration_points_ofc_configuration_point
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_configuration_points_ofc_configuration_point_ofc_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -365,7 +357,7 @@ int callback_ofc_capable_switch_ofc_configuration_points_ofc_configuration_point
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_configuration_points_ofc_configuration_point_ofc_uri (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -383,7 +375,7 @@ int callback_ofc_capable_switch_ofc_configuration_points_ofc_configuration_point
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_configuration_points_ofc_configuration_point_ofc_protocol (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -401,7 +393,7 @@ int callback_ofc_capable_switch_ofc_configuration_points_ofc_configuration_point
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -419,7 +411,7 @@ int callback_ofc_capable_switch_ofc_resources (void ** data, XMLDIFF_OP op, xmlN
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -437,7 +429,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port (void ** data, XMLDIFF_OP
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_resource_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -455,7 +447,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_resource_id (void ** 
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -473,7 +465,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration (void *
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration_ofc_admin_state (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -491,7 +483,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration_ofc_adm
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration_ofc_no_receive (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -509,7 +501,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration_ofc_no_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration_ofc_no_forward (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -527,7 +519,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration_ofc_no_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration_ofc_no_packet_in (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -545,7 +537,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration_ofc_no_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_features (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -563,7 +555,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_features (void ** dat
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_features_ofc_advertised (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -581,7 +573,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_features_ofc_advertis
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_features_ofc_advertised_ofc_rate (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -599,7 +591,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_features_ofc_advertis
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_features_ofc_advertised_ofc_auto_negotiate (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -617,7 +609,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_features_ofc_advertis
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_features_ofc_advertised_ofc_medium (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -635,7 +627,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_features_ofc_advertis
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_features_ofc_advertised_ofc_pause (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -653,7 +645,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_features_ofc_advertis
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -671,7 +663,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type (void ** 
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunnel (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -689,7 +681,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunne
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunnel_ofc_tunnel (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -707,7 +699,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunne
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunnel_ofc_tunnel_ofc_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -725,7 +717,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunne
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunnel_ofc_tunnel_ofc_endpoints_ofc_v4_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -743,7 +735,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunne
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunnel_ofc_tunnel_ofc_endpoints_ofc_v4_endpoints_ofc_local_endpoint_ipv4_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -761,7 +753,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunne
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunnel_ofc_tunnel_ofc_endpoints_ofc_v4_endpoints_ofc_remote_endpoint_ipv4_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -779,7 +771,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunne
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunnel_ofc_tunnel_ofc_endpoints_ofc_v6_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -797,7 +789,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunne
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunnel_ofc_tunnel_ofc_endpoints_ofc_v6_endpoints_ofc_local_endpoint_ipv6_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -815,7 +807,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunne
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunnel_ofc_tunnel_ofc_endpoints_ofc_v6_endpoints_ofc_remote_endpoint_ipv6_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -833,7 +825,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunne
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunnel_ofc_tunnel_ofc_endpoints_ofc_mac_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -851,7 +843,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunne
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunnel_ofc_tunnel_ofc_endpoints_ofc_mac_endpoints_ofc_local_endpoint_mac_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -869,7 +861,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunne
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunnel_ofc_tunnel_ofc_endpoints_ofc_mac_endpoints_ofc_remote_endpoint_mac_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -887,7 +879,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_tunne
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -905,7 +897,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -923,7 +915,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel_ofc_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -941,7 +933,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel_ofc_endpoints_ofc_v4_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -959,7 +951,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel_ofc_endpoints_ofc_v4_endpoints_ofc_local_endpoint_ipv4_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -977,7 +969,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel_ofc_endpoints_ofc_v4_endpoints_ofc_remote_endpoint_ipv4_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -995,7 +987,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel_ofc_endpoints_ofc_v6_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1013,7 +1005,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel_ofc_endpoints_ofc_v6_endpoints_ofc_local_endpoint_ipv6_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1031,7 +1023,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel_ofc_endpoints_ofc_v6_endpoints_ofc_remote_endpoint_ipv6_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1049,7 +1041,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel_ofc_endpoints_ofc_mac_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1067,7 +1059,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel_ofc_endpoints_ofc_mac_endpoints_ofc_local_endpoint_mac_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1085,7 +1077,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel_ofc_endpoints_ofc_mac_endpoints_ofc_remote_endpoint_mac_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1103,7 +1095,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel_ofc_checksum_present (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1121,7 +1113,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel_ofc_key_present (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1139,7 +1131,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel_ofc_key (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1157,7 +1149,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre_tunnel_ofc_ipgre_tunnel_ofc_sequence_number_present (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1175,7 +1167,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_ipgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1193,7 +1185,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1211,7 +1203,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1229,7 +1221,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_endpoints_ofc_v4_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1247,7 +1239,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_endpoints_ofc_v4_endpoints_ofc_local_endpoint_ipv4_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1265,7 +1257,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_endpoints_ofc_v4_endpoints_ofc_remote_endpoint_ipv4_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1283,7 +1275,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_endpoints_ofc_v6_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1301,7 +1293,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_endpoints_ofc_v6_endpoints_ofc_local_endpoint_ipv6_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1319,7 +1311,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_endpoints_ofc_v6_endpoints_ofc_remote_endpoint_ipv6_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1337,7 +1329,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_endpoints_ofc_mac_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1355,7 +1347,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_endpoints_ofc_mac_endpoints_ofc_local_endpoint_mac_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1373,7 +1365,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_endpoints_ofc_mac_endpoints_ofc_remote_endpoint_mac_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1391,7 +1383,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_vni_valid (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1409,7 +1401,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_vni (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1427,7 +1419,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_vni_multicast_group (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1445,7 +1437,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_udp_source_port (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1463,7 +1455,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_udp_dest_port (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1481,7 +1473,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan_tunnel_ofc_vxlan_tunnel_ofc_udp_checksum (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1499,7 +1491,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_vxlan
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1517,7 +1509,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel_ofc_nvgre_tunnel (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1535,7 +1527,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel_ofc_nvgre_tunnel_ofc_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1553,7 +1545,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel_ofc_nvgre_tunnel_ofc_endpoints_ofc_v4_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1571,7 +1563,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel_ofc_nvgre_tunnel_ofc_endpoints_ofc_v4_endpoints_ofc_local_endpoint_ipv4_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1589,7 +1581,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel_ofc_nvgre_tunnel_ofc_endpoints_ofc_v4_endpoints_ofc_remote_endpoint_ipv4_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1607,7 +1599,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel_ofc_nvgre_tunnel_ofc_endpoints_ofc_v6_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1625,7 +1617,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel_ofc_nvgre_tunnel_ofc_endpoints_ofc_v6_endpoints_ofc_local_endpoint_ipv6_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1643,7 +1635,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel_ofc_nvgre_tunnel_ofc_endpoints_ofc_v6_endpoints_ofc_remote_endpoint_ipv6_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1661,7 +1653,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel_ofc_nvgre_tunnel_ofc_endpoints_ofc_mac_endpoints (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1679,7 +1671,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel_ofc_nvgre_tunnel_ofc_endpoints_ofc_mac_endpoints_ofc_local_endpoint_mac_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1697,7 +1689,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel_ofc_nvgre_tunnel_ofc_endpoints_ofc_mac_endpoints_ofc_remote_endpoint_mac_adress (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1715,7 +1707,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel_ofc_nvgre_tunnel_ofc_tni (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1733,7 +1725,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel_ofc_nvgre_tunnel_ofc_tni_resv (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1751,7 +1743,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre_tunnel_ofc_nvgre_tunnel_ofc_tni_multicast_group (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1769,7 +1761,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_tunnel_type_ofc_nvgre
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_queue (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1787,7 +1779,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_queue (void ** data, XMLDIFF_O
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_queue_ofc_resource_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1805,7 +1797,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_queue_ofc_resource_id (void **
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_queue_ofc_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1823,7 +1815,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_queue_ofc_id (void ** data, XM
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_queue_ofc_port (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1841,7 +1833,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_queue_ofc_port (void ** data, 
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_queue_ofc_properties (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1859,7 +1851,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_queue_ofc_properties (void ** 
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_queue_ofc_properties_ofc_min_rate (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1877,7 +1869,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_queue_ofc_properties_ofc_min_r
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_queue_ofc_properties_ofc_max_rate (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1895,7 +1887,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_queue_ofc_properties_ofc_max_r
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_queue_ofc_properties_ofc_experimenter (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1913,7 +1905,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_queue_ofc_properties_ofc_exper
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1931,7 +1923,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate (void ** dat
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_resource_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1949,7 +1941,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_resource
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_certificate (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1967,7 +1959,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_certific
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -1985,7 +1977,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key_ofc_key_type (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2003,7 +1995,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key_ofc_key_type_ofc_dsa (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2021,7 +2013,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key_ofc_key_type_ofc_dsa_ofc_DSAKeyValue (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2039,7 +2031,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key_ofc_key_type_ofc_dsa_ofc_DSAKeyValue_ofc_P (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2057,7 +2049,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key_ofc_key_type_ofc_dsa_ofc_DSAKeyValue_ofc_Q (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2075,7 +2067,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key_ofc_key_type_ofc_dsa_ofc_DSAKeyValue_ofc_J (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2093,7 +2085,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key_ofc_key_type_ofc_dsa_ofc_DSAKeyValue_ofc_G (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2111,7 +2103,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key_ofc_key_type_ofc_dsa_ofc_DSAKeyValue_ofc_Y (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2129,7 +2121,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key_ofc_key_type_ofc_dsa_ofc_DSAKeyValue_ofc_Seed (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2147,7 +2139,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key_ofc_key_type_ofc_dsa_ofc_DSAKeyValue_ofc_PgenCounter (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2165,7 +2157,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key_ofc_key_type_ofc_rsa (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2183,7 +2175,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key_ofc_key_type_ofc_rsa_ofc_RSAKeyValue (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2201,7 +2193,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key_ofc_key_type_ofc_rsa_ofc_RSAKeyValue_ofc_Modulus (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2219,7 +2211,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_key_ofc_key_type_ofc_rsa_ofc_RSAKeyValue_ofc_Exponent (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2237,7 +2229,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_owned_certificate_ofc_private_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_external_certificate (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2255,7 +2247,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_external_certificate (void ** 
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_external_certificate_ofc_resource_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2273,7 +2265,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_external_certificate_ofc_resou
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_external_certificate_ofc_certificate (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2291,7 +2283,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_external_certificate_ofc_certi
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2309,7 +2301,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table (void ** data, XMLD
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_resource_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2327,7 +2319,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_resource_id (vo
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_max_entries (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2345,7 +2337,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_max_entries (vo
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_next_tables (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2363,7 +2355,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_next_tables (vo
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_next_tables_ofc_table_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2381,7 +2373,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_next_tables_ofc
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_instructions (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2399,7 +2391,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_instructions (v
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_instructions_ofc_type (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2417,7 +2409,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_instructions_of
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_matches (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2435,7 +2427,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_matches (void *
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_matches_ofc_type (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2453,7 +2445,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_matches_ofc_typ
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_write_actions (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2471,7 +2463,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_write_actions (
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_write_actions_ofc_type (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2489,7 +2481,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_write_actions_o
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_apply_actions (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2507,7 +2499,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_apply_actions (
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_apply_actions_ofc_type (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2525,7 +2517,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_apply_actions_o
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_write_setfields (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2543,7 +2535,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_write_setfields
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_write_setfields_ofc_type (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2561,7 +2553,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_write_setfields
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_apply_setfields (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2579,7 +2571,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_apply_setfields
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_apply_setfields_ofc_type (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2597,7 +2589,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_apply_setfields
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_wildcards (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2615,7 +2607,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_wildcards (void
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_wildcards_ofc_type (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2633,7 +2625,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_wildcards_ofc_t
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_metadata_match (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2651,7 +2643,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_metadata_match 
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_metadata_write (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2669,7 +2661,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_metadata_write 
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2687,7 +2679,7 @@ int callback_ofc_capable_switch_ofc_logical_switches (void ** data, XMLDIFF_OP o
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 
 	int rv = EXIT_SUCCESS;
 	if (XMLDIFF_ADD & op) {
@@ -2695,8 +2687,8 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 		assert(*data);
 		assert(XMLDIFF_CHAIN & op);
 
-		// fixme create new lsi
-		printf("fixme: create new lsi (dpid=%lu, name=%s)\n", ((struct new_lsi*) *data)->dpid, ((struct new_lsi*) *data)->dpname);
+		// todo improve lsi creation
+		printf("create new lsi (dpid=%lu, name=%s)\n", ((struct new_lsi*) *data)->dpid, ((struct new_lsi*) *data)->dpname);
 		if (create_lsi(ofc_state.xmp_client_handle, *data)) {
 			rv = EXIT_FAILURE;
 		}
@@ -2722,7 +2714,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 
 	if (XMLDIFF_ADD & op) {
 		assert(data);
@@ -2770,7 +2762,7 @@ parse_dpid(xmlChar* text)
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_datapath_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 
 	if (XMLDIFF_ADD & op) {
 		assert(data);
@@ -2799,7 +2791,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_datapath_id 
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_enabled (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	puts("currently ignored");
 	return EXIT_SUCCESS;
 }
@@ -2817,7 +2809,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_enabled (voi
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_check_controller_certificate (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	puts("currently ignored");
 	return EXIT_SUCCESS;
 }
@@ -2835,7 +2827,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_check_contro
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_lost_connection_behavior (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	puts("currently ignored");
 	return EXIT_SUCCESS;
 }
@@ -2853,7 +2845,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_lost_connect
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2871,7 +2863,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers 
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_ofc_controller (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2889,7 +2881,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_ofc_controller_ofc_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2907,7 +2899,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_ofc_controller_ofc_role (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2925,7 +2917,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_ofc_controller_ofc_ip_address (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2943,7 +2935,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_ofc_controller_ofc_port (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2961,7 +2953,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_ofc_controller_ofc_local_ip_address (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2979,7 +2971,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_ofc_controller_ofc_local_port (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -2997,7 +2989,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_ofc_controller_ofc_protocol (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -3015,7 +3007,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -3033,7 +3025,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources (v
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_ofc_port (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -3051,7 +3043,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_ofc_queue (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -3069,7 +3061,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_ofc_certificate (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
@@ -3087,7 +3079,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_ofc_flow_table (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
-	printf("%s: data=%p, op=%d\n", __FUNCTION__, data, op);
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node);
 	return EXIT_SUCCESS;
 }
