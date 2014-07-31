@@ -204,9 +204,11 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources, xmlDocPtr runn
 
 		// resource-id is missing?
 		if (running) {
+			puts("check resource-id");
 			xmlStrPrintf(buf, sizeof(buf), BAD_CAST "/ofc:capable-switch/ofc:resources/ofc:port[ofc:name=%s]/ofc:resource-id", port_info->get_port_num());
 			xmlXPathObjectPtr xpath_obj;
 			if (NULL == (xpath_obj = get_node(running, namespace_mapping, buf))) {
+				puts("add missing resource-id");
 				// no resource-id, so we set the port as resource-id
 				xmlNewChild(port, resources->ns, BAD_CAST "resource-id", BAD_CAST port_info->get_portname().c_str());
 			}
@@ -397,6 +399,72 @@ cxmp_blocking_client_adapter::add_lsi_info(xmlNodePtr lsis, xmlDocPtr running)
 		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:supported-versions
 		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:local-ip-address-in-use
 		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:local-port-in-use
+	}
+}
+
+void
+cxmp_blocking_client_adapter::get_lsi_config(xmlNodePtr lsis)
+{
+	puts(__PRETTY_FUNCTION__);
+	using xdpd::mgmt::protocol::cxmpie;
+	using xdpd::mgmt::protocol::cxmpie_lsiinfo;
+
+	pthread_mutex_lock(&client_lock);
+	xmp_client->lsi_info();
+	pthread_cond_wait(&client_read_cv, &client_lock);
+	pthread_mutex_unlock(&client_lock);
+
+	if (0 == msg->get_xmpies().size()) {
+		std::cerr << "no lsi found" << std::endl;
+		return;
+	}
+
+	assert(true == msg->get_xmpies().has_ie_multipart());
+
+	const std::deque<cxmpie*> & ies = msg->get_xmpies().get_ie_multipart().get_ies();
+
+	std::cerr << "ies.size()=" << ies.size() << std::endl;
+	for (std::deque<cxmpie*>::const_iterator iter = ies.begin(); iter != ies.end(); ++iter) {
+		cxmpie_lsiinfo* lsi_info = dynamic_cast<cxmpie_lsiinfo*>(*iter);
+
+		std::cerr << lsi_info->get_lsiname() << std::endl;
+
+		xmlChar buf[255];
+
+
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch
+		xmlNodePtr sw = xmlNewChild(lsis, lsis->ns, BAD_CAST "switch", NULL);
+
+		/// basic lsi information
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id
+		xmlNodePtr node = xmlNewChild(sw, sw->ns, BAD_CAST "id", BAD_CAST lsi_info->get_lsiname().c_str());
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:datapath-id
+		print_dpid(lsi_info->get_dpid(), buf, sizeof(buf));
+		node = xmlNewChild(sw, sw->ns, BAD_CAST "datapath-id", buf);
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:enabled
+		// todo implement
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:check-controller-certificate
+		// todo implement
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:lost-connection-behavior
+		// todo implement
+
+		/// controller(s) for this lsi
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:id
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:role
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:ip-address
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:port
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:local-ip-address
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:local-port
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:protocol
+
+		/// resources attached to this lsi
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:port
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:queue
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:certificate
+		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:flow-table
 	}
 }
 

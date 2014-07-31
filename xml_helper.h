@@ -27,6 +27,9 @@ parse_dpid(xmlChar* text);
 uint64_t
 parse_dpid_of_node(xmlNodePtr node);
 
+void
+print_dpid(const uint64_t dpid, xmlChar* buf, const unsigned int buf_len);
+
 #ifdef  __cplusplus
 }
 #endif

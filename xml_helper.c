@@ -99,3 +99,21 @@ parse_dpid_of_node(xmlNodePtr node)
 	assert(XML_GET_CONTENT(node));
 	return parse_dpid(XML_GET_CONTENT(node));
 }
+
+void
+print_dpid(const uint64_t dpid, xmlChar* buf, const unsigned int buf_len)
+{
+	assert(buf);
+	assert(buf_len > 24);
+
+	xmlStrPrintf(buf, buf_len, "%x:%x:%x:%x:%x:%x:%x:%x",
+			dpid >> 7*8,
+			dpid >> 6*8,
+			dpid >> 5*8,
+			dpid >> 4*8,
+			dpid >> 3*8,
+			dpid >> 2*8,
+			dpid >> 1*8,
+			dpid >> 0*8
+	);
+}

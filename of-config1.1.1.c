@@ -68,10 +68,45 @@ struct of_config__status {
  */
 int transapi_init(xmlDocPtr * running)
 {
+	assert(running);
+	assert(NULL == *running);
+
 	memset(&ofc_state, 0, sizeof(struct of_config__status));
 	ofc_state.xmp_client_handle = new_xmp_client();
 
-	// fixme add running config
+	// since we currently cannot query the switch_id we set it manually
+	ofc_state.capable_switch_id = strdup("xdpd-switch");
+
+	// create running config as following:
+	//	   +--rw capable-switch
+	//	      +--rw id                      inet:uri
+	//	      +--rw configuration-points
+	//	      +--rw resources
+	//	      +--rw logical-switches
+
+	puts("create running config");
+
+	*running = xmlNewDoc(BAD_CAST "1.0");
+	assert(*running);
+	xmlNodePtr root = xmlNewNode(NULL, BAD_CAST "capable-switch");
+	assert(root);
+	xmlDocSetRootElement(*running, root);
+	xmlNsPtr ns = xmlNewNs(root, BAD_CAST namespace_mapping[0].href, NULL);
+	assert(ns);
+	xmlSetNs(root, ns);
+
+	xmlNodePtr id = xmlNewChild(root, ns, BAD_CAST "id", BAD_CAST ofc_state.capable_switch_id);
+	assert(id);
+	xmlNodePtr config_points = xmlNewChild(root, ns, BAD_CAST "configuration-points", NULL);
+	assert(config_points);
+	xmlNodePtr resources = xmlNewChild(root, ns, BAD_CAST "resources", NULL);
+	assert(resources);
+	xmlNodePtr lsis = xmlNewChild(root, ns, BAD_CAST "logical-switches", NULL);
+	assert(lsis);
+	get_lsi_config(ofc_state.xmp_client_handle, lsis);
+
+
+	xmlSaveFormatFileEnc("-", *running, "UTF-8", 1);
 
 	printf("init done\n");
 	return EXIT_SUCCESS;
@@ -2728,7 +2763,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 
 	} else if (XMLDIFF_REM& op) {
 		puts("not implemented XMLDIFF_REM");
-		assert(0);
+		rv = EXIT_FAILURE;
 	} else if (XMLDIFF_MOD & op) {
 		// direct sub elements changed
 

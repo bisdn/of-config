@@ -66,6 +66,18 @@ get_lsi_info(void* handle, xmlNodePtr lsis, xmlDocPtr running)
 	xmp_client->add_lsi_info(lsis, running);
 }
 
+void
+get_lsi_config(void* handle, xmlNodePtr lsis)
+{
+	puts(__PRETTY_FUNCTION__);
+
+	assert(handle);
+	assert(lsis);
+	assert(handle == xmp_client);
+
+	xmp_client->get_lsi_config(lsis);
+}
+
 int
 create_lsi(void* handle, struct lsi* lsi)
 {

@@ -29,6 +29,9 @@ public:
 	void
 	add_lsi_info(xmlNodePtr lsis, xmlDocPtr running);
 
+	void
+	get_lsi_config(xmlNodePtr lsis);
+
 	int
 	create_lsi(struct lsi *lsi);
 

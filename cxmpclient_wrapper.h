@@ -51,6 +51,9 @@ get_port_info(void* handle, xmlNodePtr resources, xmlDocPtr running);
 void
 get_lsi_info(void* handle, xmlNodePtr lsis, xmlDocPtr running);
 
+void
+get_lsi_config(void* handle, xmlNodePtr lsis);
+
 int
 create_lsi(void* handle, struct lsi *lsi);
 
