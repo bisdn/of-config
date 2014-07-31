@@ -18,6 +18,15 @@ extern "C" {
 xmlXPathObjectPtr
 get_node(xmlDocPtr doc, const struct ns_pair *namespace_mapping, xmlChar *xpath);
 
+xmlNodePtr
+find_element(xmlChar* name, xmlNodePtr node);
+
+uint64_t
+parse_dpid(xmlChar* text);
+
+uint64_t
+parse_dpid_of_node(xmlNodePtr node);
+
 #ifdef  __cplusplus
 }
 #endif

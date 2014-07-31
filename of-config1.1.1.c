@@ -43,76 +43,11 @@ Feel free to use it to distinguish module behavior for different error-option va
  */
 NC_EDIT_ERROPT_TYPE erropt = NC_EDIT_ERROPT_NOTSET;
 
-
-static void
-print_element_names(xmlNode * a_node, int d)
-{
-    xmlNode *cur_node = NULL;
-    if (0 == d) {
-    	printf("xml subtree:\n");
-    }
-
-    for (cur_node = a_node; cur_node; cur_node = cur_node->next) {
-        if (cur_node->type == XML_ELEMENT_NODE) {
-        	int i;
-        	for(i=0; i<d; ++i) {
-        		printf("\t");
-        	}
-            printf("%s\n", cur_node->name);
-        }
-
-        print_element_names(cur_node->children, d+1);
-    }
-}
-
-static xmlNodePtr
-find_element(xmlChar* name, xmlNodePtr node)
-{
-	assert(name);
-	assert(node);
-
-	while (node) {
-		if (XML_ELEMENT_NODE == node->type && xmlStrEqual(name, node->name)) {
-			break;
-		}
-		node = node->next;
-	}
-	return node;
-}
-
-uint64_t
-parse_dpid(xmlChar* text)
-{
-	assert(text);
-
-	uint64_t dpid = 0;
-	unsigned int run = 8;
-
-    char *tok = strtok(text, ":");
-    while (tok) {
-    	run--;
-    	dpid |= strtoul(tok, NULL, 16) << (run*8);
-    	tok = strtok(NULL, ":");
-    }
-    assert(0 == run);
-
-	return dpid;
-}
-
-uint64_t
-parse_dpid_of_node(xmlNodePtr node)
-{
-	assert(node);
-	assert(XML_GET_CONTENT(node));
-	return parse_dpid(XML_GET_CONTENT(node));
-}
-
 /* status structure */
 struct of_config__status {
 	void *xmp_client_handle;
 	char *capable_switch_id;
 } ofc_state;
-
 
 /**
  * @brief Initialize plugin after loaded and before any other functions are called.
