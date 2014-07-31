@@ -405,6 +405,7 @@ cxmp_blocking_client_adapter::add_lsi_info(xmlNodePtr lsis, xmlDocPtr running)
 void
 cxmp_blocking_client_adapter::get_lsi_config(xmlNodePtr lsis)
 {
+	using xdpd::mgmt::protocol::cxmpmsg;
 	puts(__PRETTY_FUNCTION__);
 	using xdpd::mgmt::protocol::cxmpie;
 	using xdpd::mgmt::protocol::cxmpie_lsiinfo;
@@ -414,14 +415,16 @@ cxmp_blocking_client_adapter::get_lsi_config(xmlNodePtr lsis)
 	pthread_cond_wait(&client_read_cv, &client_lock);
 	pthread_mutex_unlock(&client_lock);
 
-	if (0 == msg->get_xmpies().size()) {
+	cxmpmsg lsi_msg(*msg);
+
+	if (0 == lsi_msg.get_xmpies().size()) {
 		std::cerr << "no lsi found" << std::endl;
 		return;
 	}
 
-	assert(true == msg->get_xmpies().has_ie_multipart());
+	assert(true == lsi_msg.get_xmpies().has_ie_multipart());
 
-	const std::deque<cxmpie*> & ies = msg->get_xmpies().get_ie_multipart().get_ies();
+	const std::deque<cxmpie*> & ies = lsi_msg.get_xmpies().get_ie_multipart().get_ies();
 
 	std::cerr << "ies.size()=" << ies.size() << std::endl;
 	for (std::deque<cxmpie*>::const_iterator iter = ies.begin(); iter != ies.end(); ++iter) {
@@ -461,10 +464,45 @@ cxmp_blocking_client_adapter::get_lsi_config(xmlNodePtr lsis)
 
 		/// resources attached to this lsi
 		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources
+		node = xmlNewChild(sw, sw->ns, BAD_CAST "resources", NULL);
 		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:port
+		get_lsi_ports(lsi_info->get_dpid(), node);
 		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:queue
 		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:certificate
 		// /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:flow-table
+	}
+}
+
+void
+cxmp_blocking_client_adapter::get_lsi_ports(const uint64_t dpid, xmlNodePtr resources)
+{
+	using xdpd::mgmt::protocol::cxmpmsg;
+	using xdpd::mgmt::protocol::cxmpie;
+	using xdpd::mgmt::protocol::cxmpie_name;
+
+	puts(__PRETTY_FUNCTION__);
+
+	pthread_mutex_lock(&client_lock);
+	xmp_client->port_list(dpid);
+	pthread_cond_wait(&client_read_cv, &client_lock);
+	pthread_mutex_unlock(&client_lock);
+
+	if (0 == msg->get_xmpies().size()) {
+		std::cerr << "no port found" << std::endl;
+		return;
+	}
+
+	assert(true == msg->get_xmpies().has_ie_multipart());
+
+	const std::deque<cxmpie*> & ies = msg->get_xmpies().get_ie_multipart().get_ies();
+	std::cerr << "ies.size()=" << ies.size() << std::endl;
+
+	for (std::deque<cxmpie*>::const_iterator iter = ies.begin(); iter != ies.end(); ++iter) {
+		cxmpie_name* port_name = dynamic_cast<cxmpie_name*>(*iter);
+
+		std::cerr << port_name->get_name() << std::endl;
+		xmlNodePtr node = xmlNewChild(resources, resources->ns, BAD_CAST "port", BAD_CAST port_name->get_name().c_str());
+		assert(node);
 	}
 }
 

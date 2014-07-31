@@ -32,6 +32,9 @@ public:
 	void
 	get_lsi_config(xmlNodePtr lsis);
 
+	void
+	get_lsi_ports(const uint64_t dpid, xmlNodePtr resources);
+
 	int
 	create_lsi(struct lsi *lsi);
 
@@ -40,6 +43,7 @@ public:
 
 	xdpd::mgmt::protocol::cxmpclient *xmp_client;
 private:
+
 	pthread_mutex_t client_lock;
 	pthread_t worker;
 	pthread_cond_t client_read_cv;

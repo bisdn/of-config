@@ -3101,6 +3101,8 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node, 0);
 
+	int rv = EXIT_SUCCESS;
+
 	assert(data);
 	if (NULL == *data) {
 		*data = calloc(1, sizeof(struct lsi));
@@ -3120,14 +3122,14 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 	} else if (XMLDIFF_REM & op) {
 		// todo implement
 		puts("not implemented");
-		assert(0);
+		rv = EXIT_FAILURE;
 	} else {
 		// todo implement
 		puts("not implemented");
 		assert(0);
 	}
 
-	return EXIT_SUCCESS;
+	return rv;
 }
 
 /**
