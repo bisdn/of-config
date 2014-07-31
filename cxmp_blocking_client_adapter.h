@@ -24,6 +24,12 @@ public:
 	notify(const xdpd::mgmt::protocol::cxmpmsg &msg);
 
 	void
+	get_resources(xmlNodePtr resources);
+
+	void
+	get_all_ports(xmlNodePtr resources);
+
+	void
 	add_port_info(xmlNodePtr resources, xmlDocPtr running);
 
 	void

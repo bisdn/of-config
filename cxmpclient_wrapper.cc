@@ -42,6 +42,18 @@ delete_xmp_client(void* data)
 }
 
 void
+get_resources(void* handle, xmlNodePtr resources)
+{
+	puts(__PRETTY_FUNCTION__);
+
+	assert(handle);
+	assert(resources);
+	assert(handle == xmp_client);
+
+	xmp_client->get_resources(resources);
+}
+
+void
 get_port_info(void* handle, xmlNodePtr resources, xmlDocPtr running)
 {
 	puts(__PRETTY_FUNCTION__);

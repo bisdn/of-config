@@ -46,6 +46,9 @@ void
 delete_xmp_client(void* handle);
 
 void
+get_resources(void* handle, xmlNodePtr resources);
+
+void
 get_port_info(void* handle, xmlNodePtr resources, xmlDocPtr running);
 
 void

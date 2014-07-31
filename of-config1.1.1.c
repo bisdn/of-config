@@ -101,6 +101,7 @@ int transapi_init(xmlDocPtr * running)
 	assert(config_points);
 	xmlNodePtr resources = xmlNewChild(root, ns, BAD_CAST "resources", NULL);
 	assert(resources);
+	get_resources(ofc_state.xmp_client_handle, resources);
 	xmlNodePtr lsis = xmlNewChild(root, ns, BAD_CAST "logical-switches", NULL);
 	assert(lsis);
 	get_lsi_config(ofc_state.xmp_client_handle, lsis);

@@ -74,6 +74,64 @@ cxmp_blocking_client_adapter::notify(const xdpd::mgmt::protocol::cxmpmsg& msg)
 	pthread_mutex_unlock(&client_lock);
 }
 
+void
+cxmp_blocking_client_adapter::get_resources(xmlNodePtr resources)
+{
+	// /ofc:capable-switch/ofc:resources/ofc:port
+	// /ofc:capable-switch/ofc:resources/ofc:port/ofc:resource-id
+	// /ofc:capable-switch/ofc:resources/ofc:port/ofc:configuration
+	// /ofc:capable-switch/ofc:resources/ofc:port/ofc:configuration/ofc:admin-state
+	// /ofc:capable-switch/ofc:resources/ofc:port/ofc:configuration/ofc:no-receive
+	// /ofc:capable-switch/ofc:resources/ofc:port/ofc:configuration/ofc:no-forward
+	// /ofc:capable-switch/ofc:resources/ofc:port/ofc:configuration/ofc:no-packet-in
+	// /ofc:capable-switch/ofc:resources/ofc:port/ofc:features
+	// /ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised
+	// /ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised/ofc:rate
+	// /ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised/ofc:auto-negotiate
+	// /ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised/ofc:medium
+	// /ofc:capable-switch/ofc:resources/ofc:port/ofc:features/ofc:advertised/ofc:pause
+	// /ofc:capable-switch/ofc:resources/ofc:port/ofc:tunnel-type
+	// todo all tunnel-type childs are skipped
+	get_all_ports(resources);
+}
+
+void
+cxmp_blocking_client_adapter::get_all_ports(xmlNodePtr resources)
+{
+	puts(__PRETTY_FUNCTION__);
+	using xdpd::mgmt::protocol::cxmpie;
+	using xdpd::mgmt::protocol::cxmpie_name;
+
+	pthread_mutex_lock(&client_lock);
+	xmp_client->port_list();
+	pthread_cond_wait(&client_read_cv, &client_lock);
+	pthread_mutex_unlock(&client_lock);
+
+	if (0 == msg->get_xmpies().size()) {
+		std::cerr << "no ports found" << std::endl;
+		return;
+	}
+
+	assert(true == msg->get_xmpies().has_ie_multipart());
+
+	const std::deque<cxmpie*> & ies = msg->get_xmpies().get_ie_multipart().get_ies();
+
+	std::cerr << "ies.size()=" << ies.size() << std::endl;
+	for (std::deque<cxmpie*>::const_iterator iter = ies.begin(); iter != ies.end(); ++iter) {
+		cxmpie_name* port_name = dynamic_cast<cxmpie_name*>(*iter);
+
+		std::cerr << port_name->get_name() << std::endl;
+		xmlNodePtr port = xmlNewChild(resources, resources->ns, BAD_CAST "port", NULL);
+		xmlNodePtr node = xmlNewChild(port, port->ns, BAD_CAST "resource-id", BAD_CAST port_name->get_name().c_str());
+
+		node = xmlNewChild(port, port->ns, BAD_CAST "configuration", NULL);
+		// todo add configuration
+
+		node = xmlNewChild(port, port->ns, BAD_CAST "features", NULL);
+		// todo add features/advertised
+	}
+}
+
 static inline xmlChar*
 parse_medium(const uint32_t features)
 {
