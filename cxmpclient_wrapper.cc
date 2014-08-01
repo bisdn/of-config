@@ -37,7 +37,7 @@ delete_xmp_client(void* data)
 	puts(__FUNCTION__);
 	assert(NULL != data);
 	assert(xmp_client == data);
-	delete reinterpret_cast<xdpd::mgmt::protocol::cxmpclient*>(xmp_client);
+	delete reinterpret_cast<cxmp_blocking_client_adapter*>(xmp_client);
 	xmp_client = NULL;
 }
 
