@@ -47,6 +47,9 @@ public:
 	int
 	attach_port(const uint64_t dpid, const char* port_name);
 
+	int
+	detach_port(const uint64_t dpid, const char* port_name);
+
 	xdpd::mgmt::protocol::cxmpclient *xmp_client;
 private:
 

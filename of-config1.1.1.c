@@ -2701,11 +2701,12 @@ lsi_cleanup(struct lsi *data)
 }
 
 static void
-handle_ports(void *list, xmlNodePtr node)
+handle_ports(void *list, xmlNodePtr sw)
 {
+	// fixme should be changed to first detach and then attach ports
 	if (NULL != list) {
 
-		uint64_t dpid = parse_dpid_of_node(find_element(BAD_CAST "datapath-id", node->children)->children);
+		uint64_t dpid = parse_dpid_of_node(find_element(BAD_CAST "datapath-id", sw->children)->children);
 
 		// handle ports
 		struct node *n;
@@ -2719,11 +2720,10 @@ handle_ports(void *list, xmlNodePtr node)
 
 			} else if (DELETE == ((struct port*) n->data)->op) {
 				// detach port
-				assert(0);
+				detach_port(ofc_state.xmp_client_handle, dpid, ((struct port*) n->data)->resource_id);
 			} else {
 				assert(0);
 			}
-
 
 			xmlFree(((struct port*) n->data)->resource_id);
 			node_delete(n);
@@ -2763,11 +2763,17 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 		handle_ports(((struct lsi*) *data)->res.port_list, node);
 
 	} else if (XMLDIFF_REM& op) {
-		puts("not implemented XMLDIFF_REM");
-		rv = EXIT_FAILURE;
+		// handle ports
+		handle_ports(((struct lsi*) *data)->res.port_list, node);
+
+		// todo improve lsi creation
+		printf("create new lsi (dpid=%lu, name=%s)\n", ((struct lsi*) *data)->dpid, ((struct lsi*) *data)->dpname);
+		if (create_lsi(ofc_state.xmp_client_handle, *data)) {
+			rv = EXIT_FAILURE;
+		}
+
 	} else if (XMLDIFF_MOD & op) {
 		// direct sub elements changed
-
 		puts("not implemented XMLDIFF_MOD");
 		assert(0);
 	} else if (XMLDIFF_CHAIN & op) {
@@ -3111,19 +3117,25 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 	}
 
 	if (XMLDIFF_ADD & op) {
-		if (NULL == ((struct lsi*)*data)->res.port_list) {
-			((struct lsi*)*data)->res.port_list = list_new();
-			assert(((struct lsi*)*data)->res.port_list);
+		if (NULL == ((struct lsi*) *data)->res.port_list) {
+			((struct lsi*) *data)->res.port_list = list_new();
+			assert(((struct lsi* )*data)->res.port_list);
 		}
 		struct port *p = calloc(1, sizeof(struct port));
 		p->op = ADD;
 		p->resource_id = xmlNodeListGetString(node->doc, node->children, 1);
-		list_append_data(((struct lsi*)*data)->res.port_list, p);
+		list_append_data(((struct lsi*) *data)->res.port_list, p);
 
 	} else if (XMLDIFF_REM & op) {
-		// todo implement
-		puts("not implemented");
-		rv = EXIT_FAILURE;
+		if (NULL == ((struct lsi*) *data)->res.port_list) {
+			((struct lsi*) *data)->res.port_list = list_new();
+			assert(((struct lsi* ) *data)->res.port_list);
+		}
+		struct port *p = calloc(1, sizeof(struct port));
+		p->op = DELETE;
+		p->resource_id = xmlNodeListGetString(node->doc, node->children, 1);
+		list_append_data(((struct lsi*) *data)->res.port_list, p);
+
 	} else {
 		// todo implement
 		puts("not implemented");

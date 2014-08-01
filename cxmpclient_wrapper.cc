@@ -113,3 +113,15 @@ attach_port(void* handle, uint64_t dpid, char* port_name)
 
 	return xmp_client->attach_port(dpid, port_name);
 }
+
+int
+detach_port(void* handle, uint64_t dpid, char* port_name)
+{
+	puts(__PRETTY_FUNCTION__);
+
+	assert(handle);
+	assert(port_name);
+	assert(handle == xmp_client);
+
+	return xmp_client->detach_port(dpid, port_name);
+}
