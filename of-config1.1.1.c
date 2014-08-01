@@ -2717,11 +2717,11 @@ handle_ports(void *list, xmlNodePtr sw)
 			printf("dpid=%lx port %s with op=%u\n", dpid, ((struct port*) n->data)->resource_id, ((struct port*) n->data)->op);
 			if (ADD == ((struct port*) n->data)->op) {
 				// attach port
-				attach_port(ofc_state.xmp_client_handle, dpid, ((struct port*) n->data)->resource_id);
+				port_attach(ofc_state.xmp_client_handle, dpid, ((struct port*) n->data)->resource_id);
 
 			} else if (DELETE == ((struct port*) n->data)->op) {
 				// detach port
-				detach_port(ofc_state.xmp_client_handle, dpid, ((struct port*) n->data)->resource_id);
+				port_detach(ofc_state.xmp_client_handle, dpid, ((struct port*) n->data)->resource_id);
 			} else {
 				assert(0);
 			}
@@ -2756,7 +2756,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 
 		// todo improve lsi creation (currently the controller cannot be configured)
 		printf("create new lsi (dpid=%lu, name=%s)\n", ((struct lsi*) *data)->dpid, ((struct lsi*) *data)->dpname);
-		if (create_lsi(ofc_state.xmp_client_handle, *data)) {
+		if (lsi_create(ofc_state.xmp_client_handle, *data)) {
 			rv = EXIT_FAILURE;
 		}
 
@@ -2772,7 +2772,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 		handle_ports(((struct lsi*) *data)->res.port_list, node);
 
 		printf("destroy lsi (dpid=%lu, name=%s)\n", ((struct lsi*) *data)->dpid, ((struct lsi*) *data)->dpname);
-		if ( destroy_lsi(ofc_state.xmp_client_handle, ((struct lsi*) *data)->dpid) ) {
+		if ( lsi_destroy(ofc_state.xmp_client_handle, ((struct lsi*) *data)->dpid) ) {
 			rv = EXIT_FAILURE;
 		}
 	} else if (XMLDIFF_MOD & op) {

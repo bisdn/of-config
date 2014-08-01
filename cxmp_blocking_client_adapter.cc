@@ -565,7 +565,7 @@ cxmp_blocking_client_adapter::get_lsi_ports(const uint64_t dpid, xmlNodePtr reso
 }
 
 int
-cxmp_blocking_client_adapter::create_lsi(struct lsi* lsi)
+cxmp_blocking_client_adapter::lsi_create(struct lsi* lsi)
 {
 	puts(__PRETTY_FUNCTION__);
 	using xdpd::mgmt::protocol::cxmpie;
@@ -593,7 +593,7 @@ cxmp_blocking_client_adapter::create_lsi(struct lsi* lsi)
 }
 
 int
-cxmp_blocking_client_adapter::destroy_lsi(const uint64_t dpid)
+cxmp_blocking_client_adapter::lsi_destroy(const uint64_t dpid)
 {
 	puts(__PRETTY_FUNCTION__);
 	using xdpd::mgmt::protocol::cxmpie;
@@ -621,7 +621,7 @@ cxmp_blocking_client_adapter::destroy_lsi(const uint64_t dpid)
 }
 
 int
-cxmp_blocking_client_adapter::attach_port(const uint64_t dpid, const char* port_name)
+cxmp_blocking_client_adapter::port_attach(const uint64_t dpid, const char* port_name)
 {
 	puts(__PRETTY_FUNCTION__);
 	using xdpd::mgmt::protocol::cxmpie;
@@ -649,7 +649,7 @@ cxmp_blocking_client_adapter::attach_port(const uint64_t dpid, const char* port_
 }
 
 int
-cxmp_blocking_client_adapter::detach_port(const uint64_t dpid, const char* port_name)
+cxmp_blocking_client_adapter::port_detach(const uint64_t dpid, const char* port_name)
 {
 	puts(__PRETTY_FUNCTION__);
 	using xdpd::mgmt::protocol::cxmpie;

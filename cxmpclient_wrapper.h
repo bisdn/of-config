@@ -58,16 +58,16 @@ void
 get_lsi_config(void* handle, xmlNodePtr lsis);
 
 int
-create_lsi(void* handle, struct lsi *lsi);
+lsi_create(void* handle, struct lsi *lsi);
 
 int
-destroy_lsi(void* handle, const uint64_t dpid);
+lsi_destroy(void* handle, const uint64_t dpid);
 
 int
-attach_port(void* handle, uint64_t dpid, char* port_name);
+port_attach(void* handle, uint64_t dpid, char* port_name);
 
 int
-detach_port(void* handle, uint64_t dpid, char* port_name);
+port_detach(void* handle, uint64_t dpid, char* port_name);
 
 #ifdef  __cplusplus
 }

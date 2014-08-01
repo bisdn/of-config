@@ -42,16 +42,16 @@ public:
 	get_lsi_ports(const uint64_t dpid, xmlNodePtr resources);
 
 	int
-	create_lsi(struct lsi *lsi);
+	lsi_create(struct lsi *lsi);
 
 	int
-	destroy_lsi(const uint64_t dpid);
+	lsi_destroy(const uint64_t dpid);
 
 	int
-	attach_port(const uint64_t dpid, const char* port_name);
+	port_attach(const uint64_t dpid, const char* port_name);
 
 	int
-	detach_port(const uint64_t dpid, const char* port_name);
+	port_detach(const uint64_t dpid, const char* port_name);
 
 	xdpd::mgmt::protocol::cxmpclient *xmp_client;
 private:

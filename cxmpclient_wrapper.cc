@@ -91,7 +91,7 @@ get_lsi_config(void* handle, xmlNodePtr lsis)
 }
 
 int
-create_lsi(void* handle, struct lsi* lsi)
+lsi_create(void* handle, struct lsi* lsi)
 {
 	puts(__PRETTY_FUNCTION__);
 
@@ -99,34 +99,22 @@ create_lsi(void* handle, struct lsi* lsi)
 	assert(lsi);
 	assert(handle == xmp_client);
 
-	return xmp_client->create_lsi(lsi);
+	return xmp_client->lsi_create(lsi);
 }
 
 int
-destroy_lsi(void* handle, const uint64_t dpid)
+lsi_destroy(void* handle, const uint64_t dpid)
 {
 	puts(__PRETTY_FUNCTION__);
 
 	assert(handle);
 	assert(handle == xmp_client);
 
-	return xmp_client->destroy_lsi(dpid);
+	return xmp_client->lsi_destroy(dpid);
 }
 
 int
-attach_port(void* handle, uint64_t dpid, char* port_name)
-{
-	puts(__PRETTY_FUNCTION__);
-
-	assert(handle);
-	assert(port_name);
-	assert(handle == xmp_client);
-
-	return xmp_client->attach_port(dpid, port_name);
-}
-
-int
-detach_port(void* handle, uint64_t dpid, char* port_name)
+port_attach(void* handle, uint64_t dpid, char* port_name)
 {
 	puts(__PRETTY_FUNCTION__);
 
@@ -134,5 +122,17 @@ detach_port(void* handle, uint64_t dpid, char* port_name)
 	assert(port_name);
 	assert(handle == xmp_client);
 
-	return xmp_client->detach_port(dpid, port_name);
+	return xmp_client->port_attach(dpid, port_name);
+}
+
+int
+port_detach(void* handle, uint64_t dpid, char* port_name)
+{
+	puts(__PRETTY_FUNCTION__);
+
+	assert(handle);
+	assert(port_name);
+	assert(handle == xmp_client);
+
+	return xmp_client->port_detach(dpid, port_name);
 }
