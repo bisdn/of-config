@@ -2766,11 +2766,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 		// handle ports
 		handle_ports(((struct lsi*) *data)->res.port_list, node);
 
-		// todo improve lsi creation
-		printf("create new lsi (dpid=%lu, name=%s)\n", ((struct lsi*) *data)->dpid, ((struct lsi*) *data)->dpname);
-		if (create_lsi(ofc_state.xmp_client_handle, *data)) {
-			rv = EXIT_FAILURE;
-		}
+		// fixme implement lsi destruction
 
 	} else if (XMLDIFF_MOD & op) {
 		// direct sub elements changed
