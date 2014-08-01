@@ -2727,6 +2727,7 @@ handle_ports(void *list, xmlNodePtr sw)
 			}
 
 			xmlFree(((struct port*) n->data)->resource_id);
+			free((struct port*) n->data);
 			node_delete(n);
 		}
 	}
