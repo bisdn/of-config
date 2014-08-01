@@ -1,0 +1,35 @@
+#!/bin/expect
+
+
+# read root password from file
+set f [open "./xml/edit-config_attach_port.xml"]
+set netconf_xml [read $f]
+close $f
+
+# read root password from file
+set f [open ".password" r]
+set password [read $f]
+close $f
+
+# run netopeer-cli
+spawn /home/tobi/workspace/netopeer/cli/netopeer-cli
+expect "netconf>"
+
+# Send the username, and then wait for a password prompt.
+send "connect --login root localhost\r"
+expect "root@localhost password:"
+
+# Send the password, and then wait for a shell prompt.
+send "$password\n"
+expect "netconf>"
+
+send "edit-config --error rollback running\r"
+expect "Type the edit configuration data (close editor by Ctrl-D):"
+send "$netconf_xml"
+send "\x0004"
+
+
+expect "Result OK"
+
+# end cli
+#send "\x0004"

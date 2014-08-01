@@ -1,0 +1,25 @@
+#!/bin/expect
+
+# read root password from file
+set f [open ".password"]
+set password [read $f]
+close $f
+
+# run netopeer-cli
+spawn /home/tobi/workspace/netopeer/cli/netopeer-cli
+expect "netconf>"
+
+# Send the username, and then wait for a password prompt.
+send "connect --login root localhost\r"
+expect "root@localhost password:"
+
+# Send the password, and then wait for a shell prompt.
+send "$password\n"
+expect "netconf>"
+
+send "get-config running\r"
+expect "</nacm>"
+expect "netconf>"
+
+# end cli
+send "\x0004"
