@@ -31,13 +31,24 @@ run(void* arg)
 		handle->xmp_client->register_observer(handle);
 		handle->xmp_client->set_auto_exit(false);
 		handle->xmp_client->run();
+
+		delete handle->xmp_client;
+		handle->xmp_client = NULL;
+
 	} catch (...) {
 		// todo log error
 		std::cerr << "got error" << std::endl;
+
+		if (handle->xmp_client){
+			delete handle->xmp_client;
+			handle->xmp_client = NULL;
+		}
 	}
 
-	delete handle->xmp_client;
-	handle->xmp_client = NULL;
+	//Logging
+	rofl::logging::close();
+	//Release ciosrv loop resources
+	rofl::cioloop::shutdown();
 
 	pthread_exit(NULL);
 }
@@ -57,7 +68,13 @@ cxmp_blocking_client_adapter::cxmp_blocking_client_adapter() :
 
 cxmp_blocking_client_adapter::~cxmp_blocking_client_adapter()
 {
-	// TODO Auto-generated destructor stub
+	xmp_client->terminate_client();
+	pthread_join(worker, NULL);
+
+	if (this->msg) delete this->msg;
+
+	pthread_mutex_destroy(&client_lock);
+	pthread_cond_destroy(&client_read_cv);
 }
 
 void
