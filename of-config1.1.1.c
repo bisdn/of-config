@@ -305,6 +305,7 @@ int callback_ofc_capable_switch_ofc_id (void ** data, XMLDIFF_OP op, xmlNodePtr 
 	} else {
 		// todo anything else?
 		printf("%s: unsupported operation %u\n", __PRETTY_FUNCTION__, op);
+		assert(0);
 		return EXIT_FAILURE;
 	}
 
@@ -2763,11 +2764,17 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 		handle_ports(((struct lsi*) *data)->res.port_list, node);
 
 	} else if (XMLDIFF_REM& op) {
+		assert(data);
+		assert(*data);
+		assert(XMLDIFF_CHAIN & op);
+
 		// handle ports
 		handle_ports(((struct lsi*) *data)->res.port_list, node);
 
-		// fixme implement lsi destruction
-
+		printf("destroy lsi (dpid=%lu, name=%s)\n", ((struct lsi*) *data)->dpid, ((struct lsi*) *data)->dpname);
+		if ( destroy_lsi(ofc_state.xmp_client_handle, ((struct lsi*) *data)->dpid) ) {
+			rv = EXIT_FAILURE;
+		}
 	} else if (XMLDIFF_MOD & op) {
 		// direct sub elements changed
 		puts("not implemented XMLDIFF_MOD");
@@ -2811,12 +2818,16 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_id (void ** 
 		assert(*data);
 	}
 
-	if (XMLDIFF_ADD & op) {
+	if ((XMLDIFF_ADD|XMLDIFF_REM) & op) {
 
 		xmlChar* text = xmlNodeListGetString(node->doc, node->children, 1);
 		((struct lsi*) *data)->dpname = strdup(text);
 
 		xmlFree(text);
+	} else {
+		// todo add operation to modify dpid ?
+		puts("not implemented");
+		assert(0);
 	}
 
 	return EXIT_SUCCESS;
@@ -2842,14 +2853,17 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_datapath_id 
 		assert(*data);
 	}
 
-	if (XMLDIFF_ADD & op) {
+	if ((XMLDIFF_ADD|XMLDIFF_REM) & op) {
 		xmlChar* text = xmlNodeListGetString(node->doc, node->children, 1);
 		uint64_t dpid = parse_dpid(text);
 		xmlFree(text);
 
 		((struct lsi*) *data)->dpid = dpid;
+	} else {
+		// todo add operation to modify dpid
+		puts("not implemented");
+		assert(0);
 	}
-	// todo add operation to modify dpid
 
 	return EXIT_SUCCESS;
 }

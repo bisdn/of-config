@@ -61,6 +61,9 @@ int
 create_lsi(void* handle, struct lsi *lsi);
 
 int
+destroy_lsi(void* handle, const uint64_t dpid);
+
+int
 attach_port(void* handle, uint64_t dpid, char* port_name);
 
 int

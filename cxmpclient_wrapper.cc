@@ -103,6 +103,17 @@ create_lsi(void* handle, struct lsi* lsi)
 }
 
 int
+destroy_lsi(void* handle, const uint64_t dpid)
+{
+	puts(__PRETTY_FUNCTION__);
+
+	assert(handle);
+	assert(handle == xmp_client);
+
+	return xmp_client->destroy_lsi(dpid);
+}
+
+int
 attach_port(void* handle, uint64_t dpid, char* port_name)
 {
 	puts(__PRETTY_FUNCTION__);

@@ -45,6 +45,9 @@ public:
 	create_lsi(struct lsi *lsi);
 
 	int
+	destroy_lsi(const uint64_t dpid);
+
+	int
 	attach_port(const uint64_t dpid, const char* port_name);
 
 	int
