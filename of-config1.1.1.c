@@ -2753,7 +2753,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 		assert(*data);
 		assert(XMLDIFF_CHAIN & op);
 
-		// todo improve lsi creation
+		// todo improve lsi creation (currently the controller cannot be configured)
 		printf("create new lsi (dpid=%lu, name=%s)\n", ((struct lsi*) *data)->dpid, ((struct lsi*) *data)->dpname);
 		if (create_lsi(ofc_state.xmp_client_handle, *data)) {
 			rv = EXIT_FAILURE;
