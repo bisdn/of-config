@@ -57,3 +57,19 @@ proc netconf_disconnect {} {
 		eof		{ send_user "\n"; exit 0 } 
 	}
 }
+
+proc netconf_edit_config {xml_file} {
+
+	set f [open $xml_file]
+	set netconf_xml [read $f]
+	close $f
+	
+	send "edit-config --error rollback running\r"
+	expect {
+		"Type the edit configuration data (close editor by Ctrl-D):"	{  }
+		timeout 	{ exit 1 }
+	}
+	
+	send "$netconf_xml"
+	send "\x0004"
+}

@@ -5,19 +5,7 @@ source netconf.tcl
 
 netconf_connect
 
-set f [open "./xml/edit-config_attach_port.xml"]
-set netconf_xml [read $f]
-close $f
-
-send "edit-config --error rollback running\r"
-expect {
-	"Type the edit configuration data (close editor by Ctrl-D):"	{  }
-	timeout 	{ exit 1 }
-}
-
-send "$netconf_xml"
-send "\x0004"
-
+netconf_edit_config "./xml/edit-config_attach_port.xml"
 expect {
 	"Result OK"	{  }
 	timeout		{ exit 1 }
