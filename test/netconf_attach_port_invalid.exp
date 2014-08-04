@@ -1,0 +1,13 @@
+#!/bin/expect
+
+source netconf.tcl
+
+netconf_connect
+
+netconf_edit_config "./xml/edit-config_attach_port_invalid.xml"
+expect {
+	"NETCONF error"	{  }
+	timeout		{ exit 1 }
+}
+
+netconf_disconnect
