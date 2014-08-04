@@ -277,17 +277,7 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources, xmlDocPtr runn
 		xmlNodePtr port = xmlNewChild(resources, resources->ns, BAD_CAST "port", NULL);
 		xmlChar buf[255];
 
-		// resource-id is missing?
-		if (running) {
-			puts("check resource-id");
-			xmlStrPrintf(buf, sizeof(buf), BAD_CAST "/ofc:capable-switch/ofc:resources/ofc:port[ofc:name=%s]/ofc:resource-id", port_info->get_portname().c_str());
-			xmlXPathObjectPtr xpath_obj;
-			if (NULL == (xpath_obj = get_node(running, namespace_mapping, buf))) {
-				puts("add missing resource-id");
-				// no resource-id, so we set the port as resource-id
-				xmlNewChild(port, resources->ns, BAD_CAST "resource-id", BAD_CAST port_info->get_portname().c_str());
-			}
-		}
+		xmlNewChild(port, resources->ns, BAD_CAST "resource-id", BAD_CAST port_info->get_portname().c_str());
 
 		// #/ofc:capable-switch/ofc:resources/ofc:port/ofc:number
 		xmlStrPrintf(buf, sizeof(buf), BAD_CAST "%u", port_info->get_port_num());
@@ -421,6 +411,8 @@ cxmp_blocking_client_adapter::add_lsi_info(xmlNodePtr lsis, xmlDocPtr running)
 
 		xmlNodePtr sw = xmlNewChild(lsis, lsis->ns, BAD_CAST "switch", NULL);
 		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities
+		xmlNewChild(sw, lsis->ns, BAD_CAST "id", BAD_CAST lsi_info->get_lsiname().c_str());
+
 		xmlNodePtr caps = xmlNewChild(sw, lsis->ns, BAD_CAST "capabilities", NULL);
 
 		// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:capabilities/ofc:max-buffered-packets (type uint32)
