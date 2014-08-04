@@ -64,7 +64,7 @@ proc netconf_edit_config {xml_file} {
 	set netconf_xml [read $f]
 	close $f
 	
-	send "edit-config --error rollback running\r"
+	send "edit-config --error=rollback running\r"
 	expect {
 		"Type the edit configuration data (close editor by Ctrl-D):"	{  }
 		timeout 	{ exit 1 }
