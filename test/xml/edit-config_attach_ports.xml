@@ -1,0 +1,1 @@
+<capable-switch xmlns="urn:onf:of111:config:yang"><id>capable-switch-0</id><logical-switches><switch><id>logic-switch-1</id><resources><port>veth2</port></resources></switch><switch><id>logic-switch-2</id><resources><port>veth4</port><port>veth6</port></resources></switch></logical-switches></capable-switch>
