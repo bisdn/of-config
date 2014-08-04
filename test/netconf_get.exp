@@ -4,9 +4,8 @@ source netconf.tcl
 
 netconf_connect
 
-send "get\r"
+send "get -f./xml/filter.xml\r"
 expect {
-	"</nacm>"	{ exp_continue }
 	"netconf>"	{ }
 	timeout 	{ exit 1 }
 }
