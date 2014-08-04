@@ -272,7 +272,7 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources, xmlDocPtr runn
 		cxmpie_portinfo* port_info = dynamic_cast<cxmpie_portinfo*>(*iter);
 		if (NULL == port_info) continue;
 
-		std::cerr << "append " << port_info->get_portname() << std::endl;
+		std::cerr << "append portname=" << port_info->get_portname() << " port_num=" << port_info->get_port_num() << std::endl;
 
 		xmlNodePtr port = xmlNewChild(resources, resources->ns, BAD_CAST "port", NULL);
 		xmlChar buf[255];
@@ -280,7 +280,7 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources, xmlDocPtr runn
 		// resource-id is missing?
 		if (running) {
 			puts("check resource-id");
-			xmlStrPrintf(buf, sizeof(buf), BAD_CAST "/ofc:capable-switch/ofc:resources/ofc:port[ofc:name=%s]/ofc:resource-id", port_info->get_port_num());
+			xmlStrPrintf(buf, sizeof(buf), BAD_CAST "/ofc:capable-switch/ofc:resources/ofc:port[ofc:name=%s]/ofc:resource-id", port_info->get_portname().c_str());
 			xmlXPathObjectPtr xpath_obj;
 			if (NULL == (xpath_obj = get_node(running, namespace_mapping, buf))) {
 				puts("add missing resource-id");
@@ -373,7 +373,8 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources, xmlDocPtr runn
 			// since the advertised node is not optional we will
 			// add it here if it was not configured in the running config
 			if (running) {
-				xmlStrPrintf(buf, sizeof(buf), BAD_CAST "/ofc:capable-switch/ofc:resources/ofc:port[ofc:name=%s]/ofc:features/ofc:advertised-peer", port_info->get_port_num());
+				puts("check advertised");
+				xmlStrPrintf(buf, sizeof(buf), BAD_CAST "/ofc:capable-switch/ofc:resources/ofc:port[ofc:name=%s]/ofc:features/ofc:advertised-peer", port_info->get_portname().c_str());
 				xmlXPathObjectPtr xpath_obj;
 				if (NULL != (xpath_obj = get_node(running, namespace_mapping, buf))) {
 					// fixme some parts have been configured... some not, so we will
