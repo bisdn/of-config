@@ -369,6 +369,9 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources, xmlDocPtr runn
 				if (NULL != (xpath_obj = get_node(running, namespace_mapping, buf))) {
 					// fixme some parts have been configured... some not, so we will
 					// print the supported values only for the not set parts
+
+					assert(0);
+					xmlXPathFreeObject(xpath_obj);
 				} else {
 					node = xmlNewChild(features, NULL, BAD_CAST "advertised", NULL);
 					// copy supported to advertised
