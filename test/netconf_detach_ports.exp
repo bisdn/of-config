@@ -1,0 +1,14 @@
+#!/bin/expect
+
+
+source netconf.tcl
+
+netconf_connect
+
+netconf_edit_config "./xml/edit-config_detach_ports.xml"
+expect {
+	"Result OK"	{  }
+	timeout		{ exit 1 }
+}
+
+netconf_disconnect
