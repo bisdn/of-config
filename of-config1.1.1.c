@@ -8,6 +8,7 @@
 #include <string.h>
 #include <assert.h>
 #include <libxml/tree.h>
+#include <libxml/xpath.h>
 #include <libnetconf_xml.h>
 
 #include "xml_helper.h"
@@ -2692,9 +2693,14 @@ int callback_ofc_capable_switch_ofc_logical_switches (void ** data, XMLDIFF_OP o
 static void
 lsi_cleanup(struct lsi *data)
 {
-	if (data->res.port_list) {
-		list_delete(data->res.port_list);
-		data->res.port_list = NULL;
+	if (data->res.port_list_add) {
+		list_delete(data->res.port_list_add);
+		data->res.port_list_add = NULL;
+	}
+
+	if (data->res.port_list_del) {
+		list_delete(data->res.port_list_del);
+		data->res.port_list_del = NULL;
 	}
 
 	free(data->dpname);
@@ -2704,24 +2710,21 @@ lsi_cleanup(struct lsi *data)
 static void
 handle_ports(void *list, xmlNodePtr sw)
 {
-	// fixme should be changed to first detach and then attach ports
 	if (NULL != list) {
-
-		uint64_t dpid = parse_dpid_of_node(find_element(BAD_CAST "datapath-id", sw->children)->children);
 
 		// handle ports
 		struct node *n;
 		while ((n = list_get_head(list))) {
 			list_pop_head(list);
 
-			printf("dpid=%lx port %s with op=%u\n", dpid, ((struct port*) n->data)->resource_id, ((struct port*) n->data)->op);
+			printf("dpid=%lx port %s with op=%u\n", ((struct port*) n->data)->dpid, ((struct port*) n->data)->resource_id, ((struct port*) n->data)->op);
 			if (ADD == ((struct port*) n->data)->op) {
 				// attach port
-				port_attach(ofc_state.xmp_client_handle, dpid, ((struct port*) n->data)->resource_id);
+				port_attach(ofc_state.xmp_client_handle, ((struct port*) n->data)->dpid, ((struct port*) n->data)->resource_id);
 
 			} else if (DELETE == ((struct port*) n->data)->op) {
 				// detach port
-				port_detach(ofc_state.xmp_client_handle, dpid, ((struct port*) n->data)->resource_id);
+				port_detach(ofc_state.xmp_client_handle, ((struct port*) n->data)->dpid, ((struct port*) n->data)->resource_id);
 			} else {
 				assert(0);
 			}
@@ -2762,7 +2765,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 		}
 
 		// handle ports
-		handle_ports(((struct lsi*) *data)->res.port_list, node);
+		handle_ports(((struct lsi*) *data)->res.port_list_add, node);
 
 	} else if (XMLDIFF_REM& op) {
 		assert(data);
@@ -2770,7 +2773,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 		assert(XMLDIFF_CHAIN & op);
 
 		// handle ports
-		handle_ports(((struct lsi*) *data)->res.port_list, node);
+		handle_ports(((struct lsi*) *data)->res.port_list_del, node);
 
 		printf("destroy lsi (dpid=%lu, name=%s)\n", ((struct lsi*) *data)->dpid, ((struct lsi*) *data)->dpname);
 		if ( lsi_destroy(ofc_state.xmp_client_handle, ((struct lsi*) *data)->dpid) ) {
@@ -2782,9 +2785,15 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 		assert(0);
 	} else if (XMLDIFF_CHAIN & op) {
 		// resources or controllers changed
+		assert(data);
+		assert(*data);
+		assert(XMLDIFF_CHAIN & op);
 
 		// handle ports
-		handle_ports(((struct lsi*) *data)->res.port_list, node);
+		handle_ports(((struct lsi*) *data)->res.port_list_del, node);
+		handle_ports(((struct lsi*) *data)->res.port_list_add, node);
+
+		// fixme problems might occur when the dpid changes and ports are attached/detached
 	} else {
 		puts("unsupported op");
 		assert(0);
@@ -3117,7 +3126,14 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources (v
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_ofc_port (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
+
 	print_element_names(node, 0);
+
+
+	// retrieve the dpid of this twig
+	xmlNodePtr tmp = find_element(BAD_CAST "datapath-id",  node->parent->parent->children);
+	assert(tmp);
+	uint64_t dpid = parse_dpid(tmp->children->content);
 
 	int rv = EXIT_SUCCESS;
 
@@ -3128,24 +3144,31 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 	}
 
 	if (XMLDIFF_ADD & op) {
-		if (NULL == ((struct lsi*) *data)->res.port_list) {
-			((struct lsi*) *data)->res.port_list = list_new();
-			assert(((struct lsi* )*data)->res.port_list);
+		if (NULL == ((struct lsi*) *data)->res.port_list_add) {
+			((struct lsi*) *data)->res.port_list_add = list_new();
+			assert(((struct lsi* )*data)->res.port_list_add);
 		}
 		struct port *p = calloc(1, sizeof(struct port));
-		p->op = ADD;
 		p->resource_id = xmlNodeListGetString(node->doc, node->children, 1);
-		list_append_data(((struct lsi*) *data)->res.port_list, p);
+		p->op = ADD;
+		p->dpid = dpid;
+		list_append_data(((struct lsi*) *data)->res.port_list_add, p);
+
+		printf("added to list: dpid=%lx port %s with op=%u\n", p->dpid, p->resource_id, p->op);
+
 
 	} else if (XMLDIFF_REM & op) {
-		if (NULL == ((struct lsi*) *data)->res.port_list) {
-			((struct lsi*) *data)->res.port_list = list_new();
-			assert(((struct lsi* ) *data)->res.port_list);
+		if (NULL == ((struct lsi*) *data)->res.port_list_del) {
+			((struct lsi*) *data)->res.port_list_del = list_new();
+			assert(((struct lsi* ) *data)->res.port_list_del);
 		}
 		struct port *p = calloc(1, sizeof(struct port));
-		p->op = DELETE;
 		p->resource_id = xmlNodeListGetString(node->doc, node->children, 1);
-		list_append_data(((struct lsi*) *data)->res.port_list, p);
+		p->op = DELETE;
+		p->dpid = dpid;
+		list_append_data(((struct lsi*) *data)->res.port_list_del, p);
+
+		printf("added to list: dpid=%lx port %s with op=%u\n", p->dpid, p->resource_id, p->op);
 
 	} else {
 		// todo implement

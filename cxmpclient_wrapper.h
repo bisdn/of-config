@@ -24,12 +24,14 @@ enum operation {
 };
 
 struct port {
+	uint64_t dpid;
 	char *resource_id;
 	enum operation op;
 };
 
 struct resources {
-	void *port_list;
+	void *port_list_add;
+	void *port_list_del;
 };
 
 struct lsi {
