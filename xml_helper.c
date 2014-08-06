@@ -52,6 +52,12 @@ print_element_names(xmlNode * a_node, int d)
 				printf("\t");
 			}
 			printf("%s\n", cur_node->name);
+		} else if (cur_node->type == XML_TEXT_NODE) {
+			int i;
+			for (i = 0; i < d; ++i) {
+				printf("\t");
+			}
+			printf("value=%s\n", XML_GET_CONTENT(cur_node));
 		}
 
 		print_element_names(cur_node->children, d + 1);
@@ -59,7 +65,7 @@ print_element_names(xmlNode * a_node, int d)
 }
 
 xmlNodePtr
-find_element(xmlChar* name, xmlNodePtr node)
+find_element(const xmlChar* name, xmlNodePtr node)
 {
 	assert(name);
 	assert(node);
@@ -74,30 +80,35 @@ find_element(xmlChar* name, xmlNodePtr node)
 }
 
 uint64_t
-parse_dpid(xmlChar* text)
+parse_dpid(const xmlChar* text)
 {
 	assert(text);
+	xmlChar *mytext = xmlStrdup(text);
+	assert(mytext);
+
+	printf("%s: text=%s\n", __PRETTY_FUNCTION__,  text);
 
 	uint64_t dpid = 0;
 	unsigned int run = 8;
 
-	char *tok = strtok(text, ":");
+	char *tok = strtok(mytext, ":");
 	while (tok) {
 		run--;
 		dpid |= strtoul(tok, NULL, 16) << (run * 8);
 		tok = strtok(NULL, ":");
 	}
+	xmlFree(mytext);
 	assert(0 == run);
 
 	return dpid;
 }
 
 uint64_t
-parse_dpid_of_node(xmlNodePtr node)
+parse_dpid_of_node(const xmlNodePtr node)
 {
 	assert(node);
-	assert(XML_GET_CONTENT(node));
-	return parse_dpid(XML_GET_CONTENT(node));
+	assert(node->children);
+	return parse_dpid(XML_GET_CONTENT(node->children));
 }
 
 void
