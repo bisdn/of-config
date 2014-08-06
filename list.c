@@ -10,24 +10,27 @@
 #include <stdlib.h>
 #include <assert.h>
 
+
+struct node {
+	struct node *next;
+	void *data;
+};
+
 struct list {
 	struct node *head;
 	struct node *tail;
-	void
-	(*free_fn)(void *data);
+	struct node *ptr;
 };
 
-struct node*
+static struct node*
 node_new(void *data)
 {
-
 	struct node *n = (struct node *) calloc(1, sizeof(struct node));
 	n->data = data;
 	return n;
-
 }
 
-void
+static void
 node_delete(struct node *node)
 {
 	free(node);
@@ -47,33 +50,15 @@ list_delete(struct list *l)
 	while (n) {
 		struct node *tmp = n;
 		n = n->next;
-		if (l->free_fn) l->free_fn(tmp->data);
 		free(tmp);
 	}
 
 	free(l);
 }
 
-void
-list_set_free_fn(struct list *l, void (*free_fn)(void *data))
+static void
+list_append_node(struct list *l, struct node *n)
 {
-	assert(free_fn);
-	l->free_fn = free_fn;
-}
-
-void
-list_append_node(struct list *l, struct node *node)
-{
-	l->tail->next = node;
-	l->tail = node;
-}
-
-int
-list_append_data(struct list *l, void *data)
-{
-	struct node *n = node_new(data);
-	if (NULL == n) return -1;
-
 	if (NULL == l->head) {
 		assert(NULL == l->tail);
 		l->head = n;
@@ -82,20 +67,56 @@ list_append_data(struct list *l, void *data)
 		l->tail->next = n;
 		l->tail = n;
 	}
+}
+
+int
+list_append_data(struct list *l, void *data)
+{
+	assert(l);
+	assert(data);
+
+	struct node *n = node_new(data);
+	if (NULL == n) return -1;
+
+	list_append_node(l, n);
 
 	return 0;
 }
 
-struct node*
-list_get_head(struct list *l)
-{
-	assert(l);
-	return l->head;
-}
-
-void
+void *
 list_pop_head(struct list *l)
 {
 	assert(l);
-	l->head = l->head->next;
+	void *data = NULL;
+	if (l->head) {
+		struct node *n = l->head;
+		data = n->data;
+		l->head = n->next;
+
+		if (NULL == l->head) {
+			l->tail = NULL;
+		}
+
+		node_delete(n);
+	}
+
+	l->ptr = NULL;
+	return data;
+}
+
+void *
+list_next(struct list *l)
+{
+	void *data = NULL;
+	assert(l);
+
+	if (l->ptr) {
+		l->ptr = l->ptr->next;
+	} else {
+		l->ptr = l->head;
+	}
+	if (l->ptr) {
+		data = l->ptr->data;
+	}
+	return data;
 }

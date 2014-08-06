@@ -14,37 +14,20 @@ extern "C" {
 
 struct list;
 
-struct node {
-	struct node *next;
-	void *data;
-};
-
-struct node*
-node_new(void *data);
-
-void
-node_delete(struct node *node);
-
-void
-list_set_free_fn(struct list *l, void (*free_fn)(void *data));
-
 struct list*
 list_new();
 
 void
 list_delete(struct list *l);
 
-void
-list_append_node(struct list *l, struct node *node);
-
 int
 list_append_data(struct list *l, void *data);
 
-struct node*
-list_get_head(struct list *l);
-
-void
+void *
 list_pop_head(struct list *l);
+
+void *
+list_next(struct list *l);
 
 #ifdef __cplusplus
 }

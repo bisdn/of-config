@@ -16,11 +16,11 @@
 extern "C" {
 #endif
 
-/* structures */
+/* structures */// TODO move structures to a more suitable file
 enum operation {
 	ADD,
 	DELETE,
-	// todo what about modify?
+	MODIFY
 };
 
 struct port {
@@ -34,10 +34,11 @@ struct resources {
 	void *port_list_del;
 };
 
-struct lsi {
+struct lsi { // todo operation per changed item?
 	uint64_t dpid;
 	char *dpname;
 	struct resources res;
+	enum operation op;
 };
 
 

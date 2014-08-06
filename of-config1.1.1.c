@@ -48,6 +48,8 @@ NC_EDIT_ERROPT_TYPE erropt = NC_EDIT_ERROPT_NOTSET;
 struct of_config__status {
 	void *xmp_client_handle;
 	char *capable_switch_id;
+
+	struct list *lsi_list;
 } ofc_state;
 
 /**
@@ -2672,24 +2674,6 @@ int callback_ofc_capable_switch_ofc_resources_ofc_flow_table_ofc_metadata_write 
 	return EXIT_SUCCESS;
 }
 
-/**
- * @brief This callback will be run when node in path /ofc:capable-switch/ofc:logical-switches changes
- *
- * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
- * @param[in] op	Observed change in path. XMLDIFF_OP type.
- * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
- * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
- *
- * @return EXIT_SUCCESS or EXIT_FAILURE
- */
-/* !DO NOT ALTER FUNCTION SIGNATURE! */
-int callback_ofc_capable_switch_ofc_logical_switches (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
-{
-	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
-	print_element_names(node, 0);
-	return EXIT_SUCCESS;
-}
-
 static void
 lsi_cleanup(struct lsi *data)
 {
@@ -2708,32 +2692,75 @@ lsi_cleanup(struct lsi *data)
 }
 
 static void
-handle_ports(void *list, xmlNodePtr sw)
+handle_ports(void *list)
 {
 	if (NULL != list) {
 
 		// handle ports
-		struct node *n;
-		while ((n = list_get_head(list))) {
-			list_pop_head(list);
+		struct port *p;
+		while ((p = list_pop_head(list))) {
 
-			printf("dpid=%lx port %s with op=%u\n", ((struct port*) n->data)->dpid, ((struct port*) n->data)->resource_id, ((struct port*) n->data)->op);
-			if (ADD == ((struct port*) n->data)->op) {
+			printf("dpid=%lx port %s with op=%u\n", p->dpid, p->resource_id, p->op);
+			if (ADD == p->op) {
 				// attach port
-				port_attach(ofc_state.xmp_client_handle, ((struct port*) n->data)->dpid, ((struct port*) n->data)->resource_id);
+				port_attach(ofc_state.xmp_client_handle, p->dpid, p->resource_id);
+				puts("XXX port_attach");
 
-			} else if (DELETE == ((struct port*) n->data)->op) {
+			} else if (DELETE == p->op) {
 				// detach port
-				port_detach(ofc_state.xmp_client_handle, ((struct port*) n->data)->dpid, ((struct port*) n->data)->resource_id);
+				port_detach(ofc_state.xmp_client_handle, p->dpid, p->resource_id);
+				puts("XXX port_detach");
 			} else {
 				assert(0);
 			}
 
-			xmlFree(((struct port*) n->data)->resource_id);
-			free((struct port*) n->data);
-			node_delete(n);
+			xmlFree(p->resource_id);
+			free(p);
 		}
 	}
+}
+
+/**
+ * @brief This callback will be run when node in path /ofc:capable-switch/ofc:logical-switches changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofc_capable_switch_ofc_logical_switches (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
+	print_element_names(node, 0);
+
+	assert(ofc_state.lsi_list);
+	assert(XMLDIFF_CHAIN & op);
+
+	int rv = EXIT_SUCCESS;
+	if ((XMLDIFF_ADD|XMLDIFF_REM|XMLDIFF_MOD|XMLDIFF_CHAIN) & op) {
+
+		struct lsi *current_lsi;
+		while ( (current_lsi = list_next(ofc_state.lsi_list)) ) {
+			handle_ports(current_lsi->res.port_list_del);
+		}
+
+		while ( (current_lsi = list_pop_head(ofc_state.lsi_list)) ) {
+			handle_ports(current_lsi->res.port_list_add);
+			lsi_cleanup(current_lsi);
+		}
+
+	} else {
+		puts("unsupported op");
+		assert(0);
+	}
+
+	list_delete(ofc_state.lsi_list);
+	ofc_state.lsi_list = NULL;
+
+	return rv;
 }
 
 /**
@@ -2752,10 +2779,20 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node, 0);
 
+	if (NULL == ofc_state.lsi_list) {
+		ofc_state.lsi_list = list_new();
+		assert(ofc_state.lsi_list);
+	}
+
+	assert(data);
+	assert(*data);
+
+	if (!(XMLDIFF_REM & op)) {
+		list_append_data(ofc_state.lsi_list, *data);
+	}
+
 	int rv = EXIT_SUCCESS;
 	if (XMLDIFF_ADD & op) {
-		assert(data);
-		assert(*data);
 		assert(XMLDIFF_CHAIN & op);
 
 		// todo improve lsi creation (currently the controller cannot be configured)
@@ -2764,46 +2801,36 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 			rv = EXIT_FAILURE;
 		}
 
-		// handle ports
-		handle_ports(((struct lsi*) *data)->res.port_list_add, node);
-
 	} else if (XMLDIFF_REM& op) {
-		assert(data);
-		assert(*data);
 		assert(XMLDIFF_CHAIN & op);
-
-		// handle ports
-		handle_ports(((struct lsi*) *data)->res.port_list_del, node);
 
 		printf("destroy lsi (dpid=%lu, name=%s)\n", ((struct lsi*) *data)->dpid, ((struct lsi*) *data)->dpname);
 		if ( lsi_destroy(ofc_state.xmp_client_handle, ((struct lsi*) *data)->dpid) ) {
 			rv = EXIT_FAILURE;
 		}
+
+		assert(NULL == ((struct lsi*) *data)->res.port_list_add);
+		struct port *p;
+		while ( (p = list_pop_head(((struct lsi*) *data)->res.port_list_del )) ) {
+			xmlFree(p->resource_id);
+			free(p);
+		}
+
+		lsi_cleanup(*data);
+
 	} else if (XMLDIFF_MOD & op) {
 		// direct sub elements changed
 		puts("not implemented XMLDIFF_MOD");
 		assert(0);
 	} else if (XMLDIFF_CHAIN & op) {
 		// resources or controllers changed
-		assert(data);
-		assert(*data);
-		assert(XMLDIFF_CHAIN & op);
 
-		// handle ports
-		handle_ports(((struct lsi*) *data)->res.port_list_del, node);
-		handle_ports(((struct lsi*) *data)->res.port_list_add, node);
-
-		// fixme problems might occur when the dpid changes and ports are attached/detached
 	} else {
 		puts("unsupported op");
 		assert(0);
 	}
 
-	if (*data) {
-		// free data
-		lsi_cleanup((struct lsi*) *data);
-		*data = NULL;
-	}
+	*data = NULL;
 
 	return rv;
 }
