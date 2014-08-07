@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# the sequence of tests is important here:
 TESTS_TO_RUN="netconf_get \
  netconf_create_lsi \
  netconf_attach_port \
@@ -11,6 +12,7 @@ TESTS_TO_RUN="netconf_get \
  netconf_attach_port \
  netconf_attach_ports \
  netconf_move_ports \
+ netconf_move_ports2 \
  netconf_get_config"
 
 
