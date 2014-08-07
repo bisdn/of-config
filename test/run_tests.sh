@@ -10,6 +10,7 @@ TESTS_TO_RUN="netconf_get \
  netconf_detach_ports \
  netconf_attach_port \
  netconf_attach_ports \
+ netconf_move_ports \
  netconf_get_config"
 
 
