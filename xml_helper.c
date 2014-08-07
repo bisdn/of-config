@@ -26,6 +26,10 @@ get_node(xmlDocPtr doc, const struct ns_pair const *namespace_mapping, xmlChar *
 		++namespace_mapping;
 	}
 
+	// todo only in debug-mode:
+	printf("%s: search for xpath=%s in doc:\n", __PRETTY_FUNCTION__, xpath);
+	xmlSaveFormatFileEnc("-", doc, "UTF-8", 1);
+
 	result = xmlXPathEvalExpression(xpath, context);
 	xmlXPathFreeContext(context);
 	assert(result);

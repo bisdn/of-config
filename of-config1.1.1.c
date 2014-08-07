@@ -493,6 +493,9 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration_ofc_adm
 {
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node, 0);
+
+	// fixme implement next
+
 	return EXIT_SUCCESS;
 }
 
@@ -2736,29 +2739,32 @@ int callback_ofc_capable_switch_ofc_logical_switches (void ** data, XMLDIFF_OP o
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node, 0);
 
-	assert(ofc_state.lsi_list);
-	assert(XMLDIFF_CHAIN & op);
-
 	int rv = EXIT_SUCCESS;
-	if ((XMLDIFF_ADD|XMLDIFF_REM|XMLDIFF_MOD|XMLDIFF_CHAIN) & op) {
+	if (NULL != node->children) {
 
-		struct lsi *current_lsi;
-		while ( (current_lsi = list_next(ofc_state.lsi_list)) ) {
-			handle_ports(current_lsi->res.port_list_del);
+		assert(ofc_state.lsi_list);
+		assert(XMLDIFF_CHAIN & op);
+
+		if ((XMLDIFF_ADD|XMLDIFF_REM|XMLDIFF_MOD|XMLDIFF_CHAIN) & op) {
+
+			struct lsi *current_lsi;
+			while ( (current_lsi = list_next(ofc_state.lsi_list)) ) {
+				handle_ports(current_lsi->res.port_list_del);
+			}
+
+			while ( (current_lsi = list_pop_head(ofc_state.lsi_list)) ) {
+				handle_ports(current_lsi->res.port_list_add);
+				lsi_cleanup(current_lsi);
+			}
+
+		} else {
+			puts("unsupported op");
+			assert(0);
 		}
 
-		while ( (current_lsi = list_pop_head(ofc_state.lsi_list)) ) {
-			handle_ports(current_lsi->res.port_list_add);
-			lsi_cleanup(current_lsi);
-		}
-
-	} else {
-		puts("unsupported op");
-		assert(0);
+		list_delete(ofc_state.lsi_list);
+		ofc_state.lsi_list = NULL;
 	}
-
-	list_delete(ofc_state.lsi_list);
-	ofc_state.lsi_list = NULL;
 
 	return rv;
 }
@@ -2809,11 +2815,16 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 			rv = EXIT_FAILURE;
 		}
 
+		// cannot have a port add during a lsi destroy
 		assert(NULL == ((struct lsi*) *data)->res.port_list_add);
-		struct port *p;
-		while ( (p = list_pop_head(((struct lsi*) *data)->res.port_list_del )) ) {
-			xmlFree(p->resource_id);
-			free(p);
+
+		// check if there were ports attached, then clean the list, because detachment takes place during lsi destruction
+		if (NULL != ((struct lsi*) *data)->res.port_list_del) {
+			struct port *p;
+			while ((p = list_pop_head(((struct lsi*) *data)->res.port_list_del))) {
+				xmlFree(p->resource_id);
+				free(p);
+			}
 		}
 
 		lsi_cleanup(*data);
@@ -3156,7 +3167,6 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 
 	print_element_names(node, 0);
 
-
 	// retrieve the dpid of this twig
 	xmlNodePtr tmp = find_element(BAD_CAST "datapath-id",  node->parent->parent->children);
 	assert(tmp);
@@ -3164,6 +3174,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 
 	int rv = EXIT_SUCCESS;
 
+	// fixme depending on the erropt (e.g. NC_EDIT_ERROPT_ROLLBACK we might still have *data set)
 	assert(data);
 	if (NULL == *data) {
 		*data = calloc(1, sizeof(struct lsi));
@@ -3171,20 +3182,36 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 	}
 
 	if (XMLDIFF_ADD & op) {
-		if (NULL == ((struct lsi*) *data)->res.port_list_add) {
-			((struct lsi*) *data)->res.port_list_add = list_new();
-			assert(((struct lsi* )*data)->res.port_list_add);
+
+		xmlChar buf[255];
+		xmlStrPrintf(buf, sizeof(buf), "/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:port[text()='%s']", XML_GET_CONTENT(node->children));
+		xmlXPathObjectPtr xpath_obj_ptr = get_node(node->doc, namespace_mapping, buf);
+		assert(xpath_obj_ptr);
+		assert(xpath_obj_ptr->nodesetval);
+
+		if (1 == xpath_obj_ptr->nodesetval->nodeNr) {
+
+			if (NULL == ((struct lsi*) *data)->res.port_list_add) {
+				((struct lsi*) *data)->res.port_list_add = list_new();
+				assert(((struct lsi* )*data)->res.port_list_add);
+			}
+			struct port *p = calloc(1, sizeof(struct port));
+			p->resource_id = xmlNodeListGetString(node->doc, node->children, 1);
+			p->op = ADD;
+			p->dpid = dpid;
+			list_append_data(((struct lsi*) *data)->res.port_list_add, p);
+
+			printf("added to list: dpid=%lx port %s with op=%u\n", p->dpid, p->resource_id, p->op);
+		} else {
+
+			printf("attachment failed dpid=%lx port %s: port already attached.\n", dpid, XML_GET_CONTENT(node->children));
+			rv = EXIT_FAILURE;
 		}
-		struct port *p = calloc(1, sizeof(struct port));
-		p->resource_id = xmlNodeListGetString(node->doc, node->children, 1);
-		p->op = ADD;
-		p->dpid = dpid;
-		list_append_data(((struct lsi*) *data)->res.port_list_add, p);
 
-		printf("added to list: dpid=%lx port %s with op=%u\n", p->dpid, p->resource_id, p->op);
-
+		xmlXPathFreeObject(xpath_obj_ptr);
 
 	} else if (XMLDIFF_REM & op) {
+
 		if (NULL == ((struct lsi*) *data)->res.port_list_del) {
 			((struct lsi*) *data)->res.port_list_del = list_new();
 			assert(((struct lsi* ) *data)->res.port_list_del);
