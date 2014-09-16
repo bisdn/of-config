@@ -1,0 +1,11 @@
+<capable-switch xmlns="urn:onf:of111:config:yang">
+	<id>capable-switch-0</id>
+	<resources>
+		<port>
+			<resource-id>veth0</resource-id>
+			<configuration>
+				<admin-state>up</admin-state>
+			</configuration>
+		</port>
+	</resources>
+</capable-switch>
