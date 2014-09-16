@@ -136,3 +136,27 @@ port_detach(void* handle, uint64_t dpid, char* port_name)
 
 	return xmp_client->port_detach(dpid, port_name);
 }
+
+int
+port_enable(void* handle, const char* port_name)
+{
+	puts(__PRETTY_FUNCTION__);
+
+	assert(handle);
+	assert(port_name);
+	assert(handle == xmp_client);
+
+	return xmp_client->port_enable(port_name);
+}
+
+int
+port_disable(void* handle, const char* port_name)
+{
+	puts(__PRETTY_FUNCTION__);
+
+	assert(handle);
+	assert(port_name);
+	assert(handle == xmp_client);
+
+	return xmp_client->port_disable(port_name);
+}

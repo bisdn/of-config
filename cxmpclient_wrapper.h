@@ -72,6 +72,12 @@ port_attach(void* handle, uint64_t dpid, char* port_name);
 int
 port_detach(void* handle, uint64_t dpid, char* port_name);
 
+int
+port_enable(void* handle, const char* port_name);
+
+int
+port_disable(void* handle, const char* port_name);
+
 #ifdef  __cplusplus
 }
 #endif

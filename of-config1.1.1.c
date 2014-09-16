@@ -494,9 +494,47 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration_ofc_adm
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node, 0);
 
-	// fixme implement next
+	int rv = EXIT_SUCCESS;
+	int down = 0;	// default is up
 
-	return EXIT_SUCCESS;
+	if ((XMLDIFF_ADD|XMLDIFF_MOD) & op) {
+
+		printf("XXXvalue=%s\n", XML_GET_CONTENT(node->children));
+
+		if (xmlStrEqual(XML_GET_CONTENT(node->children), BAD_CAST "down")) {
+			down = 1;
+		}
+
+		// sanity check... if the content is not "down", it has to be "up"
+		assert(down || xmlStrEqual(XML_GET_CONTENT(node->children), BAD_CAST "up"));
+
+	} else if (XMLDIFF_REM & op) {
+		// setting interface up
+	} else {
+		puts("unsupported op");
+		assert(0);
+	}
+
+	// currently the resource-id is the port name (even if the name is not set
+	xmlNodePtr tmp = find_element(BAD_CAST "resource-id",  node->parent->parent->children);
+	assert(tmp);
+
+	if (down) {
+		// set interface down
+		printf("set interface %s down\n", tmp->children->content);
+		if (port_disable(ofc_state.xmp_client_handle, tmp->children->content)) {
+			rv = EXIT_FAILURE;
+		}
+
+	} else {
+		// set interface up
+		printf("set interface %s up\n", tmp->children->content);
+		if (port_enable(ofc_state.xmp_client_handle, tmp->children->content)) {
+			rv = EXIT_FAILURE;
+		}
+	}
+
+	return rv;
 }
 
 /**

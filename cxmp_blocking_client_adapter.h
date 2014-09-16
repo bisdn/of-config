@@ -53,6 +53,12 @@ public:
 	int
 	port_detach(const uint64_t dpid, const char* port_name);
 
+	int
+	port_enable(const char* port_name);
+
+	int
+	port_disable(const char* port_name);
+
 	xdpd::mgmt::protocol::cxmpclient *xmp_client;
 private:
 
