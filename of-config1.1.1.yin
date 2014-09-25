@@ -447,6 +447,7 @@ this list.</text>
       </description>
       <list name="controller">
         <key value="id"/>
+        <min-elements value="1"/>
         <description>
           <text>The list of OpenFlow Controllers that are 
 assigned to the OpenFlow Logical Switch.  The switch MUST
