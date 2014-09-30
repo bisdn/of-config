@@ -13,6 +13,7 @@
 
 #include "xml_helper.h"
 #include "cxmpclient_wrapper.h"
+#include "utils.h"
 
 extern struct ns_pair namespace_mapping[];
 
@@ -51,6 +52,11 @@ struct of_config__status {
 
 	struct list *lsi_list;
 } ofc_state;
+
+static void *__data = NULL;
+
+#define LSI(data) ((struct lsi*) *data)
+#define CONTROLLER(data) ((struct controller*) data)
 
 /**
  * @brief Initialize plugin after loaded and before any other functions are called.
@@ -2839,8 +2845,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 	if (XMLDIFF_ADD & op) {
 		assert(XMLDIFF_CHAIN & op);
 
-		// todo improve lsi creation (currently the controller cannot be configured)
-		printf("create new lsi (dpid=%lu, name=%s)\n", ((struct lsi*) *data)->dpid, ((struct lsi*) *data)->dpname);
+		printf("create new lsi (dpid=%lu, name=%s)\n", LSI(data)->dpid, LSI(data)->dpname);
 		if (lsi_create(ofc_state.xmp_client_handle, *data)) {
 			rv = EXIT_FAILURE;
 		}
@@ -2848,18 +2853,18 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 	} else if (XMLDIFF_REM& op) {
 		assert(XMLDIFF_CHAIN & op);
 
-		printf("destroy lsi (dpid=%lu, name=%s)\n", ((struct lsi*) *data)->dpid, ((struct lsi*) *data)->dpname);
-		if ( lsi_destroy(ofc_state.xmp_client_handle, ((struct lsi*) *data)->dpid) ) {
+		printf("destroy lsi (dpid=%lu, name=%s)\n", LSI(data)->dpid, LSI(data)->dpname);
+		if ( lsi_destroy(ofc_state.xmp_client_handle, LSI(data)->dpid) ) {
 			rv = EXIT_FAILURE;
 		}
 
 		// cannot have a port add during a lsi destroy
-		assert(NULL == ((struct lsi*) *data)->res.port_list_add);
+		assert(NULL == LSI(data)->res.port_list_add);
 
 		// check if there were ports attached, then clean the list, because detachment takes place during lsi destruction
-		if (NULL != ((struct lsi*) *data)->res.port_list_del) {
+		if (NULL != LSI(data)->res.port_list_del) {
 			struct port *p;
-			while ((p = list_pop_head(((struct lsi*) *data)->res.port_list_del))) {
+			while ((p = list_pop_head(LSI(data)->res.port_list_del))) {
 				xmlFree(p->resource_id);
 				free(p);
 			}
@@ -2873,6 +2878,8 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 		assert(0);
 	} else if (XMLDIFF_CHAIN & op) {
 		// resources or controllers changed
+
+		printf("%s: XMLDIFF_CHAIN", __PRETTY_FUNCTION__);
 
 	} else {
 		puts("unsupported op");
@@ -2907,7 +2914,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_id (void ** 
 	if ((XMLDIFF_ADD|XMLDIFF_REM) & op) {
 
 		xmlChar* text = xmlNodeListGetString(node->doc, node->children, 1);
-		((struct lsi*) *data)->dpname = strdup(text);
+		LSI(data)->dpname = strdup(text);
 
 		xmlFree(text);
 	} else {
@@ -2933,7 +2940,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_id (void ** 
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_datapath_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
-	assert(data);
+	assert(NULL == __data);
 	if (NULL == *data) {
 		*data = calloc(1, sizeof(struct lsi));
 		assert(*data);
@@ -2944,7 +2951,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_datapath_id 
 		uint64_t dpid = parse_dpid(text);
 		xmlFree(text);
 
-		((struct lsi*) *data)->dpid = dpid;
+		LSI(data)->dpid = dpid;
 	} else {
 		// todo add operation to modify dpid
 		puts("not implemented");
@@ -3040,7 +3047,28 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers 
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_ofc_controller (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
-	puts("currently ignored");
+	print_element_names(node, 0);
+
+	if (NULL == *data) {
+		*data = calloc(1, sizeof(struct lsi));
+		assert(*data);
+	}
+
+	if (NULL == LSI(data)->controller_list_add) {
+		LSI(data)->controller_list_add = list_new();
+		assert(LSI(data)->controller_list_add);
+	}
+
+	if ((XMLDIFF_ADD) & op) {
+		list_append_data(LSI(data)->controller_list_add, __data);
+		__data = NULL;
+
+		// fixme implement controller removal
+	} else {
+		puts("not implemented");
+		assert(0);
+	}
+
 	return EXIT_SUCCESS;
 }
 
@@ -3058,7 +3086,21 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_ofc_controller_ofc_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
-	puts("currently ignored");
+
+	assert(NULL == __data);
+
+	if ((XMLDIFF_ADD) & op) {
+		__data = calloc(1, sizeof(struct controller));
+
+		CONTROLLER(__data)->id = strdup(XML_GET_CONTENT(node->children));
+		assert(CONTROLLER(__data)->id);
+
+	} else {
+		puts("not implemented");
+		assert(0);
+	}
+
+
 	return EXIT_SUCCESS;
 }
 
@@ -3076,7 +3118,10 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_ofc_controller_ofc_role (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
+	assert(__data);
+
 	puts("currently ignored");
+
 	return EXIT_SUCCESS;
 }
 
@@ -3094,7 +3139,18 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_ofc_controller_ofc_ip_address (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
-	puts("currently ignored");
+	assert(__data);
+
+	if ((XMLDIFF_ADD) & op) {
+
+		// fixme handle zone in address (see http://www.netconfcentral.org/modules/ietf-inet-types)
+		CONTROLLER(__data)->ip_domain = parse_ip_address(XML_GET_CONTENT(node->children), &CONTROLLER(__data)->ip);
+
+	} else {
+		puts("not implemented");
+		assert(0);
+	}
+
 	return EXIT_SUCCESS;
 }
 
@@ -3112,7 +3168,18 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_ofc_controller_ofc_port (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
-	puts("currently ignored");
+
+	assert(__data);
+
+	if ((XMLDIFF_ADD) & op) {
+
+		CONTROLLER(__data)->port = strtoul(XML_GET_CONTENT(node->children), NULL, 10);
+
+	} else {
+		puts("not implemented");
+		assert(0);
+	}
+
 	return EXIT_SUCCESS;
 }
 
@@ -3166,7 +3233,20 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_ofc_controller_ofc_protocol (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
-	puts("currently ignored");
+
+	assert(__data);
+
+	if ((XMLDIFF_ADD) & op) {
+
+		// enum "tcp";
+		// enum "tls";
+		CONTROLLER(__data)->proto = strdup(XML_GET_CONTENT(node->children));
+
+	} else {
+		puts("not implemented");
+		assert(0);
+	}
+
 	return EXIT_SUCCESS;
 }
 
@@ -3229,15 +3309,15 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 
 		if (1 == xpath_obj_ptr->nodesetval->nodeNr) {
 
-			if (NULL == ((struct lsi*) *data)->res.port_list_add) {
-				((struct lsi*) *data)->res.port_list_add = list_new();
+			if (NULL == LSI(data)->res.port_list_add) {
+				LSI(data)->res.port_list_add = list_new();
 				assert(((struct lsi* )*data)->res.port_list_add);
 			}
 			struct port *p = calloc(1, sizeof(struct port));
 			p->resource_id = xmlNodeListGetString(node->doc, node->children, 1);
 			p->op = ADD;
 			p->dpid = dpid;
-			list_append_data(((struct lsi*) *data)->res.port_list_add, p);
+			list_append_data(LSI(data)->res.port_list_add, p);
 
 			printf("added to list: dpid=%lx port %s with op=%u\n", p->dpid, p->resource_id, p->op);
 		} else {
@@ -3250,15 +3330,15 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 
 	} else if (XMLDIFF_REM & op) {
 
-		if (NULL == ((struct lsi*) *data)->res.port_list_del) {
-			((struct lsi*) *data)->res.port_list_del = list_new();
+		if (NULL == LSI(data)->res.port_list_del) {
+			LSI(data)->res.port_list_del = list_new();
 			assert(((struct lsi* ) *data)->res.port_list_del);
 		}
 		struct port *p = calloc(1, sizeof(struct port));
 		p->resource_id = xmlNodeListGetString(node->doc, node->children, 1);
 		p->op = DELETE;
 		p->dpid = dpid;
-		list_append_data(((struct lsi*) *data)->res.port_list_del, p);
+		list_append_data(LSI(data)->res.port_list_del, p);
 
 		printf("added to list: dpid=%lx port %s with op=%u\n", p->dpid, p->resource_id, p->op);
 

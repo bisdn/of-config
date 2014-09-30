@@ -99,7 +99,44 @@ lsi_create(void* handle, struct lsi* lsi)
 	assert(lsi);
 	assert(handle == xmp_client);
 
-	return xmp_client->lsi_create(lsi);
+	std::list<struct xdpd::mgmt::protocol::controller> controller;
+	struct controller *c;
+	while ((c = (struct controller *)list_pop_head((struct list*)lsi->controller_list_add))) {
+
+		xdpd::mgmt::protocol::controller c_tmp;
+
+		if (c->id) {
+			c_tmp.id.assign(c->id);
+			free(c->id);
+		}
+
+		if (c->proto) {
+			c_tmp.proto.assign(c->proto);
+			free(c->proto);
+		}
+
+		c_tmp.ip_domain = c->ip_domain;
+		if (AF_INET == c->ip_domain) {
+			struct sockaddr_in* sin;
+			sin->sin_addr = *((struct in_addr*)c->ip);
+			c_tmp.address = rofl::caddress_in4(sin, sizeof(struct sockaddr_in));
+		} else if (AF_INET6 == c->ip_domain) {
+			struct sockaddr_in6* sin;
+			memcpy(&sin->sin6_addr, (struct in6_addr*)c->ip, 16);
+			c_tmp.address = rofl::caddress_in6(sin, sizeof(struct sockaddr_in6));
+		} else {
+			assert(0);
+		}
+		free(c->ip);
+
+		c_tmp.port = c->port;
+
+		free(c);
+
+		controller.push_back(c_tmp);
+	}
+
+	return xmp_client->lsi_create(lsi->dpid, std::string(lsi->dpname), controller);
 }
 
 int

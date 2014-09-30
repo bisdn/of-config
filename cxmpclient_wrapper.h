@@ -34,10 +34,20 @@ struct resources {
 	void *port_list_del;
 };
 
+struct controller {
+	char *id;
+	void *ip;
+	uint8_t ip_domain;
+	uint16_t port;
+	char *proto;
+};
+
 struct lsi { // todo operation per changed item?
 	uint64_t dpid;
 	char *dpname;
 	struct resources res;
+	void *controller_list_add;
+	void *controller_list_del;
 	enum operation op;
 };
 

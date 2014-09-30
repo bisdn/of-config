@@ -10,10 +10,11 @@
 
 #include <pthread.h>
 #include <libxml/tree.h>
+#include <list>
 
 #include <xdpd/xmp/client/cxmpclient.h>
 
-#include "cxmpclient_wrapper.h"
+//#include "cxmpclient_wrapper.h"
 
 class cxmp_blocking_client_adapter : public xdpd::mgmt::protocol::cxmpobserver {
 public:
@@ -42,7 +43,7 @@ public:
 	get_lsi_ports(const uint64_t dpid, xmlNodePtr resources);
 
 	int
-	lsi_create(struct lsi *lsi);
+	lsi_create(const uint64_t dpid, const std::string &dpname, std::list<struct xdpd::mgmt::protocol::controller>& controller);
 
 	int
 	lsi_destroy(const uint64_t dpid);

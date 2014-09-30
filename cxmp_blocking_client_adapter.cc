@@ -578,13 +578,15 @@ cxmp_blocking_client_adapter::get_lsi_ports(const uint64_t dpid, xmlNodePtr reso
 }
 
 int
-cxmp_blocking_client_adapter::lsi_create(struct lsi* lsi)
+cxmp_blocking_client_adapter::lsi_create(const uint64_t dpid, const std::string &dpname, std::list<struct xdpd::mgmt::protocol::controller>& controller)
 {
 	puts(__PRETTY_FUNCTION__);
 	using xdpd::mgmt::protocol::cxmpie;
 
+	std::cerr << "create " << controller.size() << " controller(s)" << std::endl;
+
 	pthread_mutex_lock(&client_lock);
-	xmp_client->lsi_create(lsi->dpid, std::string(lsi->dpname));
+	xmp_client->lsi_create(dpid, dpname, controller);
 	pthread_cond_wait(&client_read_cv, &client_lock);
 	pthread_mutex_unlock(&client_lock);
 
