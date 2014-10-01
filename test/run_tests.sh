@@ -13,6 +13,7 @@ TESTS_TO_RUN="netconf_get \
  netconf_attach_ports \
  netconf_move_ports \
  netconf_move_ports2 \
+ netconf_add_controller \
  netconf_get_config"
 
 
