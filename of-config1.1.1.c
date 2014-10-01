@@ -2734,6 +2734,17 @@ lsi_cleanup(struct lsi *data)
 		data->res.port_list_del = NULL;
 	}
 
+	if (data->controller_list_add) {
+		list_delete(data->controller_list_add);
+		data->res.port_list_del = NULL;
+	}
+
+	if (data->controller_list_del) {
+
+		list_delete(data->controller_list_del);
+		data->res.port_list_del = NULL;
+	}
+
 	free(data->dpname);
 	free(data);
 }
@@ -2870,7 +2881,10 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 			}
 		}
 
+		// no need to deal with controllers seperately here
+
 		lsi_cleanup(*data);
+
 
 	} else if (XMLDIFF_MOD & op) {
 		// direct sub elements changed
@@ -2894,6 +2908,11 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 
 		if (LSI(data)->controller_list_add) {
 			lsi_connect_to_controller(ofc_state.xmp_client_handle, LSI(data));
+		}
+
+		if (LSI(data)->controller_list_del) {
+			// fixme implement
+			assert(0);
 		}
 
 	} else {
@@ -3078,7 +3097,9 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 		list_append_data(LSI(data)->controller_list_add, __data);
 		__data = NULL;
 
-		// fixme implement controller removal
+	} else if ((XMLDIFF_REM) & op) {
+		list_append_data(LSI(data)->controller_list_del, __data);
+		__data = NULL;
 	} else {
 		puts("not implemented");
 		assert(0);
