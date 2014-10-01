@@ -43,10 +43,13 @@ public:
 	get_lsi_ports(const uint64_t dpid, xmlNodePtr resources);
 
 	int
-	lsi_create(const uint64_t dpid, const std::string &dpname, std::list<struct xdpd::mgmt::protocol::controller>& controller);
+	lsi_create(const uint64_t dpid, const std::string &dpname, const std::list<struct xdpd::mgmt::protocol::controller>& controller);
 
 	int
 	lsi_destroy(const uint64_t dpid);
+
+	int
+	lsi_connect_to_controller(const uint64_t dpid, const std::list<struct xdpd::mgmt::protocol::controller>& controller);
 
 	int
 	port_attach(const uint64_t dpid, const char* port_name);

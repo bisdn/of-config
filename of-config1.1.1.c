@@ -2877,9 +2877,24 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 		puts("not implemented XMLDIFF_MOD");
 		assert(0);
 	} else if (XMLDIFF_CHAIN & op) {
-		// resources or controllers changed
+		// resources or controllers changed (attachment of ports handled in parent)
 
-		printf("%s: XMLDIFF_CHAIN", __PRETTY_FUNCTION__);
+		printf("XMLDIFF_CHAIN\n");
+
+		// check dpid
+		if (0 == LSI(data)->dpid) {
+			xmlNodePtr tmp = find_element(BAD_CAST "datapath-id",  node->children);
+			assert(tmp);
+			uint64_t dpid = parse_dpid(tmp->children->content);
+
+			if (LSI(data)->dpid != dpid) {
+				LSI(data)->dpid = dpid;
+			}
+		}
+
+		if (LSI(data)->controller_list_add) {
+			assert(0);
+		}
 
 	} else {
 		puts("unsupported op");

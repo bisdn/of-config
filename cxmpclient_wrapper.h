@@ -77,6 +77,9 @@ int
 lsi_destroy(void* handle, const uint64_t dpid);
 
 int
+lsi_connect_to_controller(void* handle, struct lsi *lsi);
+
+int
 port_attach(void* handle, uint64_t dpid, char* port_name);
 
 int

@@ -578,7 +578,7 @@ cxmp_blocking_client_adapter::get_lsi_ports(const uint64_t dpid, xmlNodePtr reso
 }
 
 int
-cxmp_blocking_client_adapter::lsi_create(const uint64_t dpid, const std::string &dpname, std::list<struct xdpd::mgmt::protocol::controller>& controller)
+cxmp_blocking_client_adapter::lsi_create(const uint64_t dpid, const std::string &dpname, const std::list<struct xdpd::mgmt::protocol::controller>& controller)
 {
 	puts(__PRETTY_FUNCTION__);
 	using xdpd::mgmt::protocol::cxmpie;
@@ -615,6 +615,36 @@ cxmp_blocking_client_adapter::lsi_destroy(const uint64_t dpid)
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->lsi_destroy(dpid);
+	pthread_cond_wait(&client_read_cv, &client_lock);
+	pthread_mutex_unlock(&client_lock);
+
+	int rv = 0;
+	switch (msg->get_type()) {
+	case XMPT_REPLY:
+		break;
+	case XMPT_ERROR:
+		rv = -1;
+		break;
+	case XMPT_REQUEST:
+	case XMPT_NOTIFICATION:
+	default:
+		rv = -2;
+		break;
+	}
+
+	return rv;
+}
+
+int
+cxmp_blocking_client_adapter::lsi_connect_to_controller(const uint64_t dpid, const std::list<struct xdpd::mgmt::protocol::controller>& controller)
+{
+	puts(__PRETTY_FUNCTION__);
+	using xdpd::mgmt::protocol::cxmpie;
+
+	std::cerr << "create " << controller.size() << " controller(s)" << std::endl;
+
+	pthread_mutex_lock(&client_lock);
+	xmp_client->lsi_connect_to_controller(dpid, controller);
 	pthread_cond_wait(&client_read_cv, &client_lock);
 	pthread_mutex_unlock(&client_lock);
 

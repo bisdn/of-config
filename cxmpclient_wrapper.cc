@@ -9,6 +9,7 @@
 #include "cxmp_blocking_client_adapter.h"
 #include <xdpd/xmp/client/cxmpclient.h>
 
+#include <list>
 #include <assert.h>
 
 
@@ -90,18 +91,13 @@ get_lsi_config(void* handle, xmlNodePtr lsis)
 	xmp_client->get_lsi_config(lsis);
 }
 
-int
-lsi_create(void* handle, struct lsi* lsi)
+static inline void
+convert_controller_list(struct list* in, std::list<class xdpd::mgmt::protocol::controller> *_out)
 {
-	puts(__PRETTY_FUNCTION__);
+	assert(in);
 
-	assert(handle);
-	assert(lsi);
-	assert(handle == xmp_client);
-
-	std::list<struct xdpd::mgmt::protocol::controller> controller;
 	struct controller *c;
-	while ((c = (struct controller *)list_pop_head((struct list*)lsi->controller_list_add))) {
+	while ((c = (struct controller *)list_pop_head(in))) {
 
 		xdpd::mgmt::protocol::controller c_tmp;
 
@@ -117,13 +113,13 @@ lsi_create(void* handle, struct lsi* lsi)
 
 		c_tmp.ip_domain = c->ip_domain;
 		if (AF_INET == c->ip_domain) {
-			struct sockaddr_in* sin;
-			sin->sin_addr = *((struct in_addr*)c->ip);
-			c_tmp.address = rofl::caddress_in4(sin, sizeof(struct sockaddr_in));
+			struct sockaddr_in sin;
+			sin.sin_addr = *((struct in_addr*)c->ip);
+			c_tmp.address = rofl::caddress_in4(&sin, sizeof(struct sockaddr_in));
 		} else if (AF_INET6 == c->ip_domain) {
-			struct sockaddr_in6* sin;
-			memcpy(&sin->sin6_addr, (struct in6_addr*)c->ip, 16);
-			c_tmp.address = rofl::caddress_in6(sin, sizeof(struct sockaddr_in6));
+			struct sockaddr_in6 sin;
+			memcpy(&sin.sin6_addr, (struct in6_addr*)c->ip, 16);
+			c_tmp.address = rofl::caddress_in6(&sin, sizeof(struct sockaddr_in6));
 		} else {
 			assert(0);
 		}
@@ -131,12 +127,27 @@ lsi_create(void* handle, struct lsi* lsi)
 
 		c_tmp.port = c->port;
 
-		free(c);
+		free(c); // todo maybe this should be done elsewhere?!
 
-		controller.push_back(c_tmp);
+		_out->push_back(c_tmp);
 	}
+}
 
-	return xmp_client->lsi_create(lsi->dpid, std::string(lsi->dpname), controller);
+int
+lsi_create(void* handle, struct lsi* lsi)
+{
+	puts(__PRETTY_FUNCTION__);
+
+	assert(handle);
+	assert(lsi);
+	assert(handle == xmp_client);
+
+	std::list<class xdpd::mgmt::protocol::controller> cont;
+	convert_controller_list((struct list*)lsi->controller_list_add, &cont);
+
+	assert(cont.size());
+
+	return xmp_client->lsi_create(lsi->dpid, std::string(lsi->dpname), cont);
 }
 
 int
@@ -148,6 +159,21 @@ lsi_destroy(void* handle, const uint64_t dpid)
 	assert(handle == xmp_client);
 
 	return xmp_client->lsi_destroy(dpid);
+}
+
+int
+lsi_connect_to_controller(void* handle, struct lsi *lsi)
+{
+	puts(__PRETTY_FUNCTION__);
+
+	assert(handle);
+	assert(lsi);
+	assert(handle == xmp_client);
+
+	std::list<struct xdpd::mgmt::protocol::controller> controller;
+	convert_controller_list((struct list*)lsi->controller_list_add, &controller);
+
+	return xmp_client->lsi_connect_to_controller(lsi->dpid, controller);
 }
 
 int
