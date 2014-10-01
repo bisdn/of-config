@@ -1,0 +1,1 @@
+<capable-switch xmlns="urn:onf:of111:config:yang"><id>capable-switch-0</id><logical-switches><switch><id>logic-switch-2</id><controllers><controller><id>c2</id><ip-address>10.10.10.2</ip-address><protocol>tcp</protocol></controller></controllers></switch></logical-switches></capable-switch>
