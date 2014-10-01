@@ -2893,7 +2893,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 		}
 
 		if (LSI(data)->controller_list_add) {
-			assert(0);
+			lsi_connect_to_controller(ofc_state.xmp_client_handle, LSI(data));
 		}
 
 	} else {
