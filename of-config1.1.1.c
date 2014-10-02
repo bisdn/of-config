@@ -3338,6 +3338,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 	if (XMLDIFF_ADD & op) {
 
 		xmlChar buf[255];
+		// check if port is already attached
 		xmlStrPrintf(buf, sizeof(buf), "/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:port[text()='%s']", XML_GET_CONTENT(node->children));
 		xmlXPathObjectPtr xpath_obj_ptr = get_node(node->doc, namespace_mapping, buf);
 		assert(xpath_obj_ptr);
@@ -3357,7 +3358,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 
 			printf("added to list: dpid=%lx port %s with op=%u\n", p->dpid, p->resource_id, p->op);
 		} else {
-
+			// nodeNr > 1 ==> already attached port
 			printf("attachment failed dpid=%lx port %s: port already attached.\n", dpid, XML_GET_CONTENT(node->children));
 			rv = EXIT_FAILURE;
 		}
@@ -3474,6 +3475,49 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 {
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node, 0);
+
+	char buf[255];
+	xmlStrPrintf(buf, sizeof(buf), "/ofc:capable-switch/ofc:logical-switches/ofc:switch[ofc:id='%s']", XML_GET_CONTENT(node->children->children));
+	xmlXPathObjectPtr xpath_obj_ptr = get_node(node->doc, namespace_mapping, buf);
+	assert(xpath_obj_ptr);
+	assert(xpath_obj_ptr->nodesetval);
+
+	uint64_t dpid_1 = 0;
+	uint64_t dpid_2 = 0;
+
+	// there should only be one lsi with this id
+	if (1 == xpath_obj_ptr->nodesetval->nodeNr) {
+
+		xmlNodePtr dpid_node = find_element(BAD_CAST "datapath-id", xpath_obj_ptr->nodesetval->nodeTab[0]->children);
+		assert(dpid_node);
+
+		dpid_1 = parse_dpid(XML_GET_CONTENT(dpid_node->children));
+
+	} else {
+		assert(0);
+	}
+	xmlXPathFreeObject(xpath_obj_ptr);
+
+	xmlStrPrintf(buf, sizeof(buf), "/ofc:capable-switch/ofc:logical-switches/ofc:switch[ofc:id='%s']", XML_GET_CONTENT(node->children->next->children));
+	xpath_obj_ptr = get_node(node->doc, namespace_mapping, buf);
+	assert(xpath_obj_ptr);
+	assert(xpath_obj_ptr->nodesetval);
+
+	// there should only be one lsi with this id
+	if (1 == xpath_obj_ptr->nodesetval->nodeNr) {
+		xmlNodePtr dpid_node = find_element(BAD_CAST "datapath-id", xpath_obj_ptr->nodesetval->nodeTab[0]->children);
+		assert(dpid_node);
+
+		dpid_2 = parse_dpid(XML_GET_CONTENT(dpid_node->children));
+
+	} else {
+		assert(0);
+	}
+	xmlXPathFreeObject(xpath_obj_ptr);
+
+	printf("dpid_1 = %lx, dpid_2 = %lx\n", dpid_1, dpid_2);
+	lsi_cross_connect(ofc_state.xmp_client_handle, dpid_1, dpid_2);
+
 	return EXIT_SUCCESS;
 }
 
@@ -3492,6 +3536,9 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 {
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node, 0);
+
+	// todo remove from paths?
+
 	return EXIT_SUCCESS;
 }
 

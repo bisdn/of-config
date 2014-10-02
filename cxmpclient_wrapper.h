@@ -80,6 +80,9 @@ int
 lsi_connect_to_controller(void* handle, struct lsi *lsi);
 
 int
+lsi_cross_connect(void* handle, const uint64_t dpid1, const uint64_t dpid2);
+
+int
 port_attach(void* handle, uint64_t dpid, char* port_name);
 
 int
