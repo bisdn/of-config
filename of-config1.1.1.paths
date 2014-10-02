@@ -209,3 +209,9 @@ ofc=urn:onf:of111:config:yang
 /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:queue
 /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:certificate
 /ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:flow-table
+
+# xdpd-mgmt
+xdpd-mgmt=urn:xdpd:mgmt:yang
+/ofc:capable-switch/xdpd-mgmt:cross-connections
+/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection
+/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switches

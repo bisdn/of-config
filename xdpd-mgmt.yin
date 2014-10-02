@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:ietf:params:xml:ns:yang:yin:1" xmlns:xdpd-mgmt="urn:xdpd:mgmt:yang" xmlns:ofc="urn:onf:of111:config:yang" name="xdpd-mgmt">
+  <namespace uri="urn:xdpd:mgmt:yang"/>
+  <prefix value="xdpd-mgmt"/>
+  <import module="of-config1.1.1">
+    <prefix value="ofc"/>
+  </import>
+  <organization>
+    <text>BISDN GmbH</text>
+  </organization>
+  <contact>
+    <text>info@bisdn.de</text>
+  </contact>
+  <description>
+    <text/>
+  </description>
+  <revision date="2014-10-01">
+    <description>
+      <text>First Draft</text>
+    </description>
+    <reference>
+      <text>nn</text>
+    </reference>
+  </revision>
+  <augment target-node="/ofc:capable-switch">
+    <container name="cross-connections">
+      <description>
+        <text/>
+      </description>
+      <presence value=""/>
+      <container name="cross-connection">
+        <description>
+          <text/>
+        </description>
+        <leaf-list name="switches">
+          <type name="leafref">
+            <path value="/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id"/>
+          </type>
+          <description>
+            <text/>
+          </description>
+          <min-elements value="2"/>
+          <max-elements value="2"/>
+        </leaf-list>
+      </container>
+    </container>
+  </augment>
+</module>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="urn:ietf:params:xml:ns:yang:yin:1" xmlns:of11-config="urn:onf:of111:config:yang" xmlns:yang="urn:ietf:params:xml:ns:yang:ietf-yang-types" xmlns:inet="urn:ietf:params:xml:ns:yang:ietf-inet-types" name="of-config1.1.1">
+<module xmlns="urn:ietf:params:xml:ns:yang:yin:1" xmlns:ofc="urn:onf:of111:config:yang" xmlns:yang="urn:ietf:params:xml:ns:yang:ietf-yang-types" xmlns:inet="urn:ietf:params:xml:ns:yang:ietf-inet-types" name="of-config1.1.1">
   <namespace uri="urn:onf:of111:config:yang"/>
-  <prefix value="of11-config"/>
+  <prefix value="ofc"/>
   <import module="ietf-yang-types">
     <prefix value="yang"/>
   </import>

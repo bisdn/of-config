@@ -1,0 +1,4 @@
+xdpd=urn:xdpd:mgmt:yang
+/xdpd:cross-connections
+/xdpd:cross-connections/xdpd:cross-connection
+/xdpd:cross-connections/xdpd:cross-connection/xdpd:switches

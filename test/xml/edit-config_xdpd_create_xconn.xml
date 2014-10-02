@@ -1,0 +1,1 @@
+<capable-switch xmlns="urn:onf:of111:config:yang"xmlns:xdpd-mgmt="urn:xdpd:mgmt:yang"><id>capable-switch-0</id><xdpd-mgmt:cross-connections><xdpd-mgmt:cross-connection><xdpd-mgmt:switches>logic-switch-1</xdpd-mgmt:switches><xdpd-mgmt:switches>logic-switch-2</xdpd-mgmt:switches></xdpd-mgmt:cross-connection></xdpd-mgmt:cross-connections></capable-switch>

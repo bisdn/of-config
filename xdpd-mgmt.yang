@@ -1,0 +1,40 @@
+module xdpd-mgmt {
+  namespace "urn:xdpd:mgmt:yang";
+  prefix xdpd-mgmt;
+
+//  import ietf-yang-types { prefix yang; }
+//  import ietf-inet-types { prefix inet; }
+  import of-config1.1.1  { prefix ofc; }
+
+  organization "BISDN GmbH";
+
+  contact "info@bisdn.de";
+
+  description "";
+
+  revision 2014-10-01 {
+    description "First Draft";
+    reference "nn";
+  }
+
+  augment "/ofc:capable-switch" {
+    container cross-connections {
+      description "";
+      presence "";
+      
+      container cross-connection {
+        description "";
+        
+        leaf-list switches {
+          type leafref {
+            path "/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id";
+          }
+          description "";
+          min-elements 2;
+          max-elements 2;
+        }
+      }
+    }
+  }
+
+}

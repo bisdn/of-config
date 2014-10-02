@@ -248,7 +248,7 @@ xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **er
  * Mapping prefixes with namespaces.
  * Do NOT modify this structure!
  */
-struct ns_pair namespace_mapping[] = {{"ofc", "urn:onf:of111:config:yang"}, {NULL, NULL}};
+struct ns_pair namespace_mapping[] = {{"ofc", "urn:onf:of111:config:yang"}, {"xdpd-mgmt", "urn:xdpd:mgmt:yang"}, {NULL, NULL}};
 
 /*
 * CONFIGURATION callbacks
@@ -3441,13 +3441,67 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 	return EXIT_SUCCESS;
 }
 
+/**
+ * @brief This callback will be run when node in path /ofc:capable-switch/xdpd-mgmt:cross-connections changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofc_capable_switch_xdpd_mgmt_cross_connections (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
+	print_element_names(node, 0);
+	return EXIT_SUCCESS;
+}
+
+/**
+ * @brief This callback will be run when node in path /ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_connection (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
+	print_element_names(node, 0);
+	return EXIT_SUCCESS;
+}
+
+/**
+ * @brief This callback will be run when node in path /ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switches changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_connection_xdpd_mgmt_switches (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
+	print_element_names(node, 0);
+	return EXIT_SUCCESS;
+}
+
 /*
 * Structure transapi_config_callbacks provide mapping between callback and path in configuration datastore.
 * It is used by libnetconf library to decide which callbacks will be run.
 * DO NOT alter this structure
 */
 struct transapi_data_callbacks clbks =  {
-	.callbacks_count = 154,
+	.callbacks_count = 157,
 	.data = NULL,
 	.callbacks = {
 		{.path = "/ofc:capable-switch", .func = callback_ofc_capable_switch},
@@ -3603,7 +3657,10 @@ struct transapi_data_callbacks clbks =  {
 		{.path = "/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:port", .func = callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_ofc_port},
 		{.path = "/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:queue", .func = callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_ofc_queue},
 		{.path = "/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:certificate", .func = callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_ofc_certificate},
-		{.path = "/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:flow-table", .func = callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_ofc_flow_table}
+		{.path = "/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:flow-table", .func = callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_ofc_flow_table},
+		{.path = "/ofc:capable-switch/xdpd-mgmt:cross-connections", .func = callback_ofc_capable_switch_xdpd_mgmt_cross_connections},
+		{.path = "/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection", .func = callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_connection},
+		{.path = "/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switches", .func = callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_connection_xdpd_mgmt_switches}
 	}
 };
 
