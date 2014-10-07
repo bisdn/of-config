@@ -122,13 +122,13 @@ print_dpid(const uint64_t dpid, xmlChar* buf, const unsigned int buf_len)
 	assert(buf_len > 24);
 
 	xmlStrPrintf(buf, buf_len, "%x:%x:%x:%x:%x:%x:%x:%x",
-			dpid >> 7*8,
-			dpid >> 6*8,
-			dpid >> 5*8,
-			dpid >> 4*8,
-			dpid >> 3*8,
-			dpid >> 2*8,
-			dpid >> 1*8,
-			dpid >> 0*8
+			dpid >> 7*8 & 0xff,
+			dpid >> 6*8 & 0xff,
+			dpid >> 5*8 & 0xff,
+			dpid >> 4*8 & 0xff,
+			dpid >> 3*8 & 0xff,
+			dpid >> 2*8 & 0xff,
+			dpid >> 1*8 & 0xff,
+			dpid >> 0*8 & 0xff
 	);
 }
