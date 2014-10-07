@@ -41,7 +41,7 @@
 <axsl:template match="/"><svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" title="" schemaVersion=""><axsl:comment><axsl:value-of select="$archiveDirParameter"/>   
 		 <axsl:value-of select="$archiveNameParameter"/>  
 		 <axsl:value-of select="$fileNameParameter"/>  
-		 <axsl:value-of select="$fileDirParameter"/></axsl:comment><svrl:ns-prefix-in-attribute-values uri="http://exslt.org/dynamic" prefix="dyn"/><svrl:ns-prefix-in-attribute-values uri="urn:onf:of111:config:yang" prefix="ofc"/><svrl:ns-prefix-in-attribute-values uri="urn:xdpd:mgmt:yang" prefix="xdpd-mgmt"/><svrl:ns-prefix-in-attribute-values uri="urn:ietf:params:xml:ns:netconf:base:1.0" prefix="nc"/><svrl:active-pattern><axsl:attribute name="id">of-config1.1.1</axsl:attribute><axsl:attribute name="name">of-config1.1.1</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M5"/><svrl:active-pattern><axsl:attribute name="id">idm140427032784688</axsl:attribute><axsl:attribute name="name">idm140427032784688</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M6"/><svrl:active-pattern><axsl:attribute name="id">idm140427032783584</axsl:attribute><axsl:attribute name="name">idm140427032783584</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M7"/><svrl:active-pattern><axsl:attribute name="id">idm140427032782480</axsl:attribute><axsl:attribute name="name">idm140427032782480</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M8"/><svrl:active-pattern><axsl:attribute name="id">idm140427032781120</axsl:attribute><axsl:attribute name="name">idm140427032781120</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M9"/><svrl:active-pattern><axsl:attribute name="id">idm140427032780304</axsl:attribute><axsl:attribute name="name">idm140427032780304</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M10"/><svrl:active-pattern><axsl:attribute name="id">idm140427032655168</axsl:attribute><axsl:attribute name="name">idm140427032655168</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M11"/><svrl:active-pattern><axsl:attribute name="id">idm140427032599712</axsl:attribute><axsl:attribute name="name">idm140427032599712</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M12"/><svrl:active-pattern><axsl:attribute name="id">idm140427032767808</axsl:attribute><axsl:attribute name="name">idm140427032767808</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M13"/><svrl:active-pattern><axsl:attribute name="id">idm140427032743328</axsl:attribute><axsl:attribute name="name">idm140427032743328</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M14"/><svrl:active-pattern><axsl:attribute name="id">xdpd-mgmt</axsl:attribute><axsl:attribute name="name">xdpd-mgmt</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M15"/></svrl:schematron-output></axsl:template>
+		 <axsl:value-of select="$fileDirParameter"/></axsl:comment><svrl:ns-prefix-in-attribute-values uri="http://exslt.org/dynamic" prefix="dyn"/><svrl:ns-prefix-in-attribute-values uri="urn:onf:of111:config:yang" prefix="ofc"/><svrl:ns-prefix-in-attribute-values uri="urn:xdpd:mgmt:yang" prefix="xdpd-mgmt"/><svrl:ns-prefix-in-attribute-values uri="urn:ietf:params:xml:ns:netconf:base:1.0" prefix="nc"/><svrl:active-pattern><axsl:attribute name="id">of-config1.1.1</axsl:attribute><axsl:attribute name="name">of-config1.1.1</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M5"/><svrl:active-pattern><axsl:attribute name="id">idm140145206558448</axsl:attribute><axsl:attribute name="name">idm140145206558448</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M6"/><svrl:active-pattern><axsl:attribute name="id">idm140145206557344</axsl:attribute><axsl:attribute name="name">idm140145206557344</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M7"/><svrl:active-pattern><axsl:attribute name="id">idm140145206556240</axsl:attribute><axsl:attribute name="name">idm140145206556240</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M8"/><svrl:active-pattern><axsl:attribute name="id">idm140145206554880</axsl:attribute><axsl:attribute name="name">idm140145206554880</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M9"/><svrl:active-pattern><axsl:attribute name="id">idm140145206554064</axsl:attribute><axsl:attribute name="name">idm140145206554064</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M10"/><svrl:active-pattern><axsl:attribute name="id">idm140145206427728</axsl:attribute><axsl:attribute name="name">idm140145206427728</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M11"/><svrl:active-pattern><axsl:attribute name="id">idm140145206372272</axsl:attribute><axsl:attribute name="name">idm140145206372272</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M12"/><svrl:active-pattern><axsl:attribute name="id">idm140145206541568</axsl:attribute><axsl:attribute name="name">idm140145206541568</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M13"/><svrl:active-pattern><axsl:attribute name="id">idm140145206517088</axsl:attribute><axsl:attribute name="name">idm140145206517088</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M14"/><svrl:active-pattern><axsl:attribute name="id">xdpd-mgmt</axsl:attribute><axsl:attribute name="name">xdpd-mgmt</axsl:attribute><axsl:apply-templates/></svrl:active-pattern><axsl:apply-templates select="/" mode="M15"/></svrl:schematron-output></axsl:template>
 
 <!--SCHEMATRON PATTERNS-->
 <axsl:param name="root" select="/nc:data"/>
@@ -50,13 +50,13 @@
 
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:configuration-points/ofc:configuration-point" priority="1025" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:configuration-points/ofc:configuration-point"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:configuration-points/ofc:configuration-point" priority="1026" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:configuration-points/ofc:configuration-point"/>
 
 		<!--REPORT -->
 <axsl:if test="preceding-sibling::ofc:configuration-point[ofc:id=current()/ofc:id]"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="preceding-sibling::ofc:configuration-point[ofc:id=current()/ofc:id]"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate key "ofc:id"</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:port" priority="1024" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:port"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:port" priority="1025" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:port"/>
 
 		<!--REPORT -->
 <axsl:if test="preceding-sibling::ofc:port[ofc:resource-id=current()/ofc:resource-id]"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="preceding-sibling::ofc:port[ofc:resource-id=current()/ofc:resource-id]"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate key "ofc:resource-id"</svrl:text></svrl:successful-report></axsl:if>
@@ -66,121 +66,121 @@
 specified and greater than 0 if rate equals 'other'</svrl:text></svrl:failed-assert></axsl:otherwise></axsl:choose><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:port/ofc:current-rate" priority="1023" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:port/ofc:current-rate"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:port/ofc:current-rate" priority="1024" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:port/ofc:current-rate"/>
 
 		<!--ASSERT -->
 <axsl:choose><axsl:when test="ancestor-or-self::*[processing-instruction('dsrl')] or (../ofc:features/ofc:current/ofc:rate='other')"/><axsl:otherwise><svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="ancestor-or-self::*[processing-instruction('dsrl')] or (../ofc:features/ofc:current/ofc:rate='other')"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Node "ofc:current-rate" is only valid when "../ofc:features/ofc:current/ofc:rate='other'"</svrl:text></svrl:failed-assert></axsl:otherwise></axsl:choose><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:port/ofc:max-rate" priority="1022" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:port/ofc:max-rate"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:port/ofc:max-rate" priority="1023" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:port/ofc:max-rate"/>
 
 		<!--ASSERT -->
 <axsl:choose><axsl:when test="ancestor-or-self::*[processing-instruction('dsrl')] or (../ofc:features/ofc:current/ofc:rate='other')"/><axsl:otherwise><svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="ancestor-or-self::*[processing-instruction('dsrl')] or (../ofc:features/ofc:current/ofc:rate='other')"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Node "ofc:max-rate" is only valid when "../ofc:features/ofc:current/ofc:rate='other'"</svrl:text></svrl:failed-assert></axsl:otherwise></axsl:choose><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:queue" priority="1021" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:queue"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:queue" priority="1022" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:queue"/>
 
 		<!--REPORT -->
 <axsl:if test="preceding-sibling::ofc:queue[ofc:resource-id=current()/ofc:resource-id]"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="preceding-sibling::ofc:queue[ofc:resource-id=current()/ofc:resource-id]"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate key "ofc:resource-id"</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:queue/ofc:port" priority="1020" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:queue/ofc:port"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:queue/ofc:port" priority="1021" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:queue/ofc:port"/>
 
 		<!--REPORT -->
 <axsl:if test="not($root/ofc:capable-switch/ofc:resources/ofc:port/ofc:resource-id=.)"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="not($root/ofc:capable-switch/ofc:resources/ofc:port/ofc:resource-id=.)"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Leaf "/nc:data/ofc:capable-switch/ofc:resources/ofc:port/ofc:resource-id" does not exist for leafref value "<axsl:text/><axsl:value-of select="."/><axsl:text/>"</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:queue/ofc:properties/ofc:experimenter" priority="1019" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:queue/ofc:properties/ofc:experimenter"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:queue/ofc:properties/ofc:experimenter" priority="1020" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:queue/ofc:properties/ofc:experimenter"/>
 
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:experimenter"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:experimenter"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:owned-certificate" priority="1018" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:owned-certificate"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:owned-certificate" priority="1019" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:owned-certificate"/>
 
 		<!--REPORT -->
 <axsl:if test="preceding-sibling::ofc:owned-certificate[ofc:resource-id=current()/ofc:resource-id]"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="preceding-sibling::ofc:owned-certificate[ofc:resource-id=current()/ofc:resource-id]"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate key "ofc:resource-id"</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:external-certificate" priority="1017" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:external-certificate"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:external-certificate" priority="1018" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:external-certificate"/>
 
 		<!--REPORT -->
 <axsl:if test="preceding-sibling::ofc:external-certificate[ofc:resource-id=current()/ofc:resource-id]"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="preceding-sibling::ofc:external-certificate[ofc:resource-id=current()/ofc:resource-id]"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate key "ofc:resource-id"</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table" priority="1016" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table" priority="1017" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table"/>
 
 		<!--REPORT -->
 <axsl:if test="preceding-sibling::ofc:flow-table[ofc:resource-id=current()/ofc:resource-id]"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="preceding-sibling::ofc:flow-table[ofc:resource-id=current()/ofc:resource-id]"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate key "ofc:resource-id"</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:next-tables/ofc:table-id" priority="1015" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:next-tables/ofc:table-id"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:next-tables/ofc:table-id" priority="1016" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:next-tables/ofc:table-id"/>
 
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:table-id"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:table-id"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:instructions/ofc:type" priority="1014" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:instructions/ofc:type"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:instructions/ofc:type" priority="1015" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:instructions/ofc:type"/>
 
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:type"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:type"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:matches/ofc:type" priority="1013" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:matches/ofc:type"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:matches/ofc:type" priority="1014" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:matches/ofc:type"/>
 
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:type"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:type"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:write-actions/ofc:type" priority="1012" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:write-actions/ofc:type"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:write-actions/ofc:type" priority="1013" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:write-actions/ofc:type"/>
 
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:type"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:type"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:apply-actions/ofc:type" priority="1011" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:apply-actions/ofc:type"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:apply-actions/ofc:type" priority="1012" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:apply-actions/ofc:type"/>
 
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:type"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:type"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:write-setfields/ofc:type" priority="1010" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:write-setfields/ofc:type"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:write-setfields/ofc:type" priority="1011" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:write-setfields/ofc:type"/>
 
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:type"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:type"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:apply-setfields/ofc:type" priority="1009" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:apply-setfields/ofc:type"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:apply-setfields/ofc:type" priority="1010" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:apply-setfields/ofc:type"/>
 
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:type"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:type"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:wildcards/ofc:type" priority="1008" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:wildcards/ofc:type"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:wildcards/ofc:type" priority="1009" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:wildcards/ofc:type"/>
 
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:type"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:type"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch" priority="1007" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch" priority="1008" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch"/>
 
 		<!--REPORT -->
 <axsl:if test="preceding-sibling::ofc:switch[ofc:id=current()/ofc:id]"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="preceding-sibling::ofc:switch[ofc:id=current()/ofc:id]"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate key "ofc:id"</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller" priority="1006" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller" priority="1007" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller"/>
 
 		<!--REPORT -->
 <axsl:if test="preceding-sibling::ofc:controller[ofc:id=current()/ofc:id]"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="preceding-sibling::ofc:controller[ofc:id=current()/ofc:id]"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate key "ofc:id"</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:supported-versions" priority="1005" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:supported-versions"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:supported-versions" priority="1006" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:supported-versions"/>
 
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:supported-versions"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:supported-versions"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:port" priority="1004" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:port"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:port" priority="1005" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:port"/>
 
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:port"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:port"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if>
@@ -189,7 +189,7 @@ specified and greater than 0 if rate equals 'other'</svrl:text></svrl:failed-ass
 <axsl:if test="not($root/ofc:capable-switch/ofc:resources/ofc:port/ofc:resource-id=.)"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="not($root/ofc:capable-switch/ofc:resources/ofc:port/ofc:resource-id=.)"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Leaf "/nc:data/ofc:capable-switch/ofc:resources/ofc:port/ofc:resource-id" does not exist for leafref value "<axsl:text/><axsl:value-of select="."/><axsl:text/>"</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:queue" priority="1003" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:queue"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:queue" priority="1004" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:queue"/>
 
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:queue"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:queue"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if>
@@ -198,19 +198,25 @@ specified and greater than 0 if rate equals 'other'</svrl:text></svrl:failed-ass
 <axsl:if test="not($root/ofc:capable-switch/ofc:resources/ofc:queue/ofc:resource-id=.)"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="not($root/ofc:capable-switch/ofc:resources/ofc:queue/ofc:resource-id=.)"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Leaf "/nc:data/ofc:capable-switch/ofc:resources/ofc:queue/ofc:resource-id" does not exist for leafref value "<axsl:text/><axsl:value-of select="."/><axsl:text/>"</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:certificate" priority="1002" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:certificate"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:certificate" priority="1003" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:certificate"/>
 
 		<!--REPORT -->
 <axsl:if test="not($root/ofc:capable-switch/ofc:resources/ofc:owned-certificate/ofc:resource-id=.)"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="not($root/ofc:capable-switch/ofc:resources/ofc:owned-certificate/ofc:resource-id=.)"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Leaf "/nc:data/ofc:capable-switch/ofc:resources/ofc:owned-certificate/ofc:resource-id" does not exist for leafref value "<axsl:text/><axsl:value-of select="."/><axsl:text/>"</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
-<axsl:template match="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:flow-table" priority="1001" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:flow-table"/>
+<axsl:template match="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:flow-table" priority="1002" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:flow-table"/>
 
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:flow-table"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:flow-table"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if>
 
 		<!--REPORT -->
 <axsl:if test="not($root/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:resource-id=.)"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="not($root/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:resource-id=.)"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Leaf "/nc:data/ofc:capable-switch/ofc:resources/ofc:flow-table/ofc:resource-id" does not exist for leafref value "<axsl:text/><axsl:value-of select="."/><axsl:text/>"</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
+
+	<!--RULE -->
+<axsl:template match="/nc:data/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection" priority="1001" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection"/>
+
+		<!--REPORT -->
+<axsl:if test="preceding-sibling::xdpd-mgmt:cross-connection[xdpd-mgmt:name=current()/xdpd-mgmt:name]"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="preceding-sibling::xdpd-mgmt:cross-connection[xdpd-mgmt:name=current()/xdpd-mgmt:name]"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate key "xdpd-mgmt:name"</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
 	<!--RULE -->
 <axsl:template match="/nc:data/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switches" priority="1000" mode="M5"><svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/nc:data/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switches"/>
@@ -227,7 +233,7 @@ specified and greater than 0 if rate equals 'other'</svrl:text></svrl:failed-ass
 		<!--REPORT -->
 <axsl:if test="not($root/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id=.)"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="not($root/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id=.)"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Leaf "/nc:data/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id" does not exist for leafref value "<axsl:text/><axsl:value-of select="."/><axsl:text/>"</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template><axsl:template match="text()" priority="-1" mode="M5"/><axsl:template match="@*|node()" priority="-2" mode="M5"><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M5"/></axsl:template>
 
-<!--PATTERN idm140427032784688-->
+<!--PATTERN idm140145206558448-->
 
 
 	<!--RULE -->
@@ -242,7 +248,7 @@ specified and greater than 0 if rate equals 'other'</svrl:text></svrl:failed-ass
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:medium"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:medium"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M6"/></axsl:template><axsl:template match="text()" priority="-1" mode="M6"/><axsl:template match="@*|node()" priority="-2" mode="M6"><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M6"/></axsl:template>
 
-<!--PATTERN idm140427032783584-->
+<!--PATTERN idm140145206557344-->
 
 
 	<!--RULE -->
@@ -257,7 +263,7 @@ specified and greater than 0 if rate equals 'other'</svrl:text></svrl:failed-ass
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:medium"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:medium"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M7"/></axsl:template><axsl:template match="text()" priority="-1" mode="M7"/><axsl:template match="@*|node()" priority="-2" mode="M7"><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M7"/></axsl:template>
 
-<!--PATTERN idm140427032782480-->
+<!--PATTERN idm140145206556240-->
 
 
 	<!--RULE -->
@@ -272,7 +278,7 @@ specified and greater than 0 if rate equals 'other'</svrl:text></svrl:failed-ass
 		<!--REPORT -->
 <axsl:if test=". = preceding-sibling::ofc:medium"><svrl:successful-report xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test=". = preceding-sibling::ofc:medium"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Duplicate leaf-list entry "<axsl:text/><axsl:value-of select="."/><axsl:text/>".</svrl:text></svrl:successful-report></axsl:if><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M8"/></axsl:template><axsl:template match="text()" priority="-1" mode="M8"/><axsl:template match="@*|node()" priority="-2" mode="M8"><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M8"/></axsl:template>
 
-<!--PATTERN idm140427032781120-->
+<!--PATTERN idm140145206554880-->
 
 
 	<!--RULE -->
@@ -281,7 +287,7 @@ specified and greater than 0 if rate equals 'other'</svrl:text></svrl:failed-ass
 		<!--ASSERT -->
 <axsl:choose><axsl:when test="ofc:local-endpoint-ipv4-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-ipv4-adress[not(processing-instruction('dsrl'))] or ofc:local-endpoint-ipv6-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-ipv6-adress[not(processing-instruction('dsrl'))] or ofc:local-endpoint-mac-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-mac-adress[not(processing-instruction('dsrl'))] or false()"/><axsl:otherwise><svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="ofc:local-endpoint-ipv4-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-ipv4-adress[not(processing-instruction('dsrl'))] or ofc:local-endpoint-ipv6-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-ipv6-adress[not(processing-instruction('dsrl'))] or ofc:local-endpoint-mac-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-mac-adress[not(processing-instruction('dsrl'))] or false()"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Node(s) from one case of mandatory choice "endpoints" must exist</svrl:text></svrl:failed-assert></axsl:otherwise></axsl:choose><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M9"/></axsl:template><axsl:template match="text()" priority="-1" mode="M9"/><axsl:template match="@*|node()" priority="-2" mode="M9"><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M9"/></axsl:template>
 
-<!--PATTERN idm140427032780304-->
+<!--PATTERN idm140145206554064-->
 
 
 	<!--RULE -->
@@ -290,7 +296,7 @@ specified and greater than 0 if rate equals 'other'</svrl:text></svrl:failed-ass
 		<!--ASSERT -->
 <axsl:choose><axsl:when test="ancestor-or-self::*[processing-instruction('dsrl')] or (../ofc:key-present='true')"/><axsl:otherwise><svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="ancestor-or-self::*[processing-instruction('dsrl')] or (../ofc:key-present='true')"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Node "key" is only valid when "../ofc:key-present='true'"</svrl:text></svrl:failed-assert></axsl:otherwise></axsl:choose><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M10"/></axsl:template><axsl:template match="text()" priority="-1" mode="M10"/><axsl:template match="@*|node()" priority="-2" mode="M10"><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M10"/></axsl:template>
 
-<!--PATTERN idm140427032655168-->
+<!--PATTERN idm140145206427728-->
 
 
 	<!--RULE -->
@@ -299,7 +305,7 @@ specified and greater than 0 if rate equals 'other'</svrl:text></svrl:failed-ass
 		<!--ASSERT -->
 <axsl:choose><axsl:when test="ofc:local-endpoint-ipv4-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-ipv4-adress[not(processing-instruction('dsrl'))] or ofc:local-endpoint-ipv6-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-ipv6-adress[not(processing-instruction('dsrl'))] or ofc:local-endpoint-mac-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-mac-adress[not(processing-instruction('dsrl'))] or false()"/><axsl:otherwise><svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="ofc:local-endpoint-ipv4-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-ipv4-adress[not(processing-instruction('dsrl'))] or ofc:local-endpoint-ipv6-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-ipv6-adress[not(processing-instruction('dsrl'))] or ofc:local-endpoint-mac-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-mac-adress[not(processing-instruction('dsrl'))] or false()"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Node(s) from one case of mandatory choice "endpoints" must exist</svrl:text></svrl:failed-assert></axsl:otherwise></axsl:choose><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M11"/></axsl:template><axsl:template match="text()" priority="-1" mode="M11"/><axsl:template match="@*|node()" priority="-2" mode="M11"><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M11"/></axsl:template>
 
-<!--PATTERN idm140427032599712-->
+<!--PATTERN idm140145206372272-->
 
 
 	<!--RULE -->
@@ -308,7 +314,7 @@ specified and greater than 0 if rate equals 'other'</svrl:text></svrl:failed-ass
 		<!--ASSERT -->
 <axsl:choose><axsl:when test="ofc:local-endpoint-ipv4-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-ipv4-adress[not(processing-instruction('dsrl'))] or ofc:local-endpoint-ipv6-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-ipv6-adress[not(processing-instruction('dsrl'))] or ofc:local-endpoint-mac-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-mac-adress[not(processing-instruction('dsrl'))] or false()"/><axsl:otherwise><svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="ofc:local-endpoint-ipv4-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-ipv4-adress[not(processing-instruction('dsrl'))] or ofc:local-endpoint-ipv6-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-ipv6-adress[not(processing-instruction('dsrl'))] or ofc:local-endpoint-mac-adress[not(processing-instruction('dsrl'))] or ofc:remote-endpoint-mac-adress[not(processing-instruction('dsrl'))] or false()"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Node(s) from one case of mandatory choice "endpoints" must exist</svrl:text></svrl:failed-assert></axsl:otherwise></axsl:choose><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M12"/></axsl:template><axsl:template match="text()" priority="-1" mode="M12"/><axsl:template match="@*|node()" priority="-2" mode="M12"><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M12"/></axsl:template>
 
-<!--PATTERN idm140427032767808-->
+<!--PATTERN idm140145206541568-->
 
 
 	<!--RULE -->
@@ -317,7 +323,7 @@ specified and greater than 0 if rate equals 'other'</svrl:text></svrl:failed-ass
 		<!--ASSERT -->
 <axsl:choose><axsl:when test="ofc:DSAKeyValue[not(processing-instruction('dsrl'))] or ofc:RSAKeyValue[not(processing-instruction('dsrl'))] or false()"/><axsl:otherwise><svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:schold="http://www.ascc.net/xml/schematron" test="ofc:DSAKeyValue[not(processing-instruction('dsrl'))] or ofc:RSAKeyValue[not(processing-instruction('dsrl'))] or false()"><axsl:attribute name="location"><axsl:apply-templates select="." mode="schematron-get-full-path"/></axsl:attribute><svrl:text>Node(s) from one case of mandatory choice "key-type" must exist</svrl:text></svrl:failed-assert></axsl:otherwise></axsl:choose><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M13"/></axsl:template><axsl:template match="text()" priority="-1" mode="M13"/><axsl:template match="@*|node()" priority="-2" mode="M13"><axsl:apply-templates select="*|comment()|processing-instruction()" mode="M13"/></axsl:template>
 
-<!--PATTERN idm140427032743328-->
+<!--PATTERN idm140145206517088-->
 
 
 	<!--RULE -->

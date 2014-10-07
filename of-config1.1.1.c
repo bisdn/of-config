@@ -3477,7 +3477,7 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 	print_element_names(node, 0);
 
 	char buf[255];
-	xmlStrPrintf(buf, sizeof(buf), "/ofc:capable-switch/ofc:logical-switches/ofc:switch[ofc:id='%s']", XML_GET_CONTENT(node->children->children));
+	xmlStrPrintf(buf, sizeof(buf), "/ofc:capable-switch/ofc:logical-switches/ofc:switch[ofc:id='%s']", XML_GET_CONTENT(node->children->next->children));
 	xmlXPathObjectPtr xpath_obj_ptr = get_node(node->doc, namespace_mapping, buf);
 	assert(xpath_obj_ptr);
 	assert(xpath_obj_ptr->nodesetval);
@@ -3498,7 +3498,7 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 	}
 	xmlXPathFreeObject(xpath_obj_ptr);
 
-	xmlStrPrintf(buf, sizeof(buf), "/ofc:capable-switch/ofc:logical-switches/ofc:switch[ofc:id='%s']", XML_GET_CONTENT(node->children->next->children));
+	xmlStrPrintf(buf, sizeof(buf), "/ofc:capable-switch/ofc:logical-switches/ofc:switch[ofc:id='%s']", XML_GET_CONTENT(node->children->next->next->children));
 	xpath_obj_ptr = get_node(node->doc, namespace_mapping, buf);
 	assert(xpath_obj_ptr);
 	assert(xpath_obj_ptr->nodesetval);

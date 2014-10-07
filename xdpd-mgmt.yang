@@ -22,9 +22,13 @@ module xdpd-mgmt {
       description "";
       presence "";
       
-      container cross-connection {
+      list cross-connection {
         description "";
+        key "name";
         
+        leaf name {
+             type string;
+         }
         leaf-list switches {
           type leafref {
             path "/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id";

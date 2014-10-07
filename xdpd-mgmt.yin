@@ -28,10 +28,14 @@
         <text/>
       </description>
       <presence value=""/>
-      <container name="cross-connection">
+      <list name="cross-connection">
         <description>
           <text/>
         </description>
+        <key value="name"/>
+        <leaf name="name">
+          <type name="string"/>
+        </leaf>
         <leaf-list name="switches">
           <type name="leafref">
             <path value="/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id"/>
@@ -42,7 +46,7 @@
           <min-elements value="2"/>
           <max-elements value="2"/>
         </leaf-list>
-      </container>
+      </list>
     </container>
   </augment>
 </module>
