@@ -349,7 +349,6 @@ data.</text>
     </container>
     <leaf name="datapath-id">
       <type name="datapath-id-type"/>
-      <mandatory value="true"/>
       <description>
         <text>The datapath identifier of the Logical Switch
 that uniquely identifies this Logical Switch within the
@@ -447,7 +446,6 @@ this list.</text>
       </description>
       <list name="controller">
         <key value="id"/>
-        <min-elements value="1"/>
         <description>
           <text>The list of OpenFlow Controllers that are 
 assigned to the OpenFlow Logical Switch.  The switch MUST
