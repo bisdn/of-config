@@ -2912,7 +2912,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 
 		if (LSI(data)->controller_list_del) {
 			// fixme implement
-			assert(0);
+			// assert(0);
 		}
 
 	} else {
@@ -3088,16 +3088,21 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 		assert(*data);
 	}
 
-	if (NULL == LSI(data)->controller_list_add) {
-		LSI(data)->controller_list_add = list_new();
-		assert(LSI(data)->controller_list_add);
-	}
-
 	if ((XMLDIFF_ADD) & op) {
+		if (NULL == LSI(data)->controller_list_add) {
+			LSI(data)->controller_list_add = list_new();
+			assert(LSI(data)->controller_list_add);
+		}
+
 		list_append_data(LSI(data)->controller_list_add, __data);
 		__data = NULL;
 
 	} else if ((XMLDIFF_REM) & op) {
+		if (NULL == LSI(data)->controller_list_del) {
+			LSI(data)->controller_list_del = list_new();
+			assert(LSI(data)->controller_list_del);
+		}
+
 		list_append_data(LSI(data)->controller_list_del, __data);
 		__data = NULL;
 	} else {
@@ -3125,7 +3130,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 
 	assert(NULL == __data);
 
-	if ((XMLDIFF_ADD) & op) {
+	if ((XMLDIFF_ADD|XMLDIFF_REM) & op) {
 		__data = calloc(1, sizeof(struct controller));
 
 		CONTROLLER(__data)->id = strdup(XML_GET_CONTENT(node->children));
@@ -3182,6 +3187,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 		// fixme handle zone in address (see http://www.netconfcentral.org/modules/ietf-inet-types)
 		CONTROLLER(__data)->ip_domain = parse_ip_address(XML_GET_CONTENT(node->children), &CONTROLLER(__data)->ip);
 
+	} else if ((XMLDIFF_REM) & op) {
 	} else {
 		puts("not implemented");
 		assert(0);
@@ -3211,6 +3217,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 
 		CONTROLLER(__data)->port = strtoul(XML_GET_CONTENT(node->children), NULL, 10);
 
+	} else if ((XMLDIFF_REM) & op) {
 	} else {
 		puts("not implemented");
 		assert(0);
@@ -3278,6 +3285,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 		// enum "tls";
 		CONTROLLER(__data)->proto = strdup(XML_GET_CONTENT(node->children));
 
+	} else if ((XMLDIFF_REM) & op) {
 	} else {
 		puts("not implemented");
 		assert(0);
