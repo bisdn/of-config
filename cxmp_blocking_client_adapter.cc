@@ -18,8 +18,8 @@
 
 extern struct ns_pair namespace_mapping[];
 
-static void *
-run(void* arg)
+/*static*/ void *
+cxmp_blocking_client_adapter::run(void* arg)
 {
 	puts(__FUNCTION__);
 
@@ -30,6 +30,8 @@ run(void* arg)
 		handle->xmp_client = new xdpd::mgmt::protocol::cxmpclient();
 		handle->xmp_client->register_observer(handle);
 		handle->xmp_client->set_auto_exit(false);
+
+		pthread_mutex_unlock(&handle->client_lock);
 		handle->xmp_client->run();
 
 		delete handle->xmp_client;
@@ -59,11 +61,10 @@ cxmp_blocking_client_adapter::cxmp_blocking_client_adapter() :
 	pthread_mutex_init(&client_lock, NULL);
 	pthread_cond_init(&client_read_cv, NULL);
 
+	pthread_mutex_lock(&client_lock);
+
 	int rv = pthread_create(&worker, NULL, &run, this);
 	printf("rv=%d\n", rv);
-
-	sleep(1);
-
 }
 
 cxmp_blocking_client_adapter::~cxmp_blocking_client_adapter()
@@ -143,6 +144,7 @@ cxmp_blocking_client_adapter::get_all_ports(xmlNodePtr resources)
 
 		node = xmlNewChild(port, port->ns, BAD_CAST "configuration", NULL);
 		// todo add configuration
+		// fixme add admin state asap
 
 		node = xmlNewChild(port, port->ns, BAD_CAST "features", NULL);
 		// todo add features/advertised

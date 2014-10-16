@@ -66,10 +66,13 @@ public:
 	int
 	port_disable(const char* port_name);
 
-	xdpd::mgmt::protocol::cxmpclient *xmp_client;
 private:
 
+	static void *
+	run(void* arg);
+	xdpd::mgmt::protocol::cxmpclient *xmp_client;
 	pthread_mutex_t client_lock;
+
 	pthread_t worker;
 	pthread_cond_t client_read_cv;
 	xdpd::mgmt::protocol::cxmpmsg *msg;
