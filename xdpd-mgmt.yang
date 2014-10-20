@@ -27,16 +27,34 @@ module xdpd-mgmt {
         key "name";
         
         leaf name {
-             type string;
-         }
+          type string;
+        }
+         
+         
+        list switch {
+          description "";
+          key "id";
+          min-elements 2;
+          max-elements 2;
+          
+          leaf id {
+            type leafref {
+              path "/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id";
+            }
+          }
+           
+          leaf portname {
+            config false;
+            type string;
+          }
+        }
+         
+        /*
         leaf-list switches {
           type leafref {
             path "/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id";
-          }
-          description "";
-          min-elements 2;
-          max-elements 2;
         }
+        */
       }
     }
   }

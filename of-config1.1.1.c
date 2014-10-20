@@ -3484,44 +3484,39 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node, 0);
 
-	char buf[255];
-	xmlStrPrintf(buf, sizeof(buf), "/ofc:capable-switch/ofc:logical-switches/ofc:switch[ofc:id='%s']", XML_GET_CONTENT(node->children->next->children));
-	xmlXPathObjectPtr xpath_obj_ptr = get_node(node->doc, namespace_mapping, buf);
-	assert(xpath_obj_ptr);
-	assert(xpath_obj_ptr->nodesetval);
-
 	uint64_t dpid_1 = 0;
 	uint64_t dpid_2 = 0;
 
-	// there should only be one lsi with this id
-	if (1 == xpath_obj_ptr->nodesetval->nodeNr) {
+	int i=0;
+	xmlNodePtr lsi;
+	for (lsi = node->children->next; NULL != lsi; lsi = lsi->next, ++i) {
+		puts(lsi->name);
+		assert(xmlStrEqual(lsi->name, BAD_CAST "switch"));
 
-		xmlNodePtr dpid_node = find_element(BAD_CAST "datapath-id", xpath_obj_ptr->nodesetval->nodeTab[0]->children);
-		assert(dpid_node);
+		// resolve dpid
+		char buf[255];
+		xmlStrPrintf(buf, sizeof(buf), "/ofc:capable-switch/ofc:logical-switches/ofc:switch[ofc:id='%s']", XML_GET_CONTENT(lsi->children->children));
+		xmlXPathObjectPtr xpath_obj_ptr = get_node(lsi->doc, namespace_mapping, buf);
+		assert(xpath_obj_ptr);
+		assert(xpath_obj_ptr->nodesetval);
 
-		dpid_1 = parse_dpid(XML_GET_CONTENT(dpid_node->children));
+		// there should only be one lsi with this id
+		if (1 == xpath_obj_ptr->nodesetval->nodeNr) {
 
-	} else {
-		assert(0);
+			xmlNodePtr dpid_node = find_element(BAD_CAST "datapath-id", xpath_obj_ptr->nodesetval->nodeTab[0]->children);
+			assert(dpid_node);
+
+			if (0 == i) {
+				dpid_1 = parse_dpid(XML_GET_CONTENT(dpid_node->children));
+			} else {
+				dpid_2 = parse_dpid(XML_GET_CONTENT(dpid_node->children));
+			}
+
+		} else {
+			assert(0);
+		}
+		xmlXPathFreeObject(xpath_obj_ptr);
 	}
-	xmlXPathFreeObject(xpath_obj_ptr);
-
-	xmlStrPrintf(buf, sizeof(buf), "/ofc:capable-switch/ofc:logical-switches/ofc:switch[ofc:id='%s']", XML_GET_CONTENT(node->children->next->next->children));
-	xpath_obj_ptr = get_node(node->doc, namespace_mapping, buf);
-	assert(xpath_obj_ptr);
-	assert(xpath_obj_ptr->nodesetval);
-
-	// there should only be one lsi with this id
-	if (1 == xpath_obj_ptr->nodesetval->nodeNr) {
-		xmlNodePtr dpid_node = find_element(BAD_CAST "datapath-id", xpath_obj_ptr->nodesetval->nodeTab[0]->children);
-		assert(dpid_node);
-
-		dpid_2 = parse_dpid(XML_GET_CONTENT(dpid_node->children));
-
-	} else {
-		assert(0);
-	}
-	xmlXPathFreeObject(xpath_obj_ptr);
 
 	printf("dpid_1 = %lx, dpid_2 = %lx\n", dpid_1, dpid_2);
 	lsi_cross_connect(ofc_state.xmp_client_handle, dpid_1, dpid_2);
@@ -3530,7 +3525,7 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 }
 
 /**
- * @brief This callback will be run when node in path /ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switches changes
+ * @brief This callback will be run when node in path /ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:name changes
  *
  * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
  * @param[in] op	Observed change in path. XMLDIFF_OP type.
@@ -3540,13 +3535,46 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
  * @return EXIT_SUCCESS or EXIT_FAILURE
  */
 /* !DO NOT ALTER FUNCTION SIGNATURE! */
-int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_connection_xdpd_mgmt_switches (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_connection_xdpd_mgmt_name (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
 	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
 	print_element_names(node, 0);
+	return EXIT_SUCCESS;
+}
 
-	// todo remove from paths?
+/**
+ * @brief This callback will be run when node in path /ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switch changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_connection_xdpd_mgmt_switch (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
+	print_element_names(node, 0);
+	return EXIT_SUCCESS;
+}
 
+/**
+ * @brief This callback will be run when node in path /ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switch/xdpd-mgmt:id changes
+ *
+ * @param[in] data	Double pointer to void. Its passed to every callback. You can share data using it.
+ * @param[in] op	Observed change in path. XMLDIFF_OP type.
+ * @param[in] node	Modified node. if op == XMLDIFF_REM its copy of node removed.
+ * @param[out] error	If callback fails, it can return libnetconf error structure with a failure description.
+ *
+ * @return EXIT_SUCCESS or EXIT_FAILURE
+ */
+/* !DO NOT ALTER FUNCTION SIGNATURE! */
+int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_connection_xdpd_mgmt_switch_xdpd_mgmt_id (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
+{
+	printf("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
+	print_element_names(node, 0);
 	return EXIT_SUCCESS;
 }
 
@@ -3556,7 +3584,7 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 * DO NOT alter this structure
 */
 struct transapi_data_callbacks clbks =  {
-	.callbacks_count = 157,
+	.callbacks_count = 159,
 	.data = NULL,
 	.callbacks = {
 		{.path = "/ofc:capable-switch", .func = callback_ofc_capable_switch},
@@ -3715,7 +3743,9 @@ struct transapi_data_callbacks clbks =  {
 		{.path = "/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:resources/ofc:flow-table", .func = callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_ofc_flow_table},
 		{.path = "/ofc:capable-switch/xdpd-mgmt:cross-connections", .func = callback_ofc_capable_switch_xdpd_mgmt_cross_connections},
 		{.path = "/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection", .func = callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_connection},
-		{.path = "/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switches", .func = callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_connection_xdpd_mgmt_switches}
+		{.path = "/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:name", .func = callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_connection_xdpd_mgmt_name},
+		{.path = "/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switch", .func = callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_connection_xdpd_mgmt_switch},
+		{.path = "/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switch/xdpd-mgmt:id", .func = callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_connection_xdpd_mgmt_switch_xdpd_mgmt_id}
 	}
 };
 

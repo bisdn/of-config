@@ -36,16 +36,23 @@
         <leaf name="name">
           <type name="string"/>
         </leaf>
-        <leaf-list name="switches">
-          <type name="leafref">
-            <path value="/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id"/>
-          </type>
+        <list name="switch">
           <description>
             <text/>
           </description>
+          <key value="id"/>
           <min-elements value="2"/>
           <max-elements value="2"/>
-        </leaf-list>
+          <leaf name="id">
+            <type name="leafref">
+              <path value="/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id"/>
+            </type>
+          </leaf>
+          <leaf name="portname">
+            <config value="false"/>
+            <type name="string"/>
+          </leaf>
+        </list>
       </list>
     </container>
   </augment>

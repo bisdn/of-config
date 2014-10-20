@@ -214,4 +214,8 @@ ofc=urn:onf:of111:config:yang
 xdpd-mgmt=urn:xdpd:mgmt:yang
 /ofc:capable-switch/xdpd-mgmt:cross-connections
 /ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection
-/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switches
+/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:name
+/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switch
+/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switch/xdpd-mgmt:id
+#/ofc:capable-switch/xdpd-mgmt:cross-connections/xdpd-mgmt:cross-connection/xdpd-mgmt:switch/xdpd-mgmt:portname
+
