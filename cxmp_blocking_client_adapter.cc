@@ -56,7 +56,7 @@ cxmp_blocking_client_adapter::run(void* arg)
 }
 
 cxmp_blocking_client_adapter::cxmp_blocking_client_adapter() :
-		xmp_client(NULL), worker(0), msg(NULL)
+		xmp_client(NULL), max_time_wait_seconds(5), worker(0), msg(NULL)
 {
 	pthread_mutex_init(&client_lock, NULL);
 	pthread_cond_init(&client_read_cv, NULL);
@@ -122,8 +122,18 @@ cxmp_blocking_client_adapter::get_all_ports(xmlNodePtr resources)
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->port_list();
-	pthread_cond_wait(&client_read_cv, &client_lock);
+
+	int rv = pthread_cond_timedwait(&client_read_cv, &client_lock, get_wait_time());
 	pthread_mutex_unlock(&client_lock);
+
+	if (rv) {
+		std::cerr << "ERROR: wait time exceeded" << std::endl;
+
+		if (not xmp_client->is_established()) {
+			exit(-2);
+		}
+		return;
+	}
 
 	if (0 == msg->get_xmpies().size()) {
 		std::cerr << "no ports found" << std::endl;
@@ -254,8 +264,17 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources, xmlDocPtr runn
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->port_info();
-	pthread_cond_wait(&client_read_cv, &client_lock);
+	int rv = pthread_cond_timedwait(&client_read_cv, &client_lock, get_wait_time());
 	pthread_mutex_unlock(&client_lock);
+
+	if (rv) {
+		std::cerr << "ERROR: wait time exceeded" << std::endl;
+
+		if (not xmp_client->is_established()) {
+			exit(-2);
+		}
+		return;
+	}
 
 	if (0 == msg->get_xmpies().size()) {
 		std::cerr << "no ports found" << std::endl;
@@ -394,9 +413,17 @@ cxmp_blocking_client_adapter::add_lsi_info(xmlNodePtr lsis, xmlDocPtr running)
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->lsi_info();
-	pthread_cond_wait(&client_read_cv, &client_lock);
+	int rv = pthread_cond_timedwait(&client_read_cv, &client_lock, get_wait_time());
 	pthread_mutex_unlock(&client_lock);
 
+	if (rv) {
+		std::cerr << "ERROR: wait time exceeded" << std::endl;
+
+		if (not xmp_client->is_established()) {
+			exit(-2);
+		}
+		return;
+	}
 	if (0 == msg->get_xmpies().size()) {
 		std::cerr << "no lsi found" << std::endl;
 		return;
@@ -485,9 +512,17 @@ cxmp_blocking_client_adapter::get_lsi_config(xmlNodePtr lsis)
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->lsi_info();
-	pthread_cond_wait(&client_read_cv, &client_lock);
+	int rv = pthread_cond_timedwait(&client_read_cv, &client_lock, get_wait_time());
 	pthread_mutex_unlock(&client_lock);
 
+	if (rv) {
+		std::cerr << "ERROR: wait time exceeded" << std::endl;
+
+		if (not xmp_client->is_established()) {
+			exit(-2);
+		}
+		return;
+	}
 	cxmpmsg lsi_msg(*msg);
 
 	if (0 == lsi_msg.get_xmpies().size()) {
@@ -557,8 +592,17 @@ cxmp_blocking_client_adapter::get_lsi_ports(const uint64_t dpid, xmlNodePtr reso
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->port_list(dpid);
-	pthread_cond_wait(&client_read_cv, &client_lock);
+	int rv = pthread_cond_timedwait(&client_read_cv, &client_lock, get_wait_time());
 	pthread_mutex_unlock(&client_lock);
+
+	if (rv) {
+		std::cerr << "ERROR: wait time exceeded" << std::endl;
+
+		if (not xmp_client->is_established()) {
+			exit(-2);
+		}
+		return;
+	}
 
 	if (0 == msg->get_xmpies().size()) {
 		std::cerr << "no port found" << std::endl;
@@ -589,10 +633,18 @@ cxmp_blocking_client_adapter::lsi_create(const uint64_t dpid, const std::string 
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->lsi_create(dpid, dpname, controller);
-	pthread_cond_wait(&client_read_cv, &client_lock);
+	int rv = pthread_cond_timedwait(&client_read_cv, &client_lock, get_wait_time());
 	pthread_mutex_unlock(&client_lock);
 
-	int rv = 0;
+	if (rv) {
+		std::cerr << "ERROR: wait time exceeded" << std::endl;
+
+		if (not xmp_client->is_established()) {
+			exit(-2);
+		}
+		return -3;
+	}
+
 	switch (msg->get_type()) {
 	case XMPT_REPLY:
 		break;
@@ -617,10 +669,18 @@ cxmp_blocking_client_adapter::lsi_destroy(const uint64_t dpid)
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->lsi_destroy(dpid);
-	pthread_cond_wait(&client_read_cv, &client_lock);
+	int rv = pthread_cond_timedwait(&client_read_cv, &client_lock, get_wait_time());
 	pthread_mutex_unlock(&client_lock);
 
-	int rv = 0;
+	if (rv) {
+		std::cerr << "ERROR: wait time exceeded" << std::endl;
+
+		if (not xmp_client->is_established()) {
+			exit(-2);
+		}
+		return -3;
+	}
+
 	switch (msg->get_type()) {
 	case XMPT_REPLY:
 		break;
@@ -647,10 +707,18 @@ cxmp_blocking_client_adapter::lsi_connect_to_controller(const uint64_t dpid, con
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->lsi_connect_to_controller(dpid, controller);
-	pthread_cond_wait(&client_read_cv, &client_lock);
+	int rv = pthread_cond_timedwait(&client_read_cv, &client_lock, get_wait_time());
 	pthread_mutex_unlock(&client_lock);
 
-	int rv = 0;
+	if (rv) {
+		std::cerr << "ERROR: wait time exceeded" << std::endl;
+
+		if (not xmp_client->is_established()) {
+			exit(-2);
+		}
+		return -3;
+	}
+
 	switch (msg->get_type()) {
 	case XMPT_REPLY:
 		break;
@@ -675,10 +743,18 @@ cxmp_blocking_client_adapter::lsi_cross_connect(const uint64_t dpid1, const uint
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->lsi_cross_connect(dpid1, dpid2);
-	pthread_cond_wait(&client_read_cv, &client_lock);
+	int rv = pthread_cond_timedwait(&client_read_cv, &client_lock, get_wait_time());
 	pthread_mutex_unlock(&client_lock);
 
-	int rv = 0;
+	if (rv) {
+		std::cerr << "ERROR: wait time exceeded" << std::endl;
+
+		if (not xmp_client->is_established()) {
+			exit(-2);
+		}
+		return -3;
+	}
+
 	switch (msg->get_type()) {
 	case XMPT_REPLY:
 		break;
@@ -703,10 +779,18 @@ cxmp_blocking_client_adapter::port_attach(const uint64_t dpid, const char* port_
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->port_attach(dpid, std::string(port_name));
-	pthread_cond_wait(&client_read_cv, &client_lock);
+	int rv = pthread_cond_timedwait(&client_read_cv, &client_lock, get_wait_time());
 	pthread_mutex_unlock(&client_lock);
 
-	int rv = 0;
+	if (rv) {
+		std::cerr << "ERROR: wait time exceeded" << std::endl;
+
+		if (not xmp_client->is_established()) {
+			exit(-2);
+		}
+		return -3;
+	}
+
 	switch (msg->get_type()) {
 	case XMPT_REPLY:
 		break;
@@ -731,10 +815,18 @@ cxmp_blocking_client_adapter::port_detach(const uint64_t dpid, const char* port_
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->port_detach(dpid, std::string(port_name));
-	pthread_cond_wait(&client_read_cv, &client_lock);
+	int rv = pthread_cond_timedwait(&client_read_cv, &client_lock, get_wait_time());
 	pthread_mutex_unlock(&client_lock);
 
-	int rv = 0;
+	if (rv) {
+		std::cerr << "ERROR: wait time exceeded" << std::endl;
+
+		if (not xmp_client->is_established()) {
+			exit(-2);
+		}
+		return -3;
+	}
+
 	switch (msg->get_type()) {
 	case XMPT_REPLY:
 		break;
@@ -759,10 +851,18 @@ cxmp_blocking_client_adapter::port_enable(const char* port_name)
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->port_enable(std::string(port_name));
-	pthread_cond_wait(&client_read_cv, &client_lock);
+	int rv = pthread_cond_timedwait(&client_read_cv, &client_lock, get_wait_time());
 	pthread_mutex_unlock(&client_lock);
 
-	int rv = 0;
+	if (rv) {
+		std::cerr << "ERROR: wait time exceeded" << std::endl;
+
+		if (not xmp_client->is_established()) {
+			exit(-2);
+		}
+		return -3;
+	}
+
 	switch (msg->get_type()) {
 	case XMPT_REPLY:
 		break;
@@ -788,10 +888,18 @@ cxmp_blocking_client_adapter::port_disable(const char* port_name)
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->port_disable(std::string(port_name));
-	pthread_cond_wait(&client_read_cv, &client_lock);
+	int rv = pthread_cond_timedwait(&client_read_cv, &client_lock, get_wait_time());
 	pthread_mutex_unlock(&client_lock);
 
-	int rv = 0;
+	if (rv) {
+		std::cerr << "ERROR: wait time exceeded" << std::endl;
+
+		if (not xmp_client->is_established()) {
+			exit(-2);
+		}
+		return -3;
+	}
+
 	switch (msg->get_type()) {
 	case XMPT_REPLY:
 		break;
@@ -806,4 +914,17 @@ cxmp_blocking_client_adapter::port_disable(const char* port_name)
 	}
 
 	return rv;
+}
+
+struct timespec*
+cxmp_blocking_client_adapter::get_wait_time()
+{
+	static struct timespec time_to_wait;
+	struct timeval now;
+
+	gettimeofday(&now, NULL);
+	time_to_wait.tv_sec = now.tv_sec + max_time_wait_seconds;
+	time_to_wait.tv_nsec = now.tv_usec * 1000UL;
+
+	return &time_to_wait;
 }

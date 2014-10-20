@@ -72,11 +72,14 @@ private:
 	run(void* arg);
 	xdpd::mgmt::protocol::cxmpclient *xmp_client;
 	pthread_mutex_t client_lock;
+	unsigned int max_time_wait_seconds;
 
 	pthread_t worker;
 	pthread_cond_t client_read_cv;
 	xdpd::mgmt::protocol::cxmpmsg *msg;
 
+	struct timespec*
+	get_wait_time();
 };
 
 #endif /* CXMP_BLOCKING_CLIENT_ADAPTER_H_ */
