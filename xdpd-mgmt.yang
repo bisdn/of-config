@@ -2,8 +2,6 @@ module xdpd-mgmt {
   namespace "urn:xdpd:mgmt:yang";
   prefix xdpd-mgmt;
 
-//  import ietf-yang-types { prefix yang; }
-//  import ietf-inet-types { prefix inet; }
   import of-config1.1.1  { prefix ofc; }
 
   organization "BISDN GmbH";
@@ -48,15 +46,7 @@ module xdpd-mgmt {
             type string;
           }
         }
-         
-        /*
-        leaf-list switches {
-          type leafref {
-            path "/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id";
-        }
-        */
       }
     }
   }
-
 }
