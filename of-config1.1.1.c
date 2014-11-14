@@ -514,6 +514,25 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration_ofc_adm
 		// sanity check... if the content is not "down", it has to be "up"
 		assert(down || xmlStrEqual(XML_GET_CONTENT(node->children), BAD_CAST "up"));
 
+		// currently the resource-id is the port name (even if the name is not set
+		xmlNodePtr tmp = find_element(BAD_CAST "resource-id",  node->parent->parent->children);
+		assert(tmp);
+
+		if (down) {
+			// set interface down
+			printf("set interface %s down\n", tmp->children->content);
+			if (port_disable(ofc_state.xmp_client_handle, tmp->children->content)) {
+				rv = EXIT_FAILURE;
+			}
+
+		} else {
+			// set interface up
+			printf("set interface %s up\n", tmp->children->content);
+			if (port_enable(ofc_state.xmp_client_handle, tmp->children->content)) {
+				rv = EXIT_FAILURE;
+			}
+		}
+
 	} else if (XMLDIFF_REM & op) {
 		// setting interface up
 	} else {
@@ -521,24 +540,6 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration_ofc_adm
 		assert(0);
 	}
 
-	// currently the resource-id is the port name (even if the name is not set
-	xmlNodePtr tmp = find_element(BAD_CAST "resource-id",  node->parent->parent->children);
-	assert(tmp);
-
-	if (down) {
-		// set interface down
-		printf("set interface %s down\n", tmp->children->content);
-		if (port_disable(ofc_state.xmp_client_handle, tmp->children->content)) {
-			rv = EXIT_FAILURE;
-		}
-
-	} else {
-		// set interface up
-		printf("set interface %s up\n", tmp->children->content);
-		if (port_enable(ofc_state.xmp_client_handle, tmp->children->content)) {
-			rv = EXIT_FAILURE;
-		}
-	}
 
 	return rv;
 }
