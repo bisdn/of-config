@@ -3488,39 +3488,41 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 	uint64_t dpid_1 = 0;
 	uint64_t dpid_2 = 0;
 
-	int i=0;
-	xmlNodePtr lsi;
-	for (lsi = node->children->next; NULL != lsi; lsi = lsi->next, ++i) {
-		puts(lsi->name);
-		assert(xmlStrEqual(lsi->name, BAD_CAST "switch"));
+	if (XMLDIFF_ADD == op) {
+		int i=0;
+		xmlNodePtr lsi;
+		for (lsi = node->children->next; NULL != lsi; lsi = lsi->next, ++i) {
+			puts(lsi->name);
+			assert(xmlStrEqual(lsi->name, BAD_CAST "switch"));
 
-		// resolve dpid
-		char buf[255];
-		xmlStrPrintf(buf, sizeof(buf), "/ofc:capable-switch/ofc:logical-switches/ofc:switch[ofc:id='%s']", XML_GET_CONTENT(lsi->children->children));
-		xmlXPathObjectPtr xpath_obj_ptr = get_node(lsi->doc, namespace_mapping, buf);
-		assert(xpath_obj_ptr);
-		assert(xpath_obj_ptr->nodesetval);
+			// resolve dpid
+			char buf[255];
+			xmlStrPrintf(buf, sizeof(buf), "/ofc:capable-switch/ofc:logical-switches/ofc:switch[ofc:id='%s']", XML_GET_CONTENT(lsi->children->children));
+			xmlXPathObjectPtr xpath_obj_ptr = get_node(lsi->doc, namespace_mapping, buf);
+			assert(xpath_obj_ptr);
+			assert(xpath_obj_ptr->nodesetval);
 
-		// there should only be one lsi with this id
-		if (1 == xpath_obj_ptr->nodesetval->nodeNr) {
+			// there should only be one lsi with this id
+			if (1 == xpath_obj_ptr->nodesetval->nodeNr) {
 
-			xmlNodePtr dpid_node = find_element(BAD_CAST "datapath-id", xpath_obj_ptr->nodesetval->nodeTab[0]->children);
-			assert(dpid_node);
+				xmlNodePtr dpid_node = find_element(BAD_CAST "datapath-id", xpath_obj_ptr->nodesetval->nodeTab[0]->children);
+				assert(dpid_node);
 
-			if (0 == i) {
-				dpid_1 = parse_dpid(XML_GET_CONTENT(dpid_node->children));
+				if (0 == i) {
+					dpid_1 = parse_dpid(XML_GET_CONTENT(dpid_node->children));
+				} else {
+					dpid_2 = parse_dpid(XML_GET_CONTENT(dpid_node->children));
+				}
+
 			} else {
-				dpid_2 = parse_dpid(XML_GET_CONTENT(dpid_node->children));
+				assert(0);
 			}
-
-		} else {
-			assert(0);
+			xmlXPathFreeObject(xpath_obj_ptr);
 		}
-		xmlXPathFreeObject(xpath_obj_ptr);
-	}
 
-	printf("dpid_1 = %lx, dpid_2 = %lx\n", dpid_1, dpid_2);
-	lsi_cross_connect(ofc_state.xmp_client_handle, dpid_1, dpid_2);
+		printf("dpid_1 = %lx, dpid_2 = %lx\n", dpid_1, dpid_2);
+		lsi_cross_connect(ofc_state.xmp_client_handle, dpid_1, dpid_2);
+	}
 
 	return EXIT_SUCCESS;
 }
