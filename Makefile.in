@@ -25,8 +25,8 @@ LIBTOOL = @LIBTOOL@
 LTCOMPILE = $(LIBTOOL) --tag=CC --quiet
 LTCXXCOMPILE = $(LIBTOOL) --tag=CXX --quiet
 
-xdpd_xmp_client_CFLAGS = @xdpd_xmp_client_CFLAGS@
-xdpd_xmp_client_LIBS = @xdpd_xmp_client_LIBS@
+XDPD_XMP_CLIENT_CFLAGS = @XDPD_XMP_CLIENT_CFLAGS@
+XDPD_XMP_CLIENT_LIBS = @XDPD_XMP_CLIENT_LIBS@
 
 SRCS = @PROJECTNAME@.c xml_helper.c list.c utils.c cxmpclient_wrapper.cc cxmp_blocking_client_adapter.cc
 OBJDIR = .obj
@@ -36,17 +36,17 @@ LCXXOBJS = $(SRCS:%.cc=$(OBJDIR)/%.cc.lo)
 all: $(TARGET)
 
 $(TARGET): $(LOBJS) $(LCXXOBJS)
-	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(xdpd_xmp_client_CFLAGS) $(CPPFLAGS) $(LIBS) $(xdpd_xmp_client_LIBS) -avoid-version -module -shared -export-dynamic --mode=link -o $@ $^ -rpath $(libdir)
+	$(LIBTOOL) --mode=link $(CC) $(XDPD_XMP_CLIENT_LIBS) $(LIBS) -avoid-version -module -shared -export-dynamic --mode=link -o $@ $^ -rpath $(libdir)
 
 $(OBJDIR)/%.c.lo: %.c
 	@[ -d $$(dirname $@) ] || \
 		(mkdir -p $$(dirname $@))
-	$(LTCOMPILE) --mode=compile $(CC) $(CFLAGS) $(CPPFLAGS) -fPIC -shared -c $< -o $@
+	$(LTCOMPILE) --mode=compile $(CC) $(CFLAGS) $(XDPD_XMP_CLIENT_CFLAGS) $(CPPFLAGS) -fPIC -shared -c $< -o $@
 
 $(OBJDIR)/%.cc.lo: %.cc
 	@[ -d $$(dirname $@) ] || \
 		(mkdir -p $$(dirname $@))
-	$(LTCXXCOMPILE) --mode=compile $(CXX) $(CFLAGS) $(CPPFLAGS) -fPIC -shared -c $< -o $@
+	$(LTCXXCOMPILE) --mode=compile $(CXX) $(CFLAGS) $(XDPD_XMP_CLIENT_CFLAGS) $(CPPFLAGS) -fPIC -shared -c $< -o $@
 
 .PHONY: install
 install: $(TARGET)

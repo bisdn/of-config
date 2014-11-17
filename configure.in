@@ -41,7 +41,7 @@ AC_SUBST(libtool)
 
 # Checks for libraries.
 AC_SEARCH_LIBS([ncds_apply_rpc], [netconf], ,AC_MSG_ERROR([libnetconf not found!]))
-PKG_CHECK_MODULES([xdpd_xmp_client], [xdpd_xmp_client])
+PKG_CHECK_MODULES([XDPD_XMP_CLIENT], [xdpd_xmp_client])
 
 # Check for libxml2.
 if test -z "$WITH_LIBXML2" ; then
