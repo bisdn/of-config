@@ -3488,7 +3488,7 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 	uint64_t dpid_1 = 0;
 	uint64_t dpid_2 = 0;
 
-	if (XMLDIFF_ADD == op) {
+	if (XMLDIFF_ADD & op) {
 		int i=0;
 		xmlNodePtr lsi;
 		for (lsi = node->children->next; NULL != lsi; lsi = lsi->next, ++i) {
