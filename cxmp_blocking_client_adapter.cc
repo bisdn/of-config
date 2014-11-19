@@ -21,7 +21,7 @@ extern struct ns_pair namespace_mapping[];
 /*static*/ void *
 cxmp_blocking_client_adapter::run(void* arg)
 {
-	puts(__FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 
 	assert(arg);
 	cxmp_blocking_client_adapter* handle = (cxmp_blocking_client_adapter *) arg;
@@ -38,8 +38,7 @@ cxmp_blocking_client_adapter::run(void* arg)
 		handle->xmp_client = NULL;
 
 	} catch (...) {
-		// todo log error
-		std::cerr << "got error" << std::endl;
+		rofl::logging::crit << "caught unknown error, exiting client" << std::endl;
 
 		if (handle->xmp_client){
 			delete handle->xmp_client;
@@ -64,7 +63,7 @@ cxmp_blocking_client_adapter::cxmp_blocking_client_adapter() :
 	pthread_mutex_lock(&client_lock);
 
 	int rv = pthread_create(&worker, NULL, &run, this);
-	printf("rv=%d\n", rv);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << ": thread created rv=" << rv << std::endl;
 }
 
 cxmp_blocking_client_adapter::~cxmp_blocking_client_adapter()
@@ -81,11 +80,11 @@ cxmp_blocking_client_adapter::~cxmp_blocking_client_adapter()
 void
 cxmp_blocking_client_adapter::notify(const xdpd::mgmt::protocol::cxmpmsg& msg)
 {
-	puts(__PRETTY_FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 	pthread_mutex_lock(&client_lock);
 	if (this->msg) delete this->msg;
 
-	std::cerr << "msg: " << msg;
+	rofl::logging::debug << "msg: " << msg;
 
 	this->msg = new xdpd::mgmt::protocol::cxmpmsg(msg);
 	pthread_cond_signal(&client_read_cv);
@@ -116,7 +115,7 @@ cxmp_blocking_client_adapter::get_resources(xmlNodePtr resources)
 void
 cxmp_blocking_client_adapter::get_all_ports(xmlNodePtr resources)
 {
-	puts(__PRETTY_FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 	using xdpd::mgmt::protocol::cxmpie;
 	using xdpd::mgmt::protocol::cxmpie_name;
 
@@ -127,7 +126,7 @@ cxmp_blocking_client_adapter::get_all_ports(xmlNodePtr resources)
 	pthread_mutex_unlock(&client_lock);
 
 	if (rv) {
-		std::cerr << "ERROR: wait time exceeded" << std::endl;
+		rofl::logging::error << "ERROR: wait time exceeded" << std::endl;
 
 		if (not xmp_client->is_established()) {
 			exit(-2);
@@ -136,7 +135,7 @@ cxmp_blocking_client_adapter::get_all_ports(xmlNodePtr resources)
 	}
 
 	if (0 == msg->get_xmpies().size()) {
-		std::cerr << "no ports found" << std::endl;
+		rofl::logging::notice << "no ports found" << std::endl;
 		return;
 	}
 
@@ -144,11 +143,11 @@ cxmp_blocking_client_adapter::get_all_ports(xmlNodePtr resources)
 
 	const std::deque<cxmpie*> & ies = msg->get_xmpies().get_ie_multipart().get_ies();
 
-	std::cerr << "ies.size()=" << ies.size() << std::endl;
+	rofl::logging::debug << "ies.size()=" << ies.size() << std::endl;
 	for (std::deque<cxmpie*>::const_iterator iter = ies.begin(); iter != ies.end(); ++iter) {
 		cxmpie_name* port_name = dynamic_cast<cxmpie_name*>(*iter);
 
-		std::cerr << port_name->get_name() << std::endl;
+		rofl::logging::debug << port_name->get_name() << std::endl;
 		xmlNodePtr port = xmlNewChild(resources, resources->ns, BAD_CAST "port", NULL);
 		xmlNodePtr node = xmlNewChild(port, port->ns, BAD_CAST "resource-id", BAD_CAST port_name->get_name().c_str());
 
@@ -258,7 +257,7 @@ append_all_rates(xmlNodePtr node, const uint32_t features)
 void
 cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources, xmlDocPtr running)
 {
-	puts(__PRETTY_FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 	using xdpd::mgmt::protocol::cxmpie;
 	using xdpd::mgmt::protocol::cxmpie_portinfo;
 
@@ -268,7 +267,7 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources, xmlDocPtr runn
 	pthread_mutex_unlock(&client_lock);
 
 	if (rv) {
-		std::cerr << "ERROR: wait time exceeded" << std::endl;
+		rofl::logging::error << "ERROR: wait time exceeded" << std::endl;
 
 		if (not xmp_client->is_established()) {
 			exit(-2);
@@ -277,7 +276,7 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources, xmlDocPtr runn
 	}
 
 	if (0 == msg->get_xmpies().size()) {
-		std::cerr << "no ports found" << std::endl;
+		rofl::logging::notice << "no ports found" << std::endl;
 		return;
 	}
 
@@ -286,14 +285,14 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources, xmlDocPtr runn
 	const std::deque<cxmpie*> & ies =
 			msg->get_xmpies().get_ie_multipart().get_ies();
 
-	std::cerr << "ies.size()=" << ies.size() << std::endl;
+	rofl::logging::debug << "ies.size()=" << ies.size() << std::endl;
 	for (std::deque<cxmpie*>::const_iterator iter = ies.begin();
 			iter != ies.end(); ++iter) {
 
 		cxmpie_portinfo* port_info = dynamic_cast<cxmpie_portinfo*>(*iter);
 		if (NULL == port_info) continue;
 
-		std::cerr << "append portname=" << port_info->get_portname() << " port_num=" << port_info->get_port_num() << std::endl;
+		rofl::logging::debug << "append portname=" << port_info->get_portname() << " port_num=" << port_info->get_port_num() << std::endl;
 
 		xmlNodePtr port = xmlNewChild(resources, resources->ns, BAD_CAST "port", NULL);
 		xmlChar buf[255];
@@ -384,7 +383,6 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources, xmlDocPtr runn
 			// since the advertised node is not optional we will
 			// add it here if it was not configured in the running config
 			if (running) {
-				puts("check advertised");
 				xmlStrPrintf(buf, sizeof(buf), BAD_CAST "/ofc:capable-switch/ofc:resources/ofc:port[ofc:name=%s]/ofc:features/ofc:advertised-peer", port_info->get_portname().c_str());
 				xmlXPathObjectPtr xpath_obj;
 				if (NULL != (xpath_obj = get_node(running, namespace_mapping, buf))) {
@@ -407,7 +405,7 @@ cxmp_blocking_client_adapter::add_port_info(xmlNodePtr resources, xmlDocPtr runn
 void
 cxmp_blocking_client_adapter::add_lsi_info(xmlNodePtr lsis, xmlDocPtr running)
 {
-	puts(__PRETTY_FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 	using xdpd::mgmt::protocol::cxmpie;
 	using xdpd::mgmt::protocol::cxmpie_lsiinfo;
 
@@ -417,7 +415,7 @@ cxmp_blocking_client_adapter::add_lsi_info(xmlNodePtr lsis, xmlDocPtr running)
 	pthread_mutex_unlock(&client_lock);
 
 	if (rv) {
-		std::cerr << "ERROR: wait time exceeded" << std::endl;
+		rofl::logging::error << "ERROR: wait time exceeded" << std::endl;
 
 		if (not xmp_client->is_established()) {
 			exit(-2);
@@ -425,7 +423,7 @@ cxmp_blocking_client_adapter::add_lsi_info(xmlNodePtr lsis, xmlDocPtr running)
 		return;
 	}
 	if (0 == msg->get_xmpies().size()) {
-		std::cerr << "no lsi found" << std::endl;
+		rofl::logging::notice << "no lsi found" << std::endl;
 		return;
 	}
 
@@ -433,11 +431,11 @@ cxmp_blocking_client_adapter::add_lsi_info(xmlNodePtr lsis, xmlDocPtr running)
 
 	const std::deque<cxmpie*> & ies = msg->get_xmpies().get_ie_multipart().get_ies();
 
-	std::cerr << "ies.size()=" << ies.size() << std::endl;
+	rofl::logging::debug << "ies.size()=" << ies.size() << std::endl;
 	for (std::deque<cxmpie*>::const_iterator iter = ies.begin(); iter != ies.end(); ++iter) {
 		cxmpie_lsiinfo* lsi_info = dynamic_cast<cxmpie_lsiinfo*>(*iter);
 
-		std::cerr << lsi_info->get_lsiname() << std::endl;
+		rofl::logging::debug << lsi_info->get_lsiname() << std::endl;
 
 		xmlChar buf[255];
 
@@ -506,7 +504,7 @@ void
 cxmp_blocking_client_adapter::get_lsi_config(xmlNodePtr lsis)
 {
 	using xdpd::mgmt::protocol::cxmpmsg;
-	puts(__PRETTY_FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 	using xdpd::mgmt::protocol::cxmpie;
 	using xdpd::mgmt::protocol::cxmpie_lsiinfo;
 
@@ -516,7 +514,7 @@ cxmp_blocking_client_adapter::get_lsi_config(xmlNodePtr lsis)
 	pthread_mutex_unlock(&client_lock);
 
 	if (rv) {
-		std::cerr << "ERROR: wait time exceeded" << std::endl;
+		rofl::logging::error << "ERROR: wait time exceeded" << std::endl;
 
 		if (not xmp_client->is_established()) {
 			exit(-2);
@@ -526,7 +524,7 @@ cxmp_blocking_client_adapter::get_lsi_config(xmlNodePtr lsis)
 	cxmpmsg lsi_msg(*msg);
 
 	if (0 == lsi_msg.get_xmpies().size()) {
-		std::cerr << "no lsi found" << std::endl;
+		rofl::logging::notice << "no lsi found" << std::endl;
 		return;
 	}
 
@@ -534,11 +532,11 @@ cxmp_blocking_client_adapter::get_lsi_config(xmlNodePtr lsis)
 
 	const std::deque<cxmpie*> & ies = lsi_msg.get_xmpies().get_ie_multipart().get_ies();
 
-	std::cerr << "ies.size()=" << ies.size() << std::endl;
+	rofl::logging::debug << "ies.size()=" << ies.size() << std::endl;
 	for (std::deque<cxmpie*>::const_iterator iter = ies.begin(); iter != ies.end(); ++iter) {
 		cxmpie_lsiinfo* lsi_info = dynamic_cast<cxmpie_lsiinfo*>(*iter);
 
-		std::cerr << lsi_info->get_lsiname() << std::endl;
+		rofl::logging::debug << lsi_info->get_lsiname() << std::endl;
 
 		xmlChar buf[255];
 
@@ -588,7 +586,7 @@ cxmp_blocking_client_adapter::get_lsi_ports(const uint64_t dpid, xmlNodePtr reso
 	using xdpd::mgmt::protocol::cxmpie;
 	using xdpd::mgmt::protocol::cxmpie_name;
 
-	puts(__PRETTY_FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->port_list(dpid);
@@ -596,7 +594,7 @@ cxmp_blocking_client_adapter::get_lsi_ports(const uint64_t dpid, xmlNodePtr reso
 	pthread_mutex_unlock(&client_lock);
 
 	if (rv) {
-		std::cerr << "ERROR: wait time exceeded" << std::endl;
+		rofl::logging::error << "ERROR: wait time exceeded" << std::endl;
 
 		if (not xmp_client->is_established()) {
 			exit(-2);
@@ -605,19 +603,19 @@ cxmp_blocking_client_adapter::get_lsi_ports(const uint64_t dpid, xmlNodePtr reso
 	}
 
 	if (0 == msg->get_xmpies().size()) {
-		std::cerr << "no port found" << std::endl;
+		rofl::logging::notice << "no port found" << std::endl;
 		return;
 	}
 
 	assert(true == msg->get_xmpies().has_ie_multipart());
 
 	const std::deque<cxmpie*> & ies = msg->get_xmpies().get_ie_multipart().get_ies();
-	std::cerr << "ies.size()=" << ies.size() << std::endl;
+	rofl::logging::debug << "ies.size()=" << ies.size() << std::endl;
 
 	for (std::deque<cxmpie*>::const_iterator iter = ies.begin(); iter != ies.end(); ++iter) {
 		cxmpie_name* port_name = dynamic_cast<cxmpie_name*>(*iter);
 
-		std::cerr << port_name->get_name() << std::endl;
+		rofl::logging::debug << port_name->get_name() << std::endl;
 		xmlNodePtr node = xmlNewChild(resources, resources->ns, BAD_CAST "port", BAD_CAST port_name->get_name().c_str());
 		assert(node);
 	}
@@ -626,10 +624,10 @@ cxmp_blocking_client_adapter::get_lsi_ports(const uint64_t dpid, xmlNodePtr reso
 int
 cxmp_blocking_client_adapter::lsi_create(const uint64_t dpid, const std::string &dpname, const std::list<struct xdpd::mgmt::protocol::controller>& controller)
 {
-	puts(__PRETTY_FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 	using xdpd::mgmt::protocol::cxmpie;
 
-	std::cerr << "create " << controller.size() << " controller(s)" << std::endl;
+	rofl::logging::info << "create " << controller.size() << " controller(s)" << std::endl;
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->lsi_create(dpid, dpname, controller);
@@ -637,7 +635,7 @@ cxmp_blocking_client_adapter::lsi_create(const uint64_t dpid, const std::string 
 	pthread_mutex_unlock(&client_lock);
 
 	if (rv) {
-		std::cerr << "ERROR: wait time exceeded" << std::endl;
+		rofl::logging::error << "ERROR: wait time exceeded" << std::endl;
 
 		if (not xmp_client->is_established()) {
 			exit(-2);
@@ -664,7 +662,7 @@ cxmp_blocking_client_adapter::lsi_create(const uint64_t dpid, const std::string 
 int
 cxmp_blocking_client_adapter::lsi_destroy(const uint64_t dpid)
 {
-	puts(__PRETTY_FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 	using xdpd::mgmt::protocol::cxmpie;
 
 	pthread_mutex_lock(&client_lock);
@@ -673,7 +671,7 @@ cxmp_blocking_client_adapter::lsi_destroy(const uint64_t dpid)
 	pthread_mutex_unlock(&client_lock);
 
 	if (rv) {
-		std::cerr << "ERROR: wait time exceeded" << std::endl;
+		rofl::logging::error << "ERROR: wait time exceeded" << std::endl;
 
 		if (not xmp_client->is_established()) {
 			exit(-2);
@@ -700,10 +698,10 @@ cxmp_blocking_client_adapter::lsi_destroy(const uint64_t dpid)
 int
 cxmp_blocking_client_adapter::lsi_connect_to_controller(const uint64_t dpid, const std::list<struct xdpd::mgmt::protocol::controller>& controller)
 {
-	puts(__PRETTY_FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 	using xdpd::mgmt::protocol::cxmpie;
 
-	std::cerr << "create " << controller.size() << " controller(s)" << std::endl;
+	rofl::logging::info << "create " << controller.size() << " controller(s)" << std::endl;
 
 	pthread_mutex_lock(&client_lock);
 	xmp_client->lsi_connect_to_controller(dpid, controller);
@@ -711,7 +709,7 @@ cxmp_blocking_client_adapter::lsi_connect_to_controller(const uint64_t dpid, con
 	pthread_mutex_unlock(&client_lock);
 
 	if (rv) {
-		std::cerr << "ERROR: wait time exceeded" << std::endl;
+		rofl::logging::error << "ERROR: wait time exceeded" << std::endl;
 
 		if (not xmp_client->is_established()) {
 			exit(-2);
@@ -738,7 +736,7 @@ cxmp_blocking_client_adapter::lsi_connect_to_controller(const uint64_t dpid, con
 int
 cxmp_blocking_client_adapter::lsi_cross_connect(const uint64_t dpid1, const uint64_t dpid2)
 {
-	puts(__PRETTY_FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 	using xdpd::mgmt::protocol::cxmpie;
 
 	pthread_mutex_lock(&client_lock);
@@ -747,7 +745,7 @@ cxmp_blocking_client_adapter::lsi_cross_connect(const uint64_t dpid1, const uint
 	pthread_mutex_unlock(&client_lock);
 
 	if (rv) {
-		std::cerr << "ERROR: wait time exceeded" << std::endl;
+		rofl::logging::error << "ERROR: wait time exceeded" << std::endl;
 
 		if (not xmp_client->is_established()) {
 			exit(-2);
@@ -774,7 +772,7 @@ cxmp_blocking_client_adapter::lsi_cross_connect(const uint64_t dpid1, const uint
 int
 cxmp_blocking_client_adapter::port_attach(const uint64_t dpid, const char* port_name)
 {
-	puts(__PRETTY_FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 	using xdpd::mgmt::protocol::cxmpie;
 
 	pthread_mutex_lock(&client_lock);
@@ -783,7 +781,7 @@ cxmp_blocking_client_adapter::port_attach(const uint64_t dpid, const char* port_
 	pthread_mutex_unlock(&client_lock);
 
 	if (rv) {
-		std::cerr << "ERROR: wait time exceeded" << std::endl;
+		rofl::logging::error << "ERROR: wait time exceeded" << std::endl;
 
 		if (not xmp_client->is_established()) {
 			exit(-2);
@@ -810,7 +808,7 @@ cxmp_blocking_client_adapter::port_attach(const uint64_t dpid, const char* port_
 int
 cxmp_blocking_client_adapter::port_detach(const uint64_t dpid, const char* port_name)
 {
-	puts(__PRETTY_FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 	using xdpd::mgmt::protocol::cxmpie;
 
 	pthread_mutex_lock(&client_lock);
@@ -819,7 +817,7 @@ cxmp_blocking_client_adapter::port_detach(const uint64_t dpid, const char* port_
 	pthread_mutex_unlock(&client_lock);
 
 	if (rv) {
-		std::cerr << "ERROR: wait time exceeded" << std::endl;
+		rofl::logging::error << "ERROR: wait time exceeded" << std::endl;
 
 		if (not xmp_client->is_established()) {
 			exit(-2);
@@ -846,7 +844,7 @@ cxmp_blocking_client_adapter::port_detach(const uint64_t dpid, const char* port_
 int
 cxmp_blocking_client_adapter::port_enable(const char* port_name)
 {
-	puts(__PRETTY_FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 	using xdpd::mgmt::protocol::cxmpie;
 
 	pthread_mutex_lock(&client_lock);
@@ -855,7 +853,7 @@ cxmp_blocking_client_adapter::port_enable(const char* port_name)
 	pthread_mutex_unlock(&client_lock);
 
 	if (rv) {
-		std::cerr << "ERROR: wait time exceeded" << std::endl;
+		rofl::logging::error << "ERROR: wait time exceeded" << std::endl;
 
 		if (not xmp_client->is_established()) {
 			exit(-2);
@@ -883,7 +881,7 @@ cxmp_blocking_client_adapter::port_enable(const char* port_name)
 int
 cxmp_blocking_client_adapter::port_disable(const char* port_name)
 {
-	puts(__PRETTY_FUNCTION__);
+	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 	using xdpd::mgmt::protocol::cxmpie;
 
 	pthread_mutex_lock(&client_lock);
@@ -892,7 +890,7 @@ cxmp_blocking_client_adapter::port_disable(const char* port_name)
 	pthread_mutex_unlock(&client_lock);
 
 	if (rv) {
-		std::cerr << "ERROR: wait time exceeded" << std::endl;
+		rofl::logging::error << "ERROR: wait time exceeded" << std::endl;
 
 		if (not xmp_client->is_established()) {
 			exit(-2);

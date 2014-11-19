@@ -93,7 +93,7 @@ int transapi_init(xmlDocPtr * running)
 	//	      +--rw resources
 	//	      +--rw logical-switches
 
-	puts("create running config");
+	nc_verb_verbose("create running config");
 
 	*running = xmlNewDoc(BAD_CAST "1.0");
 	assert(*running);
@@ -156,13 +156,6 @@ xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **er
 	xmlDocPtr state;
 	xmlNodePtr root;
 	xmlNsPtr ns;
-
-	if (running) {
-		puts("running config:");
-		xmlSaveFormatFileEnc("-", running, "UTF-8", 1);
-	} else {
-		puts("no running config");
-	}
 
 	state = xmlNewDoc(BAD_CAST "1.0");
 	root = xmlNewDocNode(state, NULL, BAD_CAST "capable-switch", NULL);
@@ -234,14 +227,6 @@ xmlDocPtr get_state_data (xmlDocPtr model, xmlDocPtr running, struct nc_err **er
 	// #/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:controllers/ofc:controller/ofc:state/ofc:local-port-in-use
 	get_lsi_info(ofc_state.xmp_client_handle, lsis, running);
 
-
-
-	if (state) {
-		puts("current state:");
-		xmlSaveFormatFileEnc("-", state, "UTF-8", 1);
-	} else {
-		puts("no state");
-	}
 	return state;
 }
 /*
@@ -431,8 +416,6 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration_ofc_adm
 
 	if ((XMLDIFF_ADD|XMLDIFF_MOD) & op) {
 
-		nc_verb_verbose("XXXvalue=%s\n", XML_GET_CONTENT(node->children));
-
 		if (xmlStrEqual(XML_GET_CONTENT(node->children), BAD_CAST "down")) {
 			down = 1;
 		}
@@ -462,7 +445,7 @@ int callback_ofc_capable_switch_ofc_resources_ofc_port_ofc_configuration_ofc_adm
 	} else if (XMLDIFF_REM & op) {
 		// setting interface up
 	} else {
-		puts("unsupported op");
+		nc_verb_error("unsupported op");
 		assert(0);
 	}
 
@@ -529,12 +512,9 @@ handle_ports(void *list)
 			if (ADD == p->op) {
 				// attach port
 				port_attach(ofc_state.xmp_client_handle, p->dpid, p->resource_id);
-				puts("XXX port_attach");
-
 			} else if (DELETE == p->op) {
 				// detach port
 				port_detach(ofc_state.xmp_client_handle, p->dpid, p->resource_id);
-				puts("XXX port_detach");
 			} else {
 				assert(0);
 			}
@@ -580,7 +560,7 @@ int callback_ofc_capable_switch_ofc_logical_switches (void ** data, XMLDIFF_OP o
 			}
 
 		} else {
-			puts("unsupported op");
+			nc_verb_error("unsupported op");
 			assert(0);
 		}
 
@@ -655,7 +635,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 
 	} else if (XMLDIFF_MOD & op) {
 		// direct sub elements changed
-		puts("not implemented XMLDIFF_MOD");
+		nc_verb_error("not implemented XMLDIFF_MOD");
 		assert(0);
 	} else if (XMLDIFF_CHAIN & op) {
 		// resources or controllers changed (attachment of ports handled in parent)
@@ -683,7 +663,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch (void ** data, X
 		}
 
 	} else {
-		puts("unsupported op");
+		nc_verb_error("unsupported op");
 		assert(0);
 	}
 
@@ -720,7 +700,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_id (void ** 
 		xmlFree(text);
 	} else {
 		// todo add operation to modify dpid ?
-		puts("not implemented");
+		nc_verb_error("not implemented");
 		assert(0);
 	}
 
@@ -755,7 +735,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_datapath_id 
 		LSI(data)->dpid = dpid;
 	} else {
 		// todo add operation to modify dpid
-		puts("not implemented");
+		nc_verb_error("not implemented");
 		assert(0);
 	}
 
@@ -776,7 +756,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_datapath_id 
 int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers (void ** data, XMLDIFF_OP op, xmlNodePtr node, struct nc_err** error)
 {
 	nc_verb_verbose("%s: data=%p, op=%d\n", __PRETTY_FUNCTION__, data, op);
-	puts("currently ignored");
+	nc_verb_verbose("currently ignored");
 	return EXIT_SUCCESS;
 }
 
@@ -819,7 +799,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 		list_append_data(LSI(data)->controller_list_del, __data);
 		__data = NULL;
 	} else {
-		puts("not implemented");
+		nc_verb_error("not implemented");
 		assert(0);
 	}
 
@@ -850,7 +830,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 		assert(CONTROLLER(__data)->id);
 
 	} else {
-		puts("not implemented");
+		nc_verb_error("not implemented");
 		assert(0);
 	}
 
@@ -880,7 +860,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 
 	} else if ((XMLDIFF_REM) & op) {
 	} else {
-		puts("not implemented");
+		nc_verb_error("not implemented");
 		assert(0);
 	}
 
@@ -910,7 +890,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 
 	} else if ((XMLDIFF_REM) & op) {
 	} else {
-		puts("not implemented");
+		nc_verb_error("not implemented");
 		assert(0);
 	}
 
@@ -942,7 +922,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_controllers_
 
 	} else if ((XMLDIFF_REM) & op) {
 	} else {
-		puts("not implemented");
+		nc_verb_error("not implemented");
 		assert(0);
 	}
 
@@ -1026,7 +1006,7 @@ int callback_ofc_capable_switch_ofc_logical_switches_ofc_switch_ofc_resources_of
 
 	} else {
 		// todo implement
-		puts("not implemented");
+		nc_verb_error("not implemented");
 		assert(0);
 	}
 
@@ -1056,7 +1036,7 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 		int i=0;
 		xmlNodePtr lsi;
 		for (lsi = node->children->next; NULL != lsi; lsi = lsi->next, ++i) {
-			puts(lsi->name);
+			nc_verb_verbose(lsi->name);
 			assert(xmlStrEqual(lsi->name, BAD_CAST "switch"));
 
 			// resolve dpid

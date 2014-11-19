@@ -11,19 +11,34 @@
 
 #include <list>
 #include <assert.h>
-
+#include <libnetconf/netconf.h>
 
 static cxmp_blocking_client_adapter *xmp_client = NULL;
-
 
 void*
 new_xmp_client()
 {
-	puts(__FUNCTION__);
+	nc_verb_verbose(__FUNCTION__);
 	if (NULL != xmp_client) return xmp_client;
 
 	rofl::logging::init();
-	rofl::logging::set_debug_level(rofl::logging::DBG);
+	unsigned int dbg_level;
+	switch (/*verbose_level*/NC_VERB_ERROR) { // verbose_level is currently a local symbol...
+		case NC_VERB_WARNING:
+			dbg_level = rofl::logging::WARN;
+			break;
+		case NC_VERB_VERBOSE:
+			dbg_level = rofl::logging::INFO;
+			break;
+		case NC_VERB_DEBUG:
+			dbg_level = rofl::logging::DBG;
+			break;
+		case NC_VERB_ERROR:
+		default:
+			dbg_level = rofl::logging::ERROR;
+			break;
+	}
+	rofl::logging::set_debug_level(dbg_level);
 
 	xmp_client = new cxmp_blocking_client_adapter();
 
@@ -35,7 +50,7 @@ new_xmp_client()
 void
 delete_xmp_client(void* data)
 {
-	puts(__FUNCTION__);
+	nc_verb_verbose(__FUNCTION__);
 	assert(NULL != data);
 	assert(xmp_client == data);
 	delete reinterpret_cast<cxmp_blocking_client_adapter*>(xmp_client);
@@ -45,7 +60,7 @@ delete_xmp_client(void* data)
 void
 get_resources(void* handle, xmlNodePtr resources)
 {
-	puts(__PRETTY_FUNCTION__);
+	nc_verb_verbose(__PRETTY_FUNCTION__);
 
 	assert(handle);
 	assert(resources);
@@ -57,7 +72,7 @@ get_resources(void* handle, xmlNodePtr resources)
 void
 get_port_info(void* handle, xmlNodePtr resources, xmlDocPtr running)
 {
-	puts(__PRETTY_FUNCTION__);
+	nc_verb_verbose(__PRETTY_FUNCTION__);
 
 	assert(handle);
 	assert(resources);
@@ -70,7 +85,7 @@ get_port_info(void* handle, xmlNodePtr resources, xmlDocPtr running)
 void
 get_lsi_info(void* handle, xmlNodePtr lsis, xmlDocPtr running)
 {
-	puts(__PRETTY_FUNCTION__);
+	nc_verb_verbose(__PRETTY_FUNCTION__);
 
 	assert(handle);
 	assert(lsis);
@@ -82,7 +97,7 @@ get_lsi_info(void* handle, xmlNodePtr lsis, xmlDocPtr running)
 void
 get_lsi_config(void* handle, xmlNodePtr lsis)
 {
-	puts(__PRETTY_FUNCTION__);
+	nc_verb_verbose(__PRETTY_FUNCTION__);
 
 	assert(handle);
 	assert(lsis);
@@ -136,7 +151,7 @@ convert_controller_list(struct list* in, std::list<class xdpd::mgmt::protocol::c
 int
 lsi_create(void* handle, struct lsi* lsi)
 {
-	puts(__PRETTY_FUNCTION__);
+	nc_verb_verbose(__PRETTY_FUNCTION__);
 
 	assert(handle);
 	assert(lsi);
@@ -153,7 +168,7 @@ lsi_create(void* handle, struct lsi* lsi)
 int
 lsi_destroy(void* handle, const uint64_t dpid)
 {
-	puts(__PRETTY_FUNCTION__);
+	nc_verb_verbose(__PRETTY_FUNCTION__);
 
 	assert(handle);
 	assert(handle == xmp_client);
@@ -164,7 +179,7 @@ lsi_destroy(void* handle, const uint64_t dpid)
 int
 lsi_connect_to_controller(void* handle, struct lsi *lsi)
 {
-	puts(__PRETTY_FUNCTION__);
+	nc_verb_verbose(__PRETTY_FUNCTION__);
 
 	assert(handle);
 	assert(lsi);
@@ -179,7 +194,7 @@ lsi_connect_to_controller(void* handle, struct lsi *lsi)
 int
 lsi_cross_connect(void* handle, const uint64_t dpid1, const uint64_t dpid2)
 {
-	puts(__PRETTY_FUNCTION__);
+	nc_verb_verbose(__PRETTY_FUNCTION__);
 
 	assert(handle);
 	assert(dpid1 != dpid2);
@@ -191,7 +206,7 @@ lsi_cross_connect(void* handle, const uint64_t dpid1, const uint64_t dpid2)
 int
 port_attach(void* handle, uint64_t dpid, char* port_name)
 {
-	puts(__PRETTY_FUNCTION__);
+	nc_verb_verbose(__PRETTY_FUNCTION__);
 
 	assert(handle);
 	assert(port_name);
@@ -203,7 +218,7 @@ port_attach(void* handle, uint64_t dpid, char* port_name)
 int
 port_detach(void* handle, uint64_t dpid, char* port_name)
 {
-	puts(__PRETTY_FUNCTION__);
+	nc_verb_verbose(__PRETTY_FUNCTION__);
 
 	assert(handle);
 	assert(port_name);
@@ -215,7 +230,7 @@ port_detach(void* handle, uint64_t dpid, char* port_name)
 int
 port_enable(void* handle, const char* port_name)
 {
-	puts(__PRETTY_FUNCTION__);
+	nc_verb_verbose(__PRETTY_FUNCTION__);
 
 	assert(handle);
 	assert(port_name);
@@ -227,7 +242,7 @@ port_enable(void* handle, const char* port_name)
 int
 port_disable(void* handle, const char* port_name)
 {
-	puts(__PRETTY_FUNCTION__);
+	nc_verb_verbose(__PRETTY_FUNCTION__);
 
 	assert(handle);
 	assert(port_name);
