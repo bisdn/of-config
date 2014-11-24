@@ -27,8 +27,7 @@ module xdpd-mgmt {
         leaf name {
           type string;
         }
-         
-         
+
         list switch {
           description "";
           key "id";
@@ -40,7 +39,18 @@ module xdpd-mgmt {
               path "/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id";
             }
           }
-           
+          
+          leaf requested-of-port-number {
+            type uint64 {
+              range "1..512";
+            }
+          }
+
+          leaf of-port-number {
+            type uint64;
+            config false;
+          }
+
           leaf portname {
             config false;
             type string;

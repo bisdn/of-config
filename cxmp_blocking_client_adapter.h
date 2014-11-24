@@ -52,7 +52,7 @@ public:
 	lsi_connect_to_controller(const uint64_t dpid, const std::list<struct xdpd::mgmt::protocol::controller>& controller);
 
 	int
-	lsi_cross_connect(const uint64_t dpid1, const uint64_t dpid2);
+	lsi_cross_connect(const uint64_t dpid1, const uint64_t port_no1, const uint64_t dpid2, const uint64_t port_no2);
 
 	int
 	port_attach(const uint64_t dpid, const char* port_name);

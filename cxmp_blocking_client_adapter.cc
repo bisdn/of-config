@@ -734,13 +734,13 @@ cxmp_blocking_client_adapter::lsi_connect_to_controller(const uint64_t dpid, con
 }
 
 int
-cxmp_blocking_client_adapter::lsi_cross_connect(const uint64_t dpid1, const uint64_t dpid2)
+cxmp_blocking_client_adapter::lsi_cross_connect(const uint64_t dpid1, const uint64_t port_no1, const uint64_t dpid2, const uint64_t port_no2)
 {
 	rofl::logging::debug << __PRETTY_FUNCTION__ << std::endl;
 	using xdpd::mgmt::protocol::cxmpie;
 
 	pthread_mutex_lock(&client_lock);
-	xmp_client->lsi_cross_connect(dpid1, dpid2);
+	xmp_client->lsi_cross_connect(dpid1, port_no1, dpid2, port_no2);
 	int rv = pthread_cond_timedwait(&client_read_cv, &client_lock, get_wait_time());
 	pthread_mutex_unlock(&client_lock);
 

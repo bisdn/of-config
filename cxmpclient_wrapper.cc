@@ -192,7 +192,7 @@ lsi_connect_to_controller(void* handle, struct lsi *lsi)
 }
 
 int
-lsi_cross_connect(void* handle, const uint64_t dpid1, const uint64_t dpid2)
+lsi_cross_connect(void* handle, const uint64_t dpid1, const uint64_t port_no1, const uint64_t dpid2, const uint64_t port_no2)
 {
 	nc_verb_verbose(__PRETTY_FUNCTION__);
 
@@ -200,7 +200,7 @@ lsi_cross_connect(void* handle, const uint64_t dpid1, const uint64_t dpid2)
 	assert(dpid1 != dpid2);
 	assert(handle == xmp_client);
 
-	return xmp_client->lsi_cross_connect(dpid1, dpid2);
+	return xmp_client->lsi_cross_connect(dpid1, port_no1, dpid2, port_no2);
 }
 
 int

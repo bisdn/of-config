@@ -1031,6 +1031,8 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 
 	uint64_t dpid_1 = 0;
 	uint64_t dpid_2 = 0;
+	uint64_t port_no1 = 0;
+	uint64_t port_no2 = 0;
 
 	if (XMLDIFF_ADD & op) {
 		int i=0;
@@ -1045,6 +1047,7 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 			xmlXPathObjectPtr xpath_obj_ptr = get_node(lsi->doc, namespace_mapping, buf);
 			assert(xpath_obj_ptr);
 			assert(xpath_obj_ptr->nodesetval);
+
 
 			// there should only be one lsi with this id
 			if (1 == xpath_obj_ptr->nodesetval->nodeNr) {

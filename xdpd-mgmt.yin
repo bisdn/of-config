@@ -48,6 +48,15 @@
               <path value="/ofc:capable-switch/ofc:logical-switches/ofc:switch/ofc:id"/>
             </type>
           </leaf>
+          <leaf name="requested-of-port-number">
+            <type name="uint64">
+              <range value="1..512"/>
+            </type>
+          </leaf>
+          <leaf name="of-port-number">
+            <type name="uint64"/>
+            <config value="false"/>
+          </leaf>
           <leaf name="portname">
             <config value="false"/>
             <type name="string"/>
