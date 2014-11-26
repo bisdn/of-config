@@ -32,7 +32,7 @@ cxmp_blocking_client_adapter::run(void* arg)
 		handle->xmp_client->set_auto_exit(false);
 
 		pthread_mutex_unlock(&handle->client_lock);
-		handle->xmp_client->run();
+		rofl::cioloop::get_loop().run();
 
 		delete handle->xmp_client;
 		handle->xmp_client = NULL;
@@ -49,7 +49,7 @@ cxmp_blocking_client_adapter::run(void* arg)
 	//Logging
 	rofl::logging::close();
 	//Release ciosrv loop resources
-	rofl::cioloop::shutdown();
+	rofl::cioloop::get_loop().shutdown();
 
 	pthread_exit(NULL);
 }
