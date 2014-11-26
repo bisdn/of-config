@@ -1038,7 +1038,6 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 		int i=0;
 		xmlNodePtr lsi;
 		for (lsi = node->children->next; NULL != lsi; lsi = lsi->next, ++i) {
-			nc_verb_verbose(lsi->name);
 			assert(xmlStrEqual(lsi->name, BAD_CAST "switch"));
 
 			// resolve dpid
@@ -1049,7 +1048,7 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 			assert(xpath_obj_ptr->nodesetval);
 
 
-			// there should only be one lsi with this id
+			// there can only be one lsi with this id
 			if (1 == xpath_obj_ptr->nodesetval->nodeNr) {
 
 				xmlNodePtr dpid_node = find_element(BAD_CAST "datapath-id", xpath_obj_ptr->nodesetval->nodeTab[0]->children);
@@ -1062,9 +1061,20 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 				}
 
 			} else {
+				// otherwise something is really screwed
 				assert(0);
 			}
 			xmlXPathFreeObject(xpath_obj_ptr);
+
+			xmlNodePtr requested_portnum = find_element(BAD_CAST "requested-of-port-number", lsi->children);
+			if (NULL != requested_portnum) {
+
+				if (0 == i) {
+					port_no1 = strtoul(XML_GET_CONTENT(requested_portnum->children), NULL, 10);
+				} else {
+					port_no2 = strtoul(XML_GET_CONTENT(requested_portnum->children), NULL, 10);
+				}
+			}
 		}
 
 		nc_verb_verbose("dpid_1 = %lx, dpid_2 = %lx\n", dpid_1, dpid_2);
