@@ -1068,7 +1068,7 @@ int callback_ofc_capable_switch_xdpd_mgmt_cross_connections_xdpd_mgmt_cross_conn
 		}
 
 		nc_verb_verbose("dpid_1 = %lx, dpid_2 = %lx\n", dpid_1, dpid_2);
-		lsi_cross_connect(ofc_state.xmp_client_handle, dpid_1, dpid_2);
+		lsi_cross_connect(ofc_state.xmp_client_handle, dpid_1, port_no1, dpid_2, port_no2);
 	}
 
 	return EXIT_SUCCESS;
