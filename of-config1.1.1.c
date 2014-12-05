@@ -18,7 +18,7 @@
 extern struct ns_pair namespace_mapping[];
 
 /* transAPI version which must be compatible with libnetconf */
-int transapi_version = 4;
+int transapi_version = 5;
 
 /* Signal to libnetconf that configuration data were modified by any callback.
  * 0 - data not modified
