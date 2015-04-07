@@ -5,7 +5,6 @@ TESTS_TO_RUN="netconf_get \
  netconf_create_lsi \
  netconf_attach_port \
  netconf_create_lsi2 \
- netconf_attach_port_invalid \
  netconf_attach_ports \
  netconf_detach_port \
  netconf_detach_ports \
