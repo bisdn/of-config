@@ -51,7 +51,7 @@ proc netconf_disconnect {} {
 	global expect_out spawn_id
 	
 	# end session
-	send "\x0004"
+	send "quit\n"
 	expect {
 		timeout	{ send_user "failed\n" ; exit 1 }
 		eof		{ send_user "\n"; exit 0 } 
@@ -60,16 +60,16 @@ proc netconf_disconnect {} {
 
 proc netconf_edit_config {xml_file {operation "merge"}} {
 
-	set f [open $xml_file]
-	set netconf_xml [read $f]
-	close $f
+	#set f [open $xml_file]
+	#set netconf_xml [read $f]
+	#close $f
 	
-	send "edit-config --defop=$operation --error=rollback running\r"
-	expect {
-		"Type the edit configuration data (close editor by Ctrl-D):"	{  }
-		timeout 	{ exit 1 }
-	}
+	send "edit-config --config=$xml_file --defop=$operation --error=rollback running\r"
+	#expect {
+	#	"Type the edit configuration data (close editor by Ctrl-D):"	{  }
+	#	timeout 	{ exit 1 }
+	#}
 	
-	send "$netconf_xml"
-	send "\x0004"
+	#send "$netconf_xml"
+	#send "\x0004"
 }
