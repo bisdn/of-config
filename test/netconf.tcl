@@ -22,7 +22,7 @@ proc netconf_connect {} {
 	}
 		
 	# run netopeer-cli
-	spawn /home/tobi/workspace/netopeer/cli/netopeer-cli
+	spawn netopeer-cli
 	expect {
 		"netconf>"	{}
 		timeout		{ exit 1 }
