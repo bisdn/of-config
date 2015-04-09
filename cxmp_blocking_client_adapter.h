@@ -1,9 +1,6 @@
-/*
- * cxmp_blocking_client_adapter.h
- *
- *  Created on: Jul 22, 2014
- *      Author: tobi
- */
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef CXMP_BLOCKING_CLIENT_ADAPTER_H_
 #define CXMP_BLOCKING_CLIENT_ADAPTER_H_
