@@ -6,6 +6,11 @@ This repository provides the configuration and management module for
 [netopeer][3] as NETCONF server. Currently only the parts covered by the xDPd
 management API are available via OF-Config.
 
+Installation
+------------
+
+See [INSTALL.md](INSTALL.md)
+
 Examples 
 --------
 
@@ -45,9 +50,8 @@ Examples
     </capable-switch>
 
 
-References
-----------
 
 [1]: http://www.xdpd.org/
 [2]: https://www.opennetworking.org/technical-communities/areas/specification
 [3]: https://code.google.com/p/netopeer/
+
